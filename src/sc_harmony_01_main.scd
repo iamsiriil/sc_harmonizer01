@@ -45,14 +45,13 @@ var progression = Array.new(50);
 
 ~chordState[\nextValidChords] = Array.new(50);
 
-//~chordData[\chordProg] = [['CM', 2], ['Fm', 1], ['EbM', 1], ['AbM', 1], ['C#M', 1], ['CM', 2]];
 ~chordData[\chordProg] = [['CM', 2], ['Fm', 1], ['AbM', 1], ['C#M', 2]];
 
 ~getChordDegreeArrays.();
 
 ~prog = ~harmonizeProg.(firstChord, progression);
-)
 ~progVoices = ~prog.flop;
+)
 
 (
 Ppar([
@@ -89,102 +88,4 @@ Ppar([
 	),
 ]).play;
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-(
-~clock = TempoClock.new(120/60);
-
-~t = { |chordProg, firstChord = nil|
-	var nextChord, chordList
-
-	~chordData[\chordProg] = chordProg;
-	~getChordDegreeArrays.();
-
-	if (firstChord != nil) {
-		nextChord = fistChord
-	} {
-		nextChord = ~getFirstChord.(); // ...
-	};
-
-	Task({
-		var buildChord;
-		var tempo = 2.5;
-
-		chordProg.do({ |c, i|
-			var dur = tempo / ~clock.tempo;
-
-			~chordState[\nextChipher] = c[0];
-
-			if (i == 0) {
-				nextChord;
-			} {
-				~getValidNotes.();
-				buildChord = Array.fill(4, {0});
-				~getNextChords.(buildChord, 0);
-
-				nextChord = ~chordState[\nextValidChords].choose;
-			};
-
-			// Play SATB
-			Synth();
-			Synth();
-			Synth();
-			Synth();
-			tempo.wait;
-
-			~chordState[\currChord] = nextChord;
-			~chordState[\lastValidChords] = ~chordState[\nextValidChords];
-		});
-
-	});
-};
-)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
