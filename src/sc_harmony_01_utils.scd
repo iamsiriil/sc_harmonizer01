@@ -57,11 +57,9 @@
 	ciphers = chordProg.collect { |c| c[0] };
 	ciphers = ciphers.asSet;
 
-	"ciphers: %".format(ciphers).postln;
 	dictChords = Dictionary.new();
 
 	ciphers.do { |c|
-		"c: %".format(c).postln;
 		dict = Dictionary.new();
 		dict[\notes] = ~triads[c][\notes].postln;
 		dict[\degree] = (~triads[c][\degree].wrapExtend(~triads[c][\notes].size));
@@ -131,10 +129,8 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resolveCommonTones: Function Call".format(~loggerCount).postln; };
 
-	//if (~enforceRootPosition == true) {
-		voiceNames = voiceNames.drop(1);
-		currChord = currChord.drop(1);
-	//};
+	voiceNames = voiceNames.drop(1);
+	currChord = currChord.drop(1);
 
 	voiceNames.do { |v, i|
 		var set = [currChord[i]];
@@ -160,6 +156,7 @@
 	if (~enforceCommonTones == true) {
 		~resolveCommonTones.();
 	};
+	// Sort by proximity to previous note
 	nil;
 };
 
@@ -171,9 +168,7 @@
 	var notes = ~chordData[\chords][cipher][\notes];
 	var degree = ~chordData[\chords][cipher][\degree];
 
-
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getNoteDegree: Function Call".format(~loggerCount).postln; };
-	//"note: %".format(note).postln;
 
 	degree[notes.indexOf(note)];
 };

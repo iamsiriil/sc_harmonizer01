@@ -1,8 +1,8 @@
 (
-"../sc_harmony_01_lib.scd".loadRelative;
-"../sc_harmony_01_utils.scd".loadRelative;
-"../sc_harmony_01_rules.scd".loadRelative;
-"../sc_harmony_01_backtrack.scd".loadRelative;
+"../src/sc_harmony_01_lib.scd".loadRelative;
+"../src/sc_harmony_01_utils.scd".loadRelative;
+"../src/sc_harmony_01_rules.scd".loadRelative;
+"../src/sc_harmony_01_backtrack.scd".loadRelative;
 )
 
 /**************************************************************************************

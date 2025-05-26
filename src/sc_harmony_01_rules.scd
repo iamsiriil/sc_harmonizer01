@@ -97,6 +97,7 @@
 		j = i + 1;
 		while {j < numVoices} {
 
+			//if (octaves.includes((currChord[i] - currChord[j]).abs)) { index = [i, j] };
 			octaves.do { |oct|
 				if ((currChord[j] - currChord[i]) == oct) { index = [i, j] };
 			};
@@ -129,6 +130,7 @@
 		j = i + 1;
 		while {j < numVoices} {
 
+			//if (fifths.includes((currChord[i] - currChord[j]).abs)) { index = [i, j] };
 			fifths.do { |n|
 				if ((currChord[j] - currChord[i]) == n) { index.add([i, j]) };
 			};
@@ -159,7 +161,7 @@
 	degreesAsSet = ~chordData[\chords][cipher][\degree].asSet;
 	chordAsSet = degrees.asSet;
 
-	if (chordAsSet == degreesAsSet) {
+	if (chordAsSet == degreesAsSet) { // Checks if chord is complete
 
 		if (~enforceNoteDuplicate == true) {
 

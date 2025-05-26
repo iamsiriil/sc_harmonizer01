@@ -29,6 +29,86 @@ GOALS:
 - getNextChord returns only the first valid chord to reduce computational overhead
 **************************************************************************************/
 // -> SynthDef
+(
+SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2|
+	var sig = SinOsc.ar(freq) * amp;
+	sig = sig * EnvGen.kr(Env.perc(0.01, (dur * 0.9)), doneAction: 2)
+	Out.ar(0, sig ! 2);
+}).add;
+)
+
+Synth(\tone);
+
+(
+var firstChord = [48, 55, 64, 72];
+var progression = Array.new(50);
+
+~chordState[\nextValidChords] = Array.new(50);
+
+//~chordData[\chordProg] = [['CM', 2], ['Fm', 1], ['EbM', 1], ['AbM', 1], ['C#M', 1], ['CM', 2]];
+~chordData[\chordProg] = [['CM', 2], ['Fm', 1], ['AbM', 1], ['C#M', 2]];
+
+~getChordDegreeArrays.();
+
+~prog = ~harmonizeProg.(firstChord, progression);
+)
+~progVoices = ~prog.flop;
+
+(
+Ppar([
+	// Bass
+	Pbind(
+		\instrument, \tone,
+		\midinote, Pseq(~progVoices[0], 1),
+		\dur, Pseq([2, 1, 1, 2], 1),
+		\amp, 0.3,
+	),
+
+	// Tenor
+	Pbind(
+		\instrument, \tone,
+		\midinote, Pseq(~progVoices[1], 1),
+		\dur, Pseq([2, 1, 1, 2], 1),
+		\amp, 0.3,
+	),
+
+	// Alto
+	Pbind(
+		\instrument, \tone,
+		\midinote, Pseq(~progVoices[2], 1),
+		\dur, Pseq([2, 1, 1, 2], 1),
+		\amp, 0.3,
+	),
+
+	// Soprano
+	Pbind(
+		\instrument, \tone,
+		\midinote, Pseq(~progVoices[3], 1),
+		\dur, Pseq([2, 1, 1, 2], 1),
+		\amp, 0.3,
+	),
+]).play;
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 (
 ~clock = TempoClock.new(120/60);
