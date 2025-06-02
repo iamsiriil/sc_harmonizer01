@@ -58,7 +58,7 @@
 
 	ciphers.do { |c|
 		dict = Dictionary.new();
-		dict[\notes] = triads[c][\notes].as(OrderedIdentitySet).postln;
+		dict[\notes] = triads[c][\notes].as(OrderedIdentitySet);
 		dict[\degree] = (triads[c][\degree].wrapExtend(triads[c][\notes].size));
 
 		dictChords[c] = dict;
@@ -160,8 +160,6 @@
 ~getNoteDegree = #{ |note, cipher, chords|
 	var notes = chords[cipher][\notes].asArray;
 	var degree = chords[cipher][\degree];
-
-	note.postln;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getNoteDegree: Function Call".format(~loggerCount).postln; };
 
