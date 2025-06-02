@@ -158,4 +158,9 @@ var nextCipher = 'GM';
 ~chordState[\validNotes][\ten]
 
 
+~set = Set[2, 5, 7, 9, 45];
+~set.reject { |n| n.isPrime }
 
+(['A', 'B', 'C', 'A'].select { |n| n == 'A' }).as(OrderedIdentitySet)
+
+[1].asSet

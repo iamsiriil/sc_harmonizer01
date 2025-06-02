@@ -53,14 +53,12 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordDegreeArrays: Function Call".format(~loggerCount).postln; };
 
-	ciphers = chordProg.collect { |c| c[0] };
-	ciphers = ciphers.asSet;
-
+	ciphers = (chordProg.collect { |c| c[0] }).asSet;
 	dictChords = Dictionary.new();
 
 	ciphers.do { |c|
 		dict = Dictionary.new();
-		dict[\notes] = triads[c][\notes].postln;
+		dict[\notes] = triads[c][\notes].as(OrderedIdentitySet).postln;
 		dict[\degree] = (triads[c][\degree].wrapExtend(triads[c][\notes].size));
 
 		dictChords[c] = dict;
@@ -74,9 +72,7 @@
 ~getChordDegreePairs = { |triads, chordProg|
 	var chords, dict;
 
-	chords = chordProg.collect { |c| c[0] };    // Separate ciphers from durations
-	chords = chords.asSet;                      // Remove duplicates
-
+	chords = (chordProg.collect { |c| c[0] }).asSet;    // Separate ciphers from durations
 	dict = Dictionary.new();
 
 	chords.do { |c|
@@ -97,11 +93,10 @@
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordVocalRange: Function Call".format(~loggerCount).postln; };
 
 	dict = Dictionary.new();
-	notes = chordNotes.asSet;
 
 	voiceData[\voiceNames].do { |v|
 		voiceRange = voiceData[\voiceRange][v];
-		dict[v] = (notes & (voiceRange[0]..voiceRange[1])).asArray.sort;
+		dict[v] = (chordNotes & (voiceRange[0]..voiceRange[1]));
 	};
 	dict;
 };
@@ -131,8 +126,7 @@
 		var set = [currChord[i]];
 
 		if ((set.isSubsetOf(validNotes[v])) && (i > 0)) {
-			validNotes[v] = validNotes[v].as(OrderedIdentitySet);
-			validNotes[v] = (validNotes[v] & set).asArray;
+			validNotes[v] = (validNotes[v] & set);
 		};
 	};
 	nil;
@@ -163,10 +157,9 @@
 /*************************************************************************************/
 // Get the corresponding degree of a note, given a cipher
 
-~getNoteDegree = #{ |note|
-	var cipher = ~chordState[\nextCipher];
-	var notes = ~chordData[\chords][cipher][\notes];
-	var degree = ~chordData[\chords][cipher][\degree];
+~getNoteDegree = #{ |note, cipher, chords|
+	var notes = chords[cipher][\notes].asArray;
+	var degree = chords[cipher][\degree];
 
 	note.postln;
 
@@ -178,13 +171,13 @@
 /*************************************************************************************/
 // Get an array with the corresponding degrees of the notes of a chord
 
-~getChordNotesDegree = #{ |chord|
+~getChordNotesDegree = #{ |currChord, cipher, chords|
 	var degreeArray = Array.new(4);
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordNotesDegree: Function Call".format(~loggerCount).postln; };
 
-	chord.do { |n, i|
-		degreeArray.add(~getNoteDegree.(n));
+	currChord.do { |n|
+		degreeArray.add(~getNoteDegree.(n, cipher, chords));
 	};
 	degreeArray;
 };
