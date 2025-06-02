@@ -1,6 +1,6 @@
 (
-"../sc_harmony_01_lib.scd".loadRelative;
-"../sc_harmony_01_utils.scd".loadRelative;
+"../src/sc_harmony_01_lib.scd".loadRelative;
+"../src/sc_harmony_01_utils.scd".loadRelative;
 )
 
 /**************************************************************************************
@@ -16,6 +16,10 @@
 	[['F#m', 1], ['EM', 1], ['C#A', 1], ['Bm', 2], ['Ed', 1], ['F#m']],
 	[['Ebm', 1], ['Gm', 1], ['BA', 1], ['BbM', 2], ['Dm', 1], ['Ebm']],
 	[['AbM', 1], ['C#m', 1], ['EbM', 1], ['Bm', 2], ['Gd', 1], ['G#m']]
+];
+
+~commonTones = [
+	[[48, 55, 64, 72], []]
 ];
 )
 
@@ -83,41 +87,64 @@
 )
 
 (
-~test_resolveCommonTones = {
-	~logger = true;
-	~loggerCount = 0;
+~test_getChordDegreeArray = { |chordProgs|
 
-	~enforceRootPosition = false;
+	chordProgs.do { |p|
+		var dict = ~getChordDegreeArrays.(~triads, p);
 
-	~chordData[\chordProg] = [['CM', 2], ['DM', 2]];
-	~chordState[\currChord] = [48, 55, 60, 64];
-	~chordState[\nextCipher] = 'DM';
-
-
-	~getChordDegreeArrays.();
-	~getChordVocalRange.();
-
-	~resolveCommonTones.();
+		p.do { |c|
+			"Test: %".format(c[0]).post;
+			if (dict[c[0]][\notes] == ~triads[c[0]][\notes]) {
+				": Passed".postln;
+			} {
+				": Failed".postln;
+			}
+		}
+	};
 };
-~test_resolveCommonTones.();
-~chordState[\validNotes][\spn];
+~test_getChordDegreeArray.(~chordProg);
 )
 
+(
+~test_getChordVocalRange = { |chord|
+
+};
+
+~chordData[\chords] = ~getChordDegreeArrays.(~triads, ~chordProg[1]);
+~nextCipher = 'FM';
+~getChordVocalRange.(~voiceData, ~chordData[\chords][~nextCipher][\notes])
+)
+
+(
+var chordProg = [['CM', 1], ['Am', 1]];
+var nextCipher = 'Am';
+var currChord = [48, 55, 64, 72];
+~loggerCount = 0;
+
+~test_resolveCommonTone = {
+
+};
+~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg);
+//~chordState[\validNotes] = ~getChordVocalRange.(~voiceData, ~chordData[\chords][nextCipher][\notes]);
+//~resolveCommonTones.(~voiceData, ~chordState[\validNotes], currChord);
+~chordState[\currChord] = currChord;
+~chordState[\nextCipher] = nextCipher;
+~getValidNotes.(~chordData[\chords], ~chordState, ~voiceData);
+)
+
+~chordState[\validNotes][\bas]
 
 
+(
+var currChord = [];
+~resolveMelodicIntervals = {
 
+}
+)
 
-
-
-
-
-
-
-
-
-
-
-
+~test_commonTones = [
+	[[], '']
+]
 
 
 

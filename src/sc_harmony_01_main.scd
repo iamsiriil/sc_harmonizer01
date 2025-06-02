@@ -33,7 +33,7 @@ GOALS:
 (
 SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2|
 	var sig = SinOsc.ar(freq) * amp;
-	sig = sig * EnvGen.kr(Env.perc(0.01, (dur * 0.9)), doneAction: 2)
+	sig = sig * EnvGen.kr(Env.perc(0.01, (dur * 0.9)), doneAction: 2);
 	Out.ar(0, sig ! 2);
 }).add;
 )
@@ -43,17 +43,19 @@ Synth(\tone);
 (
 var firstChord = [48, 55, 64, 72];
 var progression = Array.new(50);
+~loggerCount = 0;
 
 ~chordState[\nextValidChords] = Array.new(50);
 
-~chordData[\chordProg] = [['CM', 2], ['Fm', 1], ['AbM', 1], ['C#M', 2]];
+~chordData[\chordProg] = [['CM', 2], ['Cm', 1], ['Fm', 1], ['CM', 2]];
 
-~getChordDegreeArrays.();
+~chordData[\chords] = ~getChordDegreeArrays.(~triads, ~chordData[\chordProg]);
 
-~prog = ~harmonizeProg.(firstChord, progression);
-~progVoices = ~prog.flop;
+
+//~prog = ~harmonizeProg.(firstChord, progression);
+//~progVoices = ~prog.flop;
 )
-
+~prog
 (
 Ppar([
 	// Bass
@@ -89,4 +91,7 @@ Ppar([
 	),
 ]).play;
 )
-
+~a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]];
+~b = (1..10).iter;
+~a = ~a.iter;
+~a.next;

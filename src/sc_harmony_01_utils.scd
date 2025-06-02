@@ -48,8 +48,7 @@
 /*************************************************************************************/
 // Get all chord notes, within MIDI range, and respective degrees as two separate arrays
 
-~getChordDegreeArrays = #{
-	var chordProg = ~chordData[\chordProg];
+~getChordDegreeArrays = #{ |triads, chordProg|
 	var ciphers, dictChords, dict;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordDegreeArrays: Function Call".format(~loggerCount).postln; };
@@ -61,31 +60,29 @@
 
 	ciphers.do { |c|
 		dict = Dictionary.new();
-		dict[\notes] = ~triads[c][\notes].postln;
-		dict[\degree] = (~triads[c][\degree].wrapExtend(~triads[c][\notes].size));
+		dict[\notes] = triads[c][\notes].postln;
+		dict[\degree] = (triads[c][\degree].wrapExtend(triads[c][\notes].size));
 
 		dictChords[c] = dict;
 	};
-	~chordData[\chords] = dictChords;
-	nil;
+	dictChords;
 };
 
 /*************************************************************************************/
 // Get chord notes, within MIDI range, and respective degrees, as paired arrays
 
-~getChordDegreePairs = { |chordProg|
-	//var chordProg = ~chordData[\chordProg];
+~getChordDegreePairs = { |triads, chordProg|
 	var chords, dict;
 
 	chords = chordProg.collect { |c| c[0] };    // Separate ciphers from durations
-	chords.asSet;                               // Remove duplicates
+	chords = chords.asSet;                      // Remove duplicates
 
 	dict = Dictionary.new();
 
 	chords.do { |c|
 		var notes;
 
-		notes = ~triads[c][\notes] +++ ~triads[c][\degree].bubble(1);
+		notes = triads[c][\notes] +++ triads[c][\degree].bubble(1);
 		dict[c] = notes;
 	};
 	dict;
@@ -94,22 +91,19 @@
 /*************************************************************************************/
 // Get all chord notes for each vocal range
 
-~getChordVocalRange = #{
-	var cipher = ~chordState[\nextCipher].postln;
-	var voices = ~voiceData[\voiceNames];
-	var chordNotes = ~chordData[\chords][cipher][\notes].as(OrderedIdentitySet);
-	var voiceRange, dict;
+~getChordVocalRange = #{ |voiceData, chordNotes|
+	var voiceRange, dict, notes;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordVocalRange: Function Call".format(~loggerCount).postln; };
 
 	dict = Dictionary.new();
+	notes = chordNotes.asSet;
 
-	voices.do { |v|
-		voiceRange = ~voiceData[\voiceRange][v];
-		dict[v] = chordNotes & (voiceRange[0]..voiceRange[1]);
+	voiceData[\voiceNames].do { |v|
+		voiceRange = voiceData[\voiceRange][v];
+		dict[v] = (notes & (voiceRange[0]..voiceRange[1])).asArray.sort;
 	};
-	~chordState[\validNotes] = dict;
-	nil;
+	dict;
 };
 
 /*************************************************************************************/
@@ -122,20 +116,16 @@
 /*************************************************************************************/
 // Remove valid notes other than common tones from respective voices
 
-~resolveCommonTones = #{
-	var currChord = ~chordState[\currChord];
-	var validNotes = ~chordState[\validNotes];
-	var voiceNames = ~voiceData[\voiceNames];
+~resolveCommonTones = #{ |voiceData, validNotes, currChord|
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resolveCommonTones: Function Call".format(~loggerCount).postln; };
 
-	voiceNames = voiceNames.drop(1);
-	currChord = currChord.drop(1);
-
-	voiceNames.do { |v, i|
+	voiceData[\voiceNames].do { |v, i|
 		var set = [currChord[i]];
-		if (set.isSubsetOf(~chordState[\validNotes][v])) {
-			~chordState[\validNotes][v] = (~chordState[\validNotes][v] & set);
+
+		if ((set.isSubsetOf(validNotes[v])) && (i > 0)) {
+			validNotes[v] = validNotes[v].as(OrderedIdentitySet);
+			validNotes[v] = (validNotes[v] & set).asArray;
 		};
 	};
 	nil;
@@ -144,19 +134,23 @@
 /*************************************************************************************/
 // Get valid notes
 
-~getValidNotes = #{
+~getValidNotes = #{ |chords, chordState, voiceData|
+	var nextCipher = chordState[\nextCipher].postln;
+	var currChord = chordState[\currChord].postln;
+	var validNotes;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getValidNotes: Function Call".format(~loggerCount).postln; };
 
-	~getChordVocalRange.();
+	validNotes = ~getChordVocalRange.(voiceData, chords[nextCipher][\notes]);
 
 	/*if (~enforceMelodicIntervals == true) {
 		~resolveMelodicIntervals.();
 	};*/
 	if (~enforceCommonTones == true) {
-		~resolveCommonTones.();
+		~resolveCommonTones.(voiceData, validNotes, currChord);
 	};
 	// Sort by proximity to previous note
+	chordState[\validNotes] = validNotes;
 	nil;
 };
 
@@ -167,6 +161,8 @@
 	var cipher = ~chordState[\nextCipher];
 	var notes = ~chordData[\chords][cipher][\notes];
 	var degree = ~chordData[\chords][cipher][\degree];
+
+	note.postln;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getNoteDegree: Function Call".format(~loggerCount).postln; };
 
