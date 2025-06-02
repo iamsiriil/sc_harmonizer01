@@ -13,12 +13,12 @@
 		\spn -> [60, 81]
 	],
 	// Allowed melodic intervals
-	\validIntervals -> Dictionary[
+	\invalidIntervals -> Dictionary[
 		// All except tritone and sevenths. Spn, alt and ten, one octave. Bass, two
-		\bas -> [0, 1, 2, 3, 4, 5, 7, 8, 9, 12, 13, 14,15, 16, 17, 19, 20, 21, 24],
-		\ten -> [0, 1, 2, 3, 4, 5, 7, 8, 9, 12],
-		\alt -> [0, 1, 2, 3, 4, 5, 7, 8, 9, 12],
-		\spn -> [0, 1, 2, 3, 4, 5, 7, 8, 9, 12]
+		\bas -> [6, 10, 11, 18, 22, 23],
+		\ten -> [6, 10, 11],
+		\alt -> [6, 10, 11],
+		\spn -> [6, 10, 11]
 	],
 	// Number of voices
 	\numVoices -> 4,
@@ -109,8 +109,15 @@
 /*************************************************************************************/
 // Ensure only valid melodic intervals are played between chords
 
-~resolveMelodicIntervals = {
+~resolveMelodicIntervals = #{ |voiceData, validNotes, currChord|
 
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resolveMelodicIntervals: Function Call".format(~loggerCount).postln; };
+
+	voiceData[\voiceNames].do { |v, i|
+		validNotes[v] = validNotes[v].reject { |n|
+			voiceData[\invalidIntervals][v].includes((n - currChord[i]))
+		};
+	};
 };
 
 /*************************************************************************************/
@@ -143,13 +150,12 @@
 
 	validNotes = ~getChordVocalRange.(voiceData, chords[nextCipher][\notes]);
 
-	/*if (~enforceMelodicIntervals == true) {
-		~resolveMelodicIntervals.();
-	};*/
+	if (~enforceMelodicIntervals == true) {
+		~resolveMelodicIntervals.(voiceData, validNotes, currChord);
+	};
 	if (~enforceCommonTones == true) {
 		~resolveCommonTones.(voiceData, validNotes, currChord);
 	};
-	// Sort by proximity to previous note
 	chordState[\validNotes] = validNotes;
 	nil;
 };

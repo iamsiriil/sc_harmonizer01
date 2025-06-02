@@ -135,19 +135,27 @@ var currChord = [48, 55, 64, 72];
 ~chordState[\validNotes][\bas]
 
 
-(
-var currChord = [];
-~resolveMelodicIntervals = {
 
-}
+(
+var invalidIntervals = [6, 10, 11, 18, 22, 23];
+var currChord = [41, 53, 60, 69];
+var chordProg = [['FM', 1], ['GM', 1]];
+var nextCipher = 'GM';
+~resetChordDicts.();
+
+~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg);
+~chordState[\validNotes] = ~getChordVocalRange.(~voiceData, ~chordData[\chords][nextCipher][\notes]);
+
+~resolveMelodicIntervals.(~voiceData, ~chordState[\validNotes], currChord);
 )
 
-~test_commonTones = [
-	[[], '']
-]
+~chordState[\validNotes][\spn]
 
-
-
+~invalidIntervals = [6, 10, 11, 18, 22, 23];
+~invalidIntervals;
+~currChord = [41, 53, 60, 69];
+~chordState[\validNotes][\ten] = ~chordState[\validNotes][\ten].reject { |n| ~invalidIntervals.includes((n - ~currChord[1]).abs)}
+~chordState[\validNotes][\ten]
 
 
 
