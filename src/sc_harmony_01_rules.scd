@@ -23,6 +23,23 @@
 ~enforceFirstInversion        = false; // Enforced in ~checkChordPosition, during backtrack
 ~enforceSecondInversion       = false; // Enforced in ~checkChordPosition, during backtrack
 
+~rules = Dictionary[
+	\EVC -> true,
+	\EMI -> true,
+	\EVR -> true,
+	\ECT -> true,
+	\EPO -> true,
+	\EPF -> true,
+	\END -> true,
+	\ERD -> true,
+	\ETD -> false,
+	\EFD -> false,
+	\ECP -> true,
+	\ERP -> true,
+	\EFI -> false,
+	\ESI -> false
+];
+
 // Toggle rules counter
 ~toggleCount = 0;
 
