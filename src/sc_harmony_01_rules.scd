@@ -31,8 +31,8 @@
 /*************************************************************************************/
 // Check chord position: Root, first inversion, second inversion
 
-~checkChordPosition = #{ |nextChord|
-	var bassNote = ~getNoteDegree.(nextChord[0]);
+~checkChordPosition = #{ |nextChord, cipher, chords|
+	var bassNote = ~getNoteDegree.(nextChord[0], cipher, chords);
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkChordPosition: Function Call".format(~loggerCount).postln; };
 
@@ -51,6 +51,100 @@
 	} {
 		true;
 	};
+};
+
+/*************************************************************************************/
+// Checks wich degree gets repeated inside the chord,
+// and if chord is complete (e.g. All triad notes are present).
+
+~checkNoteDuplicate = #{ |nextChord, cipher, chords|
+	var degrees, chordAsSet, degreesAsSet;
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkNoteDuplicate: Function Call".format(~loggerCount).postln; };
+
+	degrees = ~getChordNotesDegree.(nextChord, cipher, chords);
+
+	degreesAsSet = chords[cipher][\degree].asSet;
+	chordAsSet = degrees.asSet;
+
+	if (chordAsSet == degreesAsSet) { // Checks if chord is complete
+
+		if (~enforceNoteDuplicate == true) {
+
+			case
+			{ ~enforceRootDuplicate == true } {
+				(degrees.count({ |item| item == "Rt" }) == 2);
+			}
+			{ ~enforceThirdDuplicate == true } {
+				(degrees.count({ |item| item.contains("3") }) == 2);
+			}
+			{ ~enforceFifthDuplicate == true } {
+				(degrees.count({ |item| item.contains("5") }) == 2);
+			}
+		} {
+			true;
+		};
+	} {
+		false;
+	};
+};
+
+
+/*************************************************************************************/
+// Check for parallel octaves
+
+~checkParallelOctaves = #{ |nextChord, currChord, numVoices|
+	var index, result;
+	var octaves = [12, 24, 36];
+
+	var i = 0, j;
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelOctaves: Function Call".format(~loggerCount).postln; };
+
+	while {i < (numVoices - 1)} {
+
+		j = i + 1;
+		while {j < numVoices} {
+
+			if (octaves.includes((currChord[i] - currChord[j]).abs)) { index = [i, j] };
+			j = j + 1;
+		};
+		i = i + 1;
+	};
+	result = (
+		(currChord[index[1]] - currChord[index[0]]) ==
+		(nextChord[index[1]] - nextChord[index[0]])
+	);
+	result.not;
+};
+
+/*************************************************************************************/
+// Check for parallel fifths
+
+~checkParallelFifths = #{ |nextChord, currChord, numVoices|
+	var index = Array.new(4), result = false;
+	var fifths = [7, 19, 31, 43];
+
+	var i = 0, j;
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelFifths: Function Call".format(~loggerCount).postln; };
+
+	while {i < (numVoices - 1)} {
+
+		j = i + 1;
+		while {j < numVoices} {
+
+			if (fifths.includes((currChord[i] - currChord[j]).abs)) { index = [i, j] };
+			j = j + 1;
+		};
+		i = i + 1;
+	};
+	index.do { |i|
+		result = result ||
+		((currChord[i[1]] - currChord[i[0]]) ==
+		(nextChord[i[1]] - nextChord[i[0]]));
+	};
+	result.not;
 };
 
 /*************************************************************************************/
@@ -80,128 +174,24 @@
 };
 
 /*************************************************************************************/
-// Check for parallel octaves
-
-~checkParallelOctaves = #{ |nextChord|
-	var currChord = ~chordState[\currChord];
-	var numVoices = ~voiceData[\numVoices];
-	var index, result;
-	var octaves = [12, 24, 36];
-
-	var i = 0, j;
-
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelOctaves: Function Call".format(~loggerCount).postln; };
-
-	while {i < (numVoices - 1)} {
-
-		j = i + 1;
-		while {j < numVoices} {
-
-			//if (octaves.includes((currChord[i] - currChord[j]).abs)) { index = [i, j] };
-			octaves.do { |oct|
-				if ((currChord[j] - currChord[i]) == oct) { index = [i, j] };
-			};
-			j = j + 1;
-		};
-		i = i + 1;
-	};
-	result = (
-		(currChord[index[1]] - currChord[index[0]]) ==
-		(nextChord[index[1]] - nextChord[index[0]])
-	);
-	result.not;
-};
-
-/*************************************************************************************/
-// Check for parallel fifths
-
-~checkParallelFifths = #{ |nextChord|
-	var currChord = ~chordState[\currChord];
-	var numVoices = ~voiceData[\numVoices];
-	var index = Array.new(4), result = false;
-	var fifths = [7, 19, 31, 43];
-
-	var i = 0, j;
-
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelFifths: Function Call".format(~loggerCount).postln; };
-
-	while {i < (numVoices - 1)} {
-
-		j = i + 1;
-		while {j < numVoices} {
-
-			//if (fifths.includes((currChord[i] - currChord[j]).abs)) { index = [i, j] };
-			fifths.do { |n|
-				if ((currChord[j] - currChord[i]) == n) { index.add([i, j]) };
-			};
-			j = j + 1;
-		};
-		i = i + 1;
-	};
-	index.do { |i|
-		result = result ||
-		((currChord[i[1]] - currChord[i[0]]) ==
-		(nextChord[i[1]] - nextChord[i[0]]));
-	};
-	result.not;
-};
-
-/*************************************************************************************/
-// Checks wich degree gets repeated inside the chord,
-// and if chord is complete (e.g. All triad notes are present).
-
-~checkNoteDuplicate = #{ |nextChord|
-	var degrees, chordAsSet, degreesAsSet;
-	var cipher = ~chordState[\nextCipher];
-
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkNoteDuplicate: Function Call".format(~loggerCount).postln; };
-
-	degrees = ~getChordNotesDegree.(nextChord);
-
-	degreesAsSet = ~chordData[\chords][cipher][\degree].asSet;
-	chordAsSet = degrees.asSet;
-
-	if (chordAsSet == degreesAsSet) { // Checks if chord is complete
-
-		if (~enforceNoteDuplicate == true) {
-
-			case
-			{ ~enforceRootDuplicate == true } {
-				(degrees.count({ |item| item == "Rt" }) == 2);
-			}
-			{ ~enforceThirdDuplicate == true } {
-				(degrees.count({ |item| item.contains("3") }) == 2);
-			}
-			{ ~enforceFifthDuplicate == true } {
-				(degrees.count({ |item| item.contains("5") }) == 2);
-			}
-		} {
-			true;
-		};
-	} {
-		false;
-	};
-};
-
-/*************************************************************************************/
 // Final check before chord gets added to validNextChord array
 
-~chordIsValid = #{ |nextChord|
+~chordIsValid = #{ |nextChord, chords, chordState, numVoices|
 	var result = true;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~chordIsValid: Function Call".format(~loggerCount).postln; };
 
 	if (~enforceChordPosition == true) {
-		result = result && ~checkChordPosition.(nextChord);
+		result = result && ~checkChordPosition.(nextChord, chordState[\nextCipher], chords);
 	};
 	if (~enforceNoteDuplicate == true) {
-		result = result && ~checkNoteDuplicate.(nextChord);
+		result = result && ~checkNoteDuplicate.(nextChord, chordState[\nextCipher], chords);
 	};
 	if (~enforceParallelOctaves == true) {
-		result = result && ~checkParallelOctaves.(nextChord);
+		result = result && ~checkParallelOctaves.(nextChord, chordState[\currChord], numVoices);
 	};
 	if (~enforceParallelFifths == true) {
-		result = result && ~checkParallelFifths.(nextChord);
+		result = result && ~checkParallelFifths.(nextChord, chordState[\currChord], numVoices);
 	};
 	for (1, 3) { |i|
 		result = result && ~checkVoiceSpacing.(nextChord, i);
