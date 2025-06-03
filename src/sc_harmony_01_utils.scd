@@ -113,6 +113,7 @@
 			voiceData[\invalidIntervals][v].includes((n - currChord[i]))
 		};
 	};
+	nil;
 };
 
 /*************************************************************************************/
@@ -138,7 +139,7 @@
 ~getValidNotes = #{ |chords, chordState, voiceData|
 	var nextCipher = chordState[\nextCipher].postln;
 	var currChord = chordState[\currChord].postln;
-	var validNotes;
+	var validNotes = Dictionary.new();
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getValidNotes: Function Call".format(~loggerCount).postln; };
 

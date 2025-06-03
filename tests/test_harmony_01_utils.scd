@@ -1,6 +1,7 @@
 (
 "../src/sc_harmony_01_lib.scd".loadRelative;
 "../src/sc_harmony_01_utils.scd".loadRelative;
+"../src/sc_harmony_01_rules.scd".loadRelative;
 )
 
 /**************************************************************************************
@@ -119,20 +120,21 @@
 var chordProg = [['CM', 1], ['Am', 1]];
 var nextCipher = 'Am';
 var currChord = [48, 55, 64, 72];
+
 ~loggerCount = 0;
+~resetChordDicts.();
 
 ~test_resolveCommonTone = {
 
 };
 ~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg);
-//~chordState[\validNotes] = ~getChordVocalRange.(~voiceData, ~chordData[\chords][nextCipher][\notes]);
-//~resolveCommonTones.(~voiceData, ~chordState[\validNotes], currChord);
+
 ~chordState[\currChord] = currChord;
 ~chordState[\nextCipher] = nextCipher;
 ~getValidNotes.(~chordData[\chords], ~chordState, ~voiceData);
 )
 
-~chordState[\validNotes][\bas]
+~chordState[\validNotes][\bas].postln;
 
 
 
@@ -149,18 +151,3 @@ var nextCipher = 'GM';
 ~resolveMelodicIntervals.(~voiceData, ~chordState[\validNotes], currChord);
 )
 
-~chordState[\validNotes][\spn]
-
-~invalidIntervals = [6, 10, 11, 18, 22, 23];
-~invalidIntervals;
-~currChord = [41, 53, 60, 69];
-~chordState[\validNotes][\ten] = ~chordState[\validNotes][\ten].reject { |n| ~invalidIntervals.includes((n - ~currChord[1]).abs)}
-~chordState[\validNotes][\ten]
-
-
-~set = Set[2, 5, 7, 9, 45];
-~set.reject { |n| n.isPrime }
-
-(['A', 'B', 'C', 'A'].select { |n| n == 'A' }).as(OrderedIdentitySet)
-
-[1].asSet
