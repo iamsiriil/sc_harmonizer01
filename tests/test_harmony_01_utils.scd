@@ -106,8 +106,20 @@
 ~test_getChordDegreeArray.(~chordProg);
 )
 
+/*************************************************************************************/
+// TEST: ~getChordVocalRange
 (
 ~test_getChordVocalRange = { |chord|
+	// chordProg
+	// getChordDegreeArrays
+	// nextCipher
+
+	~resetChordData.(chordData);
+	~resetChordState.(chordState);
+
+	~chordData[\chordProg] = ;
+	~chordData[\chords] = ;
+	~chordState[\nextCipher] = ;
 
 };
 
@@ -116,6 +128,8 @@
 ~getChordVocalRange.(~voiceData, ~chordData[\chords][~nextCipher][\notes])
 )
 
+/*************************************************************************************/
+// TEST: ~resolveCommonTones
 (
 var chordProg = [['CM', 1], ['Am', 1]];
 var nextCipher = 'Am';
@@ -125,10 +139,23 @@ var currChord = [48, 55, 64, 72];
 ~resetChordDicts.();
 
 ~test_resolveCommonTone = {
+	// chordProg
+	// getChordDegreeArrays
+	// nextCipher
+	// currChord
+	// getChordVocalRange
 
+	~resetChordData.(chordData);
+	~resetChordState.(chordState);
+
+	~chordData[\chordProg] = ;
+	~chordData[\chords] = ;
+	~chordState[\nextCipher] = ;
+	~chordState[\currChord] = ;
+	~chordState[\validNotes] = ;
 };
-~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg);
 
+~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg);
 ~chordState[\currChord] = currChord;
 ~chordState[\nextCipher] = nextCipher;
 ~getValidNotes.(~chordData[\chords], ~chordState, ~voiceData);
@@ -136,14 +163,31 @@ var currChord = [48, 55, 64, 72];
 
 ~chordState[\validNotes][\bas].postln;
 
-
-
+/*************************************************************************************/
+// TEST: ~resolveCommonIntervals
 (
 var invalidIntervals = [6, 10, 11, 18, 22, 23];
 var currChord = [41, 53, 60, 69];
 var chordProg = [['FM', 1], ['GM', 1]];
 var nextCipher = 'GM';
-~resetChordDicts.();
+~resetChordData.(~chordData); ~resetChordState.(~chordState);
+
+~test_resolveMelodicIntervals = {
+	// chordProg
+	// getChordDegreeArrays
+	// nextCipher
+	// currChord
+	// getChordVocalRange
+
+	~resetChordData.(chordData);
+	~resetChordState.(chordState);
+
+	~chordData[\chordProg] = ;
+	~chordData[\chords] = ;
+	~chordState[\nextCipher] = ;
+	~chordState[\currChord] = ;
+	~chordState[\validNotes] = ;
+}
 
 ~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg);
 ~chordState[\validNotes] = ~getChordVocalRange.(~voiceData, ~chordData[\chords][nextCipher][\notes]);

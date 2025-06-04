@@ -260,7 +260,7 @@
 
 		rules[\enforceRootDuplicate] = false;
 		rules[\enforceThirdDuplicate] = false;
-		rules[\enforceFifthDuplicate]79 = true;
+		rules[\enforceFifthDuplicate] = true;
 	}
 	{ 5 } { // Second inversion with root duplicate
 		rules[\enforceRootPosition] = false;
