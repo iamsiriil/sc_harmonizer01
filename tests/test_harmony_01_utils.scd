@@ -109,17 +109,34 @@
 /*************************************************************************************/
 // TEST: ~getChordVocalRange
 (
+// Returns an array os single chord progressions, with all the triads
+~getProg = { |triads|
+	var prog = Array.new(triads.keys.size);
+
+	triads.keys.do { |k|
+		var temp = [[k, 1]];
+		prog.add(temp);
+	};
+	prog;
+};
+~p = [['Em', 1]];
+~p.unbubble[0]
 ~test_getChordVocalRange = { |chord|
 	// chordProg
 	// getChordDegreeArrays
 	// nextCipher
+	var prog = ~getProg.(~triads);
 
 	~resetChordData.(chordData);
 	~resetChordState.(chordState);
 
-	~chordData[\chordProg] = ;
-	~chordData[\chords] = ;
-	~chordState[\nextCipher] = ;
+	prog.do { |p, i|
+		~chordData[\chordProg] = p;
+		~chordData[\chords] = ~getChordDegreeArrays.(~triads, ~chordData[\chordProg]);
+		~chordState[\nextCipher] = p.unbubble[0];
+
+	}
+
 
 };
 
