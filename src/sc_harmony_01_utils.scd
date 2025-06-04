@@ -29,8 +29,7 @@
 // Data structure containing sets of necessary chords and the chord progression to be played
 ~chordData = Dictionary[
 	\chords        -> nil,        // Dictionary with arrays
-	\chordProg     -> nil,         // 2D Array
-	\totalDuration -> nil
+	\chordProg     -> nil         // 2D Array
 ];
 
 // Data structure containing the state of chords as they're built and played'
@@ -136,7 +135,7 @@ o};
 /*************************************************************************************/
 // Get valid notes
 
-~getValidNotes = #{ |chords, chordState, voiceData|
+~getValidNotes = #{ |chords, chordState, voiceData, rules|
 	var nextCipher = chordState[\nextCipher].postln;
 	var currChord = chordState[\currChord].postln;
 	var validNotes = Dictionary.new();
@@ -145,10 +144,10 @@ o};
 
 	validNotes = ~getChordVocalRange.(voiceData, chords[nextCipher][\notes]);
 
-	if (~enforceMelodicIntervals == true) {
+	if (rules[\enforceMelodicIntervals] == true) {
 		~resolveMelodicIntervals.(voiceData, validNotes, currChord);
 	};
-	if (~enforceCommonTones == true) {
+	if (rules[\enforceCommonTones] == true) {
 		~resolveCommonTones.(voiceData, validNotes, currChord);
 	};
 	chordState[\validNotes] = validNotes;
@@ -203,18 +202,21 @@ o};
 
 /*************************************************************************************/
 // Resets ~chordData dictionary values to nil
-~resetChordDicts = #{
+~resetChordData = #{ |chordData|
 
-	~chordData[\chords]    = nil;
-	~chordData[\chordProg] = nil;
+	chordData[\chords]    = nil;
+	chordData[\chordProg] = nil;
+	nil;
+};
 
-	~chordState[\currChord]       = nil;
-	~chordState[\nextChord]       = nil;
-	~chordState[\validNotes]      = nil;
-	~chordState[\nextValidChords] = nil;
-	~chordState[\lastValidChords] = nil;
-	~chordState[\nextCipher]      = nil;
+~resetChordState = #{ |chordState|
 
+	chordState[\currChord]       = nil;
+	chordState[\nextChord]       = nil;
+	chordState[\validNotes]      = nil;
+	chordState[\nextValidChords] = nil;
+	chordState[\lastValidChords] = nil;
+	chordState[\nextCipher]      = nil;
 	nil;
 };
 )

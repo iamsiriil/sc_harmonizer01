@@ -24,45 +24,45 @@
 ~enforceSecondInversion       = false; // Enforced in ~checkChordPosition, during backtrack
 
 ~rules = Dictionary[
-	\EVC -> true,
-	\EMI -> true,
-	\EVR -> true,
-	\ECT -> true,
-	\EPO -> true,
-	\EPF -> true,
-	\END -> true,
-	\ERD -> true,
-	\ETD -> false,
-	\EFD -> false,
-	\ECP -> true,
-	\ERP -> true,
-	\EFI -> false,
-	\ESI -> false
+	\enforceVoiceCrossProhibition -> true,
+	\enforceMelodicIntervals      -> true,
+	\enforceVocalRange            -> true,
+	\enforceCommonTones           -> true,
+	\enforceParallelOctaves       -> true,
+	\enforceParallelFifths        -> true,
+	\enforceNoteDuplicate         -> true,
+	\enforceRootDuplicate         -> true,
+	\enforceThirdDuplicate        -> false,
+	\enforceFifthDuplicate        -> false,
+	\enforceChordPosition         -> true,
+	\enforceRootPosition          -> true,
+	\enforceFirstInversion        -> false,
+	\enforceSecondInversion       -> false,
+	\toggleCount                  -> 0
 ];
 
 // Toggle rules counter
-~toggleCount = 0;
 
 ~logger = true;
 
 /*************************************************************************************/
 // Check chord position: Root, first inversion, second inversion
 
-~checkChordPosition = #{ |nextChord, cipher, chords|
+~checkChordPosition = #{ |nextChord, cipher, chords,rules|
 	var bassNote = ~getNoteDegree.(nextChord[0], cipher, chords);
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkChordPosition: Function Call".format(~loggerCount).postln; };
 
-	if (~enforceChordPosition == true) {
+	if (rules[\enforceChordPosition]) {
 
 		case
-		{ ~enforceRootPosition == true } {
+		{ rules[\enforceRootPosition] } {
 			bassNote == "Rt";
 		}
-		{ ~enforceFirstInversion == true } {
+		{ rules[\enforceFirstInversion] } {
 			bassNote.contains("3");
 		}
-		{ ~enforceSecondInversion == true } {
+		{ rules[\enforceSecondInversion] } {
 			bassNote.contains("5");
 		};
 	} {
@@ -74,7 +74,7 @@
 // Checks wich degree gets repeated inside the chord,
 // and if chord is complete (e.g. All triad notes are present).
 
-~checkNoteDuplicate = #{ |nextChord, cipher, chords|
+~checkNoteDuplicate = #{ |nextChord, cipher, chords, rules|
 	var degrees, chordAsSet, degreesAsSet;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkNoteDuplicate: Function Call".format(~loggerCount).postln; };
@@ -86,16 +86,16 @@
 
 	if (chordAsSet == degreesAsSet) { // Checks if chord is complete
 
-		if (~enforceNoteDuplicate == true) {
+		if (rules[\enforceNoteDuplicate]) {
 
 			case
-			{ ~enforceRootDuplicate == true } {
+			{ rules[\enforceRootDuplicate] } {
 				(degrees.count({ |item| item == "Rt" }) == 2);
 			}
-			{ ~enforceThirdDuplicate == true } {
+			{ rules[\enforceThirdDuplicate] } {
 				(degrees.count({ |item| item.contains("3") }) == 2);
 			}
-			{ ~enforceFifthDuplicate == true } {
+			{ rules[\enforceFifthDuplicate] } {
 				(degrees.count({ |item| item.contains("5") }) == 2);
 			}
 		} {
@@ -167,7 +167,7 @@
 /*************************************************************************************/
 // Check range between voices
 
-~checkVoiceSpacing = #{ |nextChord, i|
+~checkVoiceSpacing = #{ |nextChord, i, rules|
 	var cross, n;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkVoiceSpacing: Function Call".format(~loggerCount).postln; };
@@ -175,7 +175,7 @@
 	if (i > 0) {
 		n = (nextChord[i] - nextChord[i - 1]);
 
-		cross = if (~enforceVoiceCrossProhibition == true) {
+		cross = if (rules[\enforceVoiceCrossProhibition]) {
 			(n >= 0);
 		} {
 			(n >= -4);
@@ -193,21 +193,21 @@
 /*************************************************************************************/
 // Final check before chord gets added to validNextChord array
 
-~chordIsValid = #{ |nextChord, chords, chordState, numVoices|
+~chordIsValid = #{ |nextChord, chords, chordState, numVoices, rules|
 	var result = true;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~chordIsValid: Function Call".format(~loggerCount).postln; };
 
-	if (~enforceChordPosition == true) {
+	if (rules[\enforceChordPosition]) {
 		result = result && ~checkChordPosition.(nextChord, chordState[\nextCipher], chords);
 	};
-	if (~enforceNoteDuplicate == true) {
+	if (rules[\enforceNoteDuplicate]) {
 		result = result && ~checkNoteDuplicate.(nextChord, chordState[\nextCipher], chords);
 	};
-	if (~enforceParallelOctaves == true) {
+	if (rules[\enforceParallelOctaves]) {
 		result = result && ~checkParallelOctaves.(nextChord, chordState[\currChord], numVoices);
 	};
-	if (~enforceParallelFifths == true) {
+	if (rules[\enforceParallelFifths]) {
 		result = result && ~checkParallelFifths.(nextChord, chordState[\currChord], numVoices);
 	};
 	for (1, 3) { |i|
@@ -219,109 +219,109 @@
 /*************************************************************************************/
 // Toggle rules
 
-~toggleRules = #{ |count|
+~toggleRules = #{ |count, rules|
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~toggleRules: Function Call".format(~loggerCount).postln; };
 
 	"~toggleCount = %".format(~toggleCount).postln;
 	switch(count)
 	{ 0 } { // Root position with third duplicate
-		~enforceRootDuplicate = false;
-		~enforceThirdDuplicate = true;
-		~enforceFifthDuplicate = false;
+		rules[\enforceRootDuplicate] = false;
+		rules[\enforceThirdDuplicate] = true;
+		rules[\enforceFifthDuplicate] = false;
 	}
 	{ 1 } { // Root position with fifth duplicate
-		~enforceRootDuplicate = false;
-		~enforceThirdDuplicate = false;
-		~enforceFifthDuplicate = true;
+		rules[\enforceRootDuplicate] = false;
+		rules[\enforceThirdDuplicate] = false;
+		rules[\enforceFifthDuplicate] = true;
 	}
 	{ 2 } { // First inversion with root duplicate
-		~enforceRootPosition = false;
-		~enforceFirstInversion = true;
-		~enforceSecondInversion = false;
+		rules[\enforceRootPosition] = false;
+		rules[\enforceFirstInversion] = true;
+		rules[\enforceSecondInversion] = false;
 
-		~enforceRootDuplicate = true;
-		~enforceThirdDuplicate = false;
-		~enforceFifthDuplicate = false;
+		rules[\enforceRootDuplicate] = true;
+		rules[\enforceThirdDuplicate] = false;
+		rules[\enforceFifthDuplicate] = false;
 	}
 	{ 3 } { // First inversion with third duplicate
-		~enforceRootPosition = false;
-		~enforceFirstInversion = true;
-		~enforceSecondInversion = false;
+		rules[\enforceRootPosition] = false;
+		rules[\enforceFirstInversion] = true;
+		rules[\enforceSecondInversion] = false;
 
-		~enforceRootDuplicate = false;
-		~enforceThirdDuplicate = true;
-		~enforceFifthDuplicate = false;
+		rules[\enforceRootDuplicate] = false;
+		rules[\enforceThirdDuplicate] = true;
+		rules[\enforceFifthDuplicate] = false;
 	}
 	{ 4 } { // First inversion with fifth duplicate
-		~enforceRootPosition = false;
-		~enforceFirstInversion = true;
-		~enforceSecondInversion = false;
+		rules[\enforceRootPosition] = false;
+		rules[\enforceFirstInversion] = true;
+		rules[\enforceSecondInversion] = false;
 
-		~enforceRootDuplicate = false;
-		~enforceThirdDuplicate = false;
-		~enforceFifthDuplicate = true;
+		rules[\enforceRootDuplicate] = false;
+		rules[\enforceThirdDuplicate] = false;
+		rules[\enforceFifthDuplicate]79 = true;
 	}
 	{ 5 } { // Second inversion with root duplicate
-		~enforceRootPosition = false;
-		~enforceFirstInversion = false;
-		~enforceSecondInversion = true;
+		rules[\enforceRootPosition] = false;
+		rules[\enforceFirstInversion] = false;
+		rules[\enforceSecondInversion] = true;
 
-		~enforceRootDuplicate = true;
-		~enforceThirdDuplicate = false;
-		~enforceFifthDuplicate = false;
+		rules[\enforceRootDuplicate] = true;
+		rules[\enforceThirdDuplicate] = false;
+		rules[\enforceFifthDuplicate] = false;
 	}
 	{ 6 } { // Second inversion with third duplicate
-		~enforceRootPosition = false;
-		~enforceFirstInversion = false;
-		~enforceSecondInversion = true;
+		rules[\enforceRootPosition] = false;
+		rules[\enforceFirstInversion] = false;
+		rules[\enforceSecondInversion] = true;
 
-		~enforceRootDuplicate = false;
-		~enforceThirdDuplicate = true;
-		~enforceFifthDuplicate = false;
+		rules[\enforceRootDuplicate] = false;
+		rules[\enforceThirdDuplicate] = true;
+		rules[\enforceFifthDuplicate] = false;
 	}
 	{ 7 } { // Second inversion with fifth duplicate
-		~enforceRootPosition = false;
-		~enforceFirstInversion = false;
-		~enforceSecondInversion = true;
+		rules[\enforceRootPosition] = false;
+		rules[\enforceFirstInversion] = false;
+		rules[\enforceSecondInversion] = true;
 
-		~enforceRootDuplicate = false;
-		~enforceThirdDuplicate = false;
-		~enforceFifthDuplicate = true;
+		rules[\enforceRootDuplicate] = false;
+		rules[\enforceThirdDuplicate] = false;
+		rules[\enforceFifthDuplicate] = true;
 	}
 	{ 8 } { // Any duplication and position, no parallel checks
-		~enforceNoteDuplicate = false;
-		~enforceChordPosition = false;
+		rules[\enforceNoteDuplicate] = false;
+		rules[\enforceChordPosition] = false;
 
-		~enforceParallelOctaves = false;
-		~enforceParallelfifths = false;
+		rules[\enforceParallelOctaves] = false;
+		rules[\enforceParallelfifths] = false;
 	};
 
-	~toggleCount = ~toggleCount + 1;
+	rules[\toggleCount] = rules[\toggleCount] + 1;
 	nil;
 };
 
 /*************************************************************************************/
 // Reset rules
 
-~resetRules = #{
+~resetRules = #{ |rules|
 
-	~enforceVoiceCrossProhibition = true;
-	~enforceMelodicIntervals      = true;
-	~enforceVocalRange            = true;
-	~enforceParallelOctaves       = true;
-	~enforceParallelFifths        = true;
-	~enforceNoteDuplicate         = true;
-	~enforceRootDuplicate         = true;
-	~enforceThirdDuplicate        = false;
-	~enforceFifthDuplicate        = false;
-	~enforceChordPosition         = true;
-	~enforceRootPosition          = true;
-	~enforceFirstInversion        = false;
-	~enforceSecondInversion       = false;
-	~enforceCommonTone            = true;
+	rules[\enforceVoiceCrossProhibition] = true;
+	rules[\enforceMelodicIntervals]      = true;
+	rules[\enforceVocalRange]            = true;
+	rules[\enforceParallelOctaves]       = true;
+	rules[\enforceParallelFifths]        = true;
+	rules[\enforceNoteDuplicate]         = true;
+	rules[\enforceRootDuplicate]         = true;
+	rules[\enforceThirdDuplicate]        = false;
+	rules[\enforceFifthDuplicate]        = false;
+	rules[\enforceChordPosition]         = true;
+	rules[\enforceRootPosition]          = true;
+	rules[\enforceFirstInversion]        = false;
+	rules[\enforceSecondInversion]       = false;
+	rules[\enforceCommonTone]            = true;
 
-	~toggleCount = 0;
+	rules[\toggleCount] = 0;
 	nil;
 };
 )
