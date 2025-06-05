@@ -165,6 +165,71 @@
 )
 
 /*************************************************************************************/
+// TEST: ~resolveMelodicIntervals
+(
+~test_RMIFixtures = [
+	[
+		[['CM', 1], ['DM', 1]],
+		[48, 55, 60, 64],
+/*		'DM',
+		'bas',*/
+		[
+			OrderedIdentitySet[42, 54],
+			OrderedIdentitySet[66],
+			OrderedIdentitySet[66],
+			OrderedIdentitySet[74]
+		]
+	]
+];
+~test_RMIFixtures[0];
+	/*[[['Dm', 1], ['CM', 1]], [50, 57, 62, 65], 'CM', 'bas', OrderedIdentitySet[40, 60]],
+	[[['Dm', 1], ['C#m', 1]],[50, 57, 62, 65], 'C#m','bas', OrderedIdentitySet[40, 44, 56]],
+	[[['Em', 1], ['BbM', 1]],[52, 59, 64, 67], 'BbM','bas', OrderedIdentitySet[41, 46, 58]]*/
+//];
+
+~test_RMISubroutine = { |voiceData, chordState, exclude, i|
+	var refRange = chordState[\validNotes].copy;
+	var result = true;
+
+	"TEST #% | ~resolveMelodicIntervals | ".format(i).post;
+
+	~resolveMelodicIntervals.(voiceData, chordState[\validNotes], chordState[\currChord]);
+
+	voiceData[\voiceNames].do { |v, j|
+		result = result && ((refRange[v] -- chordState[\validNotes][v]) == exclude[j]);
+	};
+
+	if (result) {
+		"PASSED".postln;
+	} {
+		"FAILED".postln;
+	}
+};
+
+~test_resolveMelodicIntervals = { |fixtures, triads, voiceData, chordData, chordState|
+
+	~logger = false;
+	~loggerCount = 0;
+
+	fixtures.do { |f, i|
+
+		chordData[\chordProg] = f[0];
+		chordData[\chords] = ~getChordDegreeArrays.(triads, f[0]);
+		chordState[\nextCipher] = f[0][1][0];
+		chordState[\currChord] = f[1];
+		chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][f[0][1][0]][\notes]);
+
+		~test_RMISubroutine.(voiceData, chordState, f[2], i);
+
+		~resetChordData.(chordData); ~resetChordState.(chordState);
+	};
+	nil;
+};
+
+~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
+)
+(Set[1, 2, 3, 4] -- Set[1, 2, 3, 4]) == Set[]
+/*************************************************************************************/
 // TEST: ~resolveCommonTones
 (
 var chordProg = [['CM', 1], ['Am', 1]];
@@ -198,52 +263,3 @@ var currChord = [48, 55, 64, 72];
 )
 
 ~chordState[\validNotes][\bas].postln;
-
-/*************************************************************************************/
-// TEST: ~resolveMelodicIntervals
-(
-~test_RMIFixtures = [
-	[[['CM', 1], ['DM', 1]], [48, 55, 60, 64], 'DM', 'bas', OrderedIdentitySet[42, 54]],
-	[[['Dm', 1], ['CM', 1]], [50, 57, 62, 65], 'CM', 'bas', OrderedIdentitySet[40, 60]]
-];
-
-~test_RMISubroutine = { |chordState, voiceData, voice, exclude, i|
-	var refRange = chordState[\validNotes][voice];
-
-	"TEST #% | ~resolveMelodicIntervals | ".format(i).post;
-
-	~resolveMelodicIntervals.(voiceData, chordState[\validNotes], chordState[\currChord]);
-
-	if ((refRange -- chordState[\validNotes][voice]) == exclude) {
-		"PASSED".postln;
-	} {
-		"FAILED".postln;
-	}
-};
-
-~test_resolveMelodicIntervals = { |fixtures, triads, voiceData, chordData, chordState|
-
-	~logger = false;
-	~loggerCount = 0;
-
-	fixtures.do { |f, i|
-
-		chordData[\chordProg] = f[0];
-		chordData[\chords] = ~getChordDegreeArrays.(triads, f[0]);
-		chordState[\currChord] = f[1];
-		chordState[\nextCipher] = f[2];
-		chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][f[2]][\notes]);
-
-		~test_RMISubroutine.(chordState, voiceData, f[3], f[4], i);
-
-		~resetChordData.(chordData); ~resetChordState.(chordState);
-	};
-	nil;
-};
-
-~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
-)
-
-(Set[0, 1, 2, 3, 4] -- OrderedIdentitySet[0, 1, 2]) == Set[3, 4]
-OrderedIdentitySet[1, 2, 3].includes(3)
-(OrderedIdentitySet[42, 45, 50, 54, 57] -- OrderedIdentitySet[45, 50, 57]) == OrderedIdentitySet[42, 54]
