@@ -200,34 +200,50 @@ var currChord = [48, 55, 64, 72];
 ~chordState[\validNotes][\bas].postln;
 
 /*************************************************************************************/
-// TEST: ~resolveCommonIntervals
+// TEST: ~resolveMelodicIntervals
 (
-var invalidIntervals = [6, 10, 11, 18, 22, 23];
-var currChord = [41, 53, 60, 69];
-var chordProg = [['FM', 1], ['GM', 1]];
-var nextCipher = 'GM';
-~resetChordData.(~chordData); ~resetChordState.(~chordState);
+~test_RMIFixtures = [
+	[[['CM', 1], ['DM', 1]], [48, 55, 60, 64], 'DM', 'bas', OrderedIdentitySet[42, 54]],
+	[[['Dm', 1], ['CM', 1]], [50, 57, 62, 65], 'CM', 'bas', OrderedIdentitySet[40, 60]]
+];
 
-~test_resolveMelodicIntervals = {
-	// chordProg
-	// getChordDegreeArrays
-	// nextCipher
-	// currChord
-	// getChordVocalRange
+~test_RMISubroutine = { |chordState, voiceData, voice, exclude, i|
+	var refRange = chordState[\validNotes][voice];
 
-	~resetChordData.(chordData);
-	~resetChordState.(chordState);
+	"TEST #% | ~resolveMelodicIntervals | ".format(i).post;
 
-	~chordData[\chordProg] = ;
-	~chordData[\chords] = ;
-	~chordState[\nextCipher] = ;
-	~chordState[\currChord] = ;
-	~chordState[\validNotes] = ;
-}
+	~resolveMelodicIntervals.(voiceData, chordState[\validNotes], chordState[\currChord]);
 
-~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg);
-~chordState[\validNotes] = ~getChordVocalRange.(~voiceData, ~chordData[\chords][nextCipher][\notes]);
+	if ((refRange -- chordState[\validNotes][voice]) == exclude) {
+		"PASSED".postln;
+	} {
+		"FAILED".postln;
+	}
+};
 
-~resolveMelodicIntervals.(~voiceData, ~chordState[\validNotes], currChord);
+~test_resolveMelodicIntervals = { |fixtures, triads, voiceData, chordData, chordState|
+
+	~logger = false;
+	~loggerCount = 0;
+
+	fixtures.do { |f, i|
+
+		chordData[\chordProg] = f[0];
+		chordData[\chords] = ~getChordDegreeArrays.(triads, f[0]);
+		chordState[\currChord] = f[1];
+		chordState[\nextCipher] = f[2];
+		chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][f[2]][\notes]);
+
+		~test_RMISubroutine.(chordState, voiceData, f[3], f[4], i);
+
+		~resetChordData.(chordData); ~resetChordState.(chordState);
+	};
+	nil;
+};
+
+~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
 )
 
+(Set[0, 1, 2, 3, 4] -- OrderedIdentitySet[0, 1, 2]) == Set[3, 4]
+OrderedIdentitySet[1, 2, 3].includes(3)
+(OrderedIdentitySet[42, 45, 50, 54, 57] -- OrderedIdentitySet[45, 50, 57]) == OrderedIdentitySet[42, 54]

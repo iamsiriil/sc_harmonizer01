@@ -109,7 +109,7 @@
 
 	voiceData[\voiceNames].do { |v, i|
 		validNotes[v] = validNotes[v].reject { |n|
-			voiceData[\invalidIntervals][v].includes((n - currChord[i]))
+			voiceData[\invalidIntervals][v].includes((n - currChord[i]).abs);
 		};
 	};
 	nil;
