@@ -119,30 +119,49 @@
 	};
 	prog;
 };
-~p = [['Em', 1]];
-~p.unbubble[0]
-~test_getChordVocalRange = { |chord|
-	// chordProg
-	// getChordDegreeArrays
-	// nextCipher
-	var prog = ~getProg.(~triads);
 
-	~resetChordData.(chordData);
-	~resetChordState.(chordState);
+~test_GCVRSubroutine = { |chordState, voiceData, i|
+	var result = true;
 
-	prog.do { |p, i|
-		~chordData[\chordProg] = p;
-		~chordData[\chords] = ~getChordDegreeArrays.(~triads, ~chordData[\chordProg]);
-		~chordState[\nextCipher] = p.unbubble[0];
+	"TEST #% | ~getChordVocalRange | chord: % | ".format(i, chordState[\nextCipher]).post;
 
-	}
+	voiceData[\voiceNames].do { |v|
 
+		if ((chordState[\validNotes][v].asArray.first >= voiceData[\voiceRange][v][0]) &&
+			(chordState[\validNotes][v].asArray.last <= voiceData[\voiceRange][v][1])) {
+			result = result && true;
+		} {
+			result = result && false;
+		};
+	};
 
+	if (result) {
+		"PASSED".postln;
+	} {
+		"FAILED".postln;
+	};
 };
 
-~chordData[\chords] = ~getChordDegreeArrays.(~triads, ~chordProg[1]);
-~nextCipher = 'FM';
-~getChordVocalRange.(~voiceData, ~chordData[\chords][~nextCipher][\notes])
+~test_getChordVocalRange = { |triads, voiceData, chordData, chordState|
+	var prog = ~getProg.(triads);
+
+	~logger = false;
+	~loggerCount = 0;
+
+	prog.do { |p, i|
+		chordData[\chordProg] = p;
+		chordData[\chords] = ~getChordDegreeArrays.(triads, chordData[\chordProg]);
+		chordState[\nextCipher] = p.unbubble[0];
+
+		chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][chordState[\nextCipher]][\notes]);
+
+		~test_GCVRSubroutine.(chordState, voiceData, i);
+	};
+	~resetChordData.(chordData); ~resetChordState.(chordState);
+	nil;
+};
+
+~test_getChordVocalRange.(~triads, ~voiceData, ~chordData, ~chordState);
 )
 
 /*************************************************************************************/
