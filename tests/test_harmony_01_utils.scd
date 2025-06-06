@@ -171,18 +171,36 @@
 	[
 		[['CM', 1], ['DM', 1]],
 		[48, 55, 60, 64],
-/*		'DM',
-		'bas',*/
 		[
 			OrderedIdentitySet[42, 54],
 			OrderedIdentitySet[66],
 			OrderedIdentitySet[66],
 			OrderedIdentitySet[74]
 		]
+	],
+	[
+		[['DM', 1], ['Cm', 1]],
+		[50, 57, 62, 66],
+		[
+			OrderedIdentitySet[60],
+			OrderedIdentitySet[51, 63, 67],
+			OrderedIdentitySet[72],
+			OrderedIdentitySet[60, 72]
+		]
+	],
+	[
+		[['Em', 1], ['Ebm', 1]],
+		[40, 59, 67, 76],
+		[
+			OrderedIdentitySet[46, 51, 58],
+			OrderedIdentitySet[],
+			OrderedIdentitySet[],
+			OrderedIdentitySet[66, 70]
+		]
 	]
 ];
-~test_RMIFixtures[0];
-	/*[[['Dm', 1], ['CM', 1]], [50, 57, 62, 65], 'CM', 'bas', OrderedIdentitySet[40, 60]],
+~test_RMIFixtures[2][2];
+	/*
 	[[['Dm', 1], ['C#m', 1]],[50, 57, 62, 65], 'C#m','bas', OrderedIdentitySet[40, 44, 56]],
 	[[['Em', 1], ['BbM', 1]],[52, 59, 64, 67], 'BbM','bas', OrderedIdentitySet[41, 46, 58]]*/
 //];
@@ -194,6 +212,11 @@
 	"TEST #% | ~resolveMelodicIntervals | ".format(i).post;
 
 	~resolveMelodicIntervals.(voiceData, chordState[\validNotes], chordState[\currChord]);
+
+	"refRange:".postln;
+	voiceData[\voiceNames].do { |v| refRange[v].postln };
+	"validNotes:".postln;
+	voiceData[\voiceNames].do { |v| chordState[\validNotes][v].postln };
 
 	voiceData[\voiceNames].do { |v, j|
 		result = result && ((refRange[v] -- chordState[\validNotes][v]) == exclude[j]);

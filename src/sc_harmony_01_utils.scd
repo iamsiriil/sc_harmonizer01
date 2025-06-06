@@ -15,7 +15,7 @@
 	// Allowed melodic intervals
 	\invalidIntervals -> Dictionary[
 		// All except tritone and sevenths. Spn, alt and ten, one octave. Bass, two
-		\bas -> [6, 10, 11, 18, 22, 23],
+		\bas -> [6, 10, 11, 18],
 		\ten -> [6, 10, 11],
 		\alt -> [6, 10, 11],
 		\spn -> [6, 10, 11]
