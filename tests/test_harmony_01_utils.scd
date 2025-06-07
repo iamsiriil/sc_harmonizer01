@@ -201,34 +201,66 @@
 /*************************************************************************************/
 // TEST: ~resolveCommonTones
 (
-var chordProg = [['CM', 1], ['Am', 1]];
-var nextCipher = 'Am';
-var currChord = [48, 55, 64, 72];
+~test_RCTFixtures = (
+	\00: (
+		\chord: [48, 55, 64, 72],
+		\chordProg: [['CM', 1], ['Em', 1]],
+		\function: [(_ > 1), (_ == 1), (_ == 1), (_ > 1)]
+	)
+);
 
-~loggerCount = 0;
-~resetChordDicts.();
-
-~test_resolveCommonTone = {
-	// chordProg
-	// getChordDegreeArrays
-	// nextCipher
-	// currChord
-	// getChordVocalRange
-
-	~resetChordData.(chordData);
-	~resetChordState.(chordState);
-
-	~chordData[\chordProg] = ;
-	~chordData[\chords] = ;
-	~chordState[\nextCipher] = ;
-	~chordState[\currChord] = ;
-	~chordState[\validNotes] = ;
-};
-
-~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg);
-~chordState[\currChord] = currChord;
-~chordState[\nextCipher] = nextCipher;
-~getValidNotes.(~chordData[\chords], ~chordState, ~voiceData);
 )
 
-~chordState[\validNotes][\bas].postln;
+(
+~test_RCTSubroutine = { |voiceData, chordState, functions, i|
+	var refRange = chordState[\validNotes].copy;
+	var result = true;
+
+	~resolveCommonTones.(voiceData, chordState[\validNotes], chordState[\currChord]);
+
+	voiceData[\voiceNames].do { |v|
+		"%: %".format(v, refRange[v].asArray).padRight(30).post;
+		"| %".format(chordState[\validNotes][v].asArray).postln;
+	};
+
+	voiceData[\voiceNames].do { |v, j|
+		result = result && functions[j].(chordState[\validNotes][v].size);
+	};
+
+	if (result) {
+		"PASSED".postln;
+	} {
+		"FAILED".postln;
+	}
+
+};
+
+~test_resolveCommonTones = { |fixtures, triads, voiceData, chordData, chordState|
+
+	~logger = false;
+	~loggerCount = 0;
+
+	fixtures.do { |f, i|
+		var cipher = f[\chordProg][1][0];
+
+		~chordData[\chords] = ~getChordDegreeArrays.(triads, f[\chordProg]);
+		~chordState[\currChord] = f[\chord];
+		~chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][cipher][\notes]);
+
+		~test_RCTSubroutine.(voiceData, chordState, f[\function], i);
+
+		~resetChordData.(chordData); ~resetChordState.(chordState);
+	};
+	nil;
+};
+~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
+)
+(
+~test = (
+	\a: 0,
+	\b: 1,
+	\c: 2
+);
+
+~test.do { |n| n.postln };
+)
