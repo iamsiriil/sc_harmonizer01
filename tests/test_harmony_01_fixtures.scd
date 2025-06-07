@@ -1,3 +1,7 @@
+/**************************************************************************************
+- HARMONY 01 / Utility Functions and Data Structures / Tests
+**************************************************************************************/
+// ~getVocalChordRange fixture
 (
 // Returns an array of single chord progressions, with all the triads
 ~test_GVCRFixtures = { |triads|
@@ -10,76 +14,106 @@
 	prog;
 };
 
-~test_RMIFixtures = [
-	[
-		[['CM', 1], ['DM', 1]],
-		[48, 55, 60, 64],
-		[
+/*************************************************************************************/
+// ~resolveMelodicInterval fixture
+~test_RMIFixtures = (
+	\00: (
+		\chord: [48, 55, 60, 64],
+		\chordProg: [['CM', 1], ['DM', 1]],
+		\exclude: [
 			OrderedIdentitySet[42, 54],
 			OrderedIdentitySet[66],
 			OrderedIdentitySet[66],
-			OrderedIdentitySet[74]
-		]
-	],
-	[
-		[['DM', 1], ['Cm', 1]],
-		[50, 57, 62, 66],
-		[
+			OrderedIdentitySet[74]]
+	),
+	\01: (
+		\chord: [50, 57, 62, 66],
+		\chordProg: [['DM', 1], ['Cm', 1]],
+		\exclude: [
 			OrderedIdentitySet[60],
 			OrderedIdentitySet[51, 63, 67],
 			OrderedIdentitySet[72],
-			OrderedIdentitySet[60, 72]
-		]
-	],
-	[
-		[['Em', 1], ['Ebm', 1]],
-		[40, 59, 67, 76],
-		[
+			OrderedIdentitySet[60, 72]]
+	),
+	\02: (
+		\chord: [40, 59, 67, 76],
+		\chordProg: [['Em', 1], ['Ebm', 1]],
+		\exclude: [
 			OrderedIdentitySet[46, 51, 58],
 			OrderedIdentitySet[],
 			OrderedIdentitySet[],
-			OrderedIdentitySet[66, 70]
-		]
-	],
-	[
-		[['BbM', 1], ['Cd', 1]],
-		[58, 65, 74, 77],
-		[
+			OrderedIdentitySet[66, 70]]
+	),
+	\03: (
+		\chord: [58, 65, 74, 77],
+		\chordProg: [['BbM', 1], ['Cd', 1]],
+		\exclude: [
 			OrderedIdentitySet[48],
 			OrderedIdentitySet[54],
 			OrderedIdentitySet[63],
-			OrderedIdentitySet[66]
-		]
-	],
-	[
-		[['CM', 1], ['DM', 1]],
-		[60, 67, 72, 76],
-		[
+			OrderedIdentitySet[66]]
+	),
+	\04: (
+		\chord: [60, 67, 72, 76],
+		\chordProg: [['CM', 1], ['DM', 1]],
+		\exclude: [
 			OrderedIdentitySet[42, 50, 54],
 			OrderedIdentitySet[57],
 			OrderedIdentitySet[62, 66],
-			OrderedIdentitySet[66]
-		]
-	],
-	[
-		[['Dm', 1], ['C#m', 1]],
-		[57, 62, 62, 65],
-		[
+			OrderedIdentitySet[66]]
+	),
+	\05: (
+		\chord: [57, 62, 62, 65],
+		\chordProg: [['Dm', 1], ['C#m', 1]],
+		\exclude: [
 			OrderedIdentitySet[],
 			OrderedIdentitySet[52, 56],
 			OrderedIdentitySet[56, 68, 73],
-			OrderedIdentitySet[76]
-		]
-	],
-	[
-		[['CM', 1], ['F#M', 1]],
-		[60, 64, 67, 72],
-		[
+			OrderedIdentitySet[76]]
+	),
+	\06: (
+		\chord: [60, 64, 67, 72],
+		\chordProg: [['CM', 1], ['F#M', 1]],
+		\exclude: [
 			OrderedIdentitySet[42, 49,54],
 			OrderedIdentitySet[54, 58],
 			OrderedIdentitySet[61, 73],
-			OrderedIdentitySet[61, 66, 78]
-		]
-	]
-];
+			OrderedIdentitySet[61, 66, 78]]
+	)
+);
+
+/*************************************************************************************/
+// ~resolveCommonTone fixture
+~test_RCTFixtures = (
+	\00: (
+		\chord: [48, 55, 64, 72],
+		\chordProg: [['CM', 1], ['Em', 1]],
+		\functions: [(_ > 1), (_ == 1), (_ == 1), (_ > 1)]
+	),
+	\01: (
+		\chord: [48, 55, 60, 64],
+		\chordProg: [['CM', 1], ['Em', 1]],
+		\functions: [(_ > 1), (_ == 1), (_ > 1), (_ == 1)]
+	),
+	\02: (
+		\chord: [48, 60, 67, 76],
+		\chordProg: [['CM', 1], ['Em', 1]],
+		\functions: [(_ > 1), (_ > 1), (_ == 1), (_ == 1)]
+	),
+	\03: (
+		\chord: [48, 60, 64, 67],
+		\chordProg: [['CM', 1], ['FM', 1]],
+		\functions: [(_ > 1), (_ == 1), (_ > 1), (_ > 1)]
+	),
+	\04: (
+		\chord: [48, 55, 60, 64],
+		\chordProg: [['CM', 1], ['FM', 1]],
+		\functions: [(_ > 1), (_ > 1), (_ == 1), (_ > 1)]
+	),
+	\05: (
+		\chord: [48, 55, 64, 72],
+		\chordProg: [['CM', 1], ['FM', 1]],
+		\functions: [(_ > 1), (_ > 1), (_ > 1), (_ == 1)]
+	)
+);
 )

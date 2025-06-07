@@ -182,13 +182,13 @@
 	~loggerCount = 0;
 
 	fixtures.do { |f, i|
-		var cipher = f[0][1][0];
+		var cipher = f[\chordProg][1][0];
 
-		chordData[\chords] = ~getChordDegreeArrays.(triads, f[0]);
-		chordState[\currChord] = f[1];
+		chordData[\chords] = ~getChordDegreeArrays.(triads, f[\chordProg]);
+		chordState[\currChord] = f[\chord];
 		chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][cipher][\notes]);
 
-		~test_RMISubroutine.(voiceData, chordState, f[2], i);
+		~test_RMISubroutine.(voiceData, chordState, f[\exclude], i);
 
 		~resetChordData.(chordData); ~resetChordState.(chordState);
 	};
@@ -200,17 +200,6 @@
 
 /*************************************************************************************/
 // TEST: ~resolveCommonTones
-(
-~test_RCTFixtures = (
-	\00: (
-		\chord: [48, 55, 64, 72],
-		\chordProg: [['CM', 1], ['Em', 1]],
-		\function: [(_ > 1), (_ == 1), (_ == 1), (_ > 1)]
-	)
-);
-
-)
-
 (
 ~test_RCTSubroutine = { |voiceData, chordState, functions, i|
 	var refRange = chordState[\validNotes].copy;
@@ -247,20 +236,11 @@
 		~chordState[\currChord] = f[\chord];
 		~chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][cipher][\notes]);
 
-		~test_RCTSubroutine.(voiceData, chordState, f[\function], i);
+		~test_RCTSubroutine.(voiceData, chordState, f[\functions], i);
 
 		~resetChordData.(chordData); ~resetChordState.(chordState);
 	};
 	nil;
 };
 ~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
-)
-(
-~test = (
-	\a: 0,
-	\b: 1,
-	\c: 2
-);
-
-~test.do { |n| n.postln };
 )
