@@ -7,7 +7,7 @@
 	"| %".format(function).padRight(27).post;
 
 	if (message.notNil) {
-		"| %".format(message).padRight(15).post;
+		"| %".format(message[0]).padRight(message[1]).post;
 	};
 
 	if (result) {

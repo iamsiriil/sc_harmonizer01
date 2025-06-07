@@ -11,83 +11,73 @@
 /*************************************************************************************/
 // TEST: ~getChordDegreePairs
 (
-~test_getChordDegreePairs = { |chordProg|
-	var triadKeys = ~triads.keys; // Get all keys from ~triads
+~test_getChordDegreePairs = { |chordProg, triads, chordData|
+	var triadKeys = triads.keys; // Get all keys from ~triads
 	var getSymbols, dict, result = true;
 
 	"\nFunction: ~getChordDegreePairs".postln;
 
-	"\nTEST #1 : Set of ciphers in progression, is subset of ~triads.keys:".postln;
+	"Set of ciphers in progression, is subset of ~triads.keys:".postln;
 	chordProg.do { |p, i|
 		getSymbols = (p.collect { |a| a[0]});
 		result = result && getSymbols.isSubsetOf(triadKeys);
 
-		if (result) {
-			"TEST #1 : Pogression #% : PASSED".format(i).postln;
-		} {
-			"TEST #1 : Pogression #% : FAILED".format(i).postln;
-		};
+		~test_resultMessage.(result, "~getChordDegreePairs", nil, i);
 	};
 	result = true;
 
-
-	"\nTEST #2 : Set of keys from returned dictionary is subset of ~triads.keys:".postln;
+	"\nSet of keys from returned dictionary is subset of ~triads.keys:".postln;
 	chordProg.do { |p, i|
-		~chordData[\chordProg] = p;
+		chordData[\chordProg] = p;
 
-		dict = ~getChordDegreePairs.(~triads, p);
+		dict = ~getChordDegreePairs.(triads, p);
 		result = result && dict.keys.isSubsetOf(triadKeys);
 
-		if (result) {
-			"TEST #2 : Pogression #% : PASSED".format(i).postln;
-		} {
-			"TEST #2 : Pogression #% : FAILED".format(i).postln;
-		};
+		~test_resultMessage.(result, "~getChordDegreePairs", nil, i);
+
 	};
-	~chordData[\chordProg] = nil; dict = nil; result = true; // Reset variables after test
+	~resetChordData.(chordData); dict = nil; result = true; // Reset variables after test
 
-
-	"\nTEST #3 : Pairing of midi note numbers and scale degrees is correct:".postln;
+	"\nPairing of midi note numbers and scale degrees is correct:".postln;
 	chordProg.do { |p, i|
-		~chordData[\chordProg] = p;
+		chordData[\chordProg] = p;
 
-		dict = ~getChordDegreePairs.(~triads, p);
+		dict = ~getChordDegreePairs.(triads, p);
 		10.do {
 			var key = dict.keys.choose;
 			var pair = dict[key].choose;
-			var notes = ~triads[key][\notes];
-			var degree = ~triads[key][\degree].wrapExtend(notes.size);
+			var notes = triads[key][\notes];
+			var degree = triads[key][\degree].wrapExtend(notes.size);
 
 			result = result && (degree[notes.indexOf(pair[0])] == pair[1]);
 		};
-		if (result) {
-			"TEST #3 : Pogression #% : PASSED".format(i).postln;
-		} {
-			"TEST #3 : Pogression #% : FAILED".format(i).postln;
-		};
+
+		~test_resultMessage.(result, "~getChordDegreePairs", nil, i);
 	};
-	~chordData[\chordProg] = nil; dict = nil; result = true; // Reset variables after test
+	~resetChordData.(chordData); dict = nil; result = true; // Reset variables after test
+	nil;
 };
-~test_getChordDegreePairs.(~test_GCDFixture);
 
 /*************************************************************************************/
 // TEST: ~getChordDegreeArrays
-~test_getChordDegreeArray = { |chordProgs|
+~test_getChordDegreeArray = { |chordProgs, triads, chordData|
+	var result = true;
+
+	"\nFunction: ~getChordDegreeArrays".postln;
 
 	chordProgs.do { |p|
-		var dict = ~getChordDegreeArrays.(~triads, p);
+		var prog = p.collect{ |i| i[0] };
+		chordData[\chords] = ~getChordDegreeArrays.(triads, p);
 
-		p.do { |c|
-			"Test: %".format(c[0]).post;
-			if (dict[c[0]][\notes] == ~triads[c[0]][\notes]) {
-				": Passed".postln;
-			} {
-				": Failed".postln;
-			}
-		}
+		prog.do { |c, i|
+			result = result && (chordData[\chords][c][\notes].asArray == triads[c][\notes]);
+
+			~test_resultMessage.(result, "~getChordDegreeArrays", ["prog: %".format(prog), 37], i);
+		};
+		~resetChordData.(chordData);
 	};
+	nil;
 };
-~test_getChordDegreeArray.(~test_GCDFixture);
 
 /*************************************************************************************/
 // TEST: ~getChordVocalRange
@@ -106,7 +96,7 @@
 		};
 	};
 
-	~test_resultMessage.(result, "~getChordVocalRange", "chord: %".format(chordState[\nextCipher]), i);
+	~test_resultMessage.(result, "~getChordVocalRange", ["chord: %".format(chordState[\nextCipher]), 12], i);
 	nil;
 };
 
@@ -129,12 +119,8 @@
 	nil;
 };
 
-~test_getChordVocalRange.(~triads, ~voiceData, ~chordData, ~chordState);
-)
-
 /*************************************************************************************/
 // TEST: ~resolveMelodicIntervals
-(
 ~test_RMISubroutine = { |voiceData, chordState, exclude, i|
 	var refRange = chordState[\validNotes].copy;
 	var result = true;
@@ -170,12 +156,8 @@
 	nil;
 };
 
-~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
-)
-
 /*************************************************************************************/
 // TEST: ~resolveCommonTones
-(
 ~test_RCTSubroutine = { |voiceData, chordState, functions, message, i, verbose|
 	var refRange = chordState[\validNotes].copy;
 	var result = true;
@@ -186,7 +168,7 @@
 		result = result && functions[j].(chordState[\validNotes][v].size);
 	};
 
-	~test_resultMessage.(result, "~resolveCommonTones", message, i);
+	~test_resultMessage.(result, "~resolveCommonTones", [message, 15], i);
 	if (verbose) {
 		~test_RCTVerbose.(voiceData[\voiceNames], chordState[\validNotes], refRange);
 	};
@@ -213,12 +195,11 @@
 	};
 	nil;
 };
-~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState, true);
 )
 
 (
-~test_getChordDegreePairs.(~test_GCDFixture);
-~test_getChordDegreeArray.(~test_GCDFixture);
+~test_getChordDegreePairs.(~test_GCDFixture, ~triads, ~chordData);
+~test_getChordDegreeArray.(~test_GCDFixture, ~triads, ~chordData);
 ~test_getChordVocalRange.(~triads, ~voiceData, ~chordData, ~chordState);
 ~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState, verbose: false);
 ~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
