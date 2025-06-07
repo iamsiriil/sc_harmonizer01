@@ -2,6 +2,9 @@
 - HARMONY 01 / Range Functions
 **************************************************************************************/
 (
+~logger = true;
+
+/*************************************************************************************/
 // Get all chord notes, within MIDI range, and respective degrees as two separate arrays
 
 ~getChordDegreeArrays = #{ |triads, chordProg|
