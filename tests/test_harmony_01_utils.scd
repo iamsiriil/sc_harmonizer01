@@ -2,6 +2,7 @@
 "../src/sc_harmony_01_lib.scd".loadRelative;
 "../src/sc_harmony_01_utils.scd".loadRelative;
 "../src/sc_harmony_01_rules.scd".loadRelative;
+"./test_harmony_01_fixtures.scd".loadRelative;
 )
 
 /**************************************************************************************
@@ -19,9 +20,6 @@
 	[['AbM', 1], ['C#m', 1], ['EbM', 1], ['Bm', 2], ['Gd', 1], ['G#m']]
 ];
 
-~commonTones = [
-	[[48, 55, 64, 72], []]
-];
 )
 
 /*************************************************************************************/
@@ -109,21 +107,8 @@
 /*************************************************************************************/
 // TEST: ~getChordVocalRange
 (
-// Returns an array os single chord progressions, with all the triads
-~getProg = { |triads|
-	var prog = Array.new(triads.keys.size);
-
-	triads.keys.do { |k|
-		var temp = [[k, 1]];
-		prog.add(temp);
-	};
-	prog;
-};
-
 ~test_GCVRSubroutine = { |chordState, voiceData, i|
 	var result = true;
-
-	"TEST #% | ~getChordVocalRange | chord: % | ".format(i, chordState[\nextCipher]).post;
 
 	voiceData[\voiceNames].do { |v|
 
@@ -135,15 +120,19 @@
 		};
 	};
 
+	"TEST #% ".format(i).padRight(9).post;
+	"| ~getChordVocalRange | ".post;
+	"chord: % ".format(chordState[\nextCipher]).padRight(12).post;
+
 	if (result) {
-		"PASSED".postln;
+		"| PASSED".postln;
 	} {
-		"FAILED".postln;
+		"| FAILED".postln;
 	};
 };
 
 ~test_getChordVocalRange = { |triads, voiceData, chordData, chordState|
-	var prog = ~getProg.(triads);
+	var prog = ~test_GVCRFixtures.(triads);
 
 	~logger = false;
 	~loggerCount = 0;
@@ -167,66 +156,24 @@
 /*************************************************************************************/
 // TEST: ~resolveMelodicIntervals
 (
-~test_RMIFixtures = [
-	[
-		[['CM', 1], ['DM', 1]],
-		[48, 55, 60, 64],
-		[
-			OrderedIdentitySet[42, 54],
-			OrderedIdentitySet[66],
-			OrderedIdentitySet[66],
-			OrderedIdentitySet[74]
-		]
-	],
-	[
-		[['DM', 1], ['Cm', 1]],
-		[50, 57, 62, 66],
-		[
-			OrderedIdentitySet[60],
-			OrderedIdentitySet[51, 63, 67],
-			OrderedIdentitySet[72],
-			OrderedIdentitySet[60, 72]
-		]
-	],
-	[
-		[['Em', 1], ['Ebm', 1]],
-		[40, 59, 67, 76],
-		[
-			OrderedIdentitySet[46, 51, 58],
-			OrderedIdentitySet[],
-			OrderedIdentitySet[],
-			OrderedIdentitySet[66, 70]
-		]
-	]
-];
-~test_RMIFixtures[2][2];
-	/*
-	[[['Dm', 1], ['C#m', 1]],[50, 57, 62, 65], 'C#m','bas', OrderedIdentitySet[40, 44, 56]],
-	[[['Em', 1], ['BbM', 1]],[52, 59, 64, 67], 'BbM','bas', OrderedIdentitySet[41, 46, 58]]*/
-//];
-
 ~test_RMISubroutine = { |voiceData, chordState, exclude, i|
 	var refRange = chordState[\validNotes].copy;
 	var result = true;
 
-	"TEST #% | ~resolveMelodicIntervals | ".format(i).post;
-
 	~resolveMelodicIntervals.(voiceData, chordState[\validNotes], chordState[\currChord]);
-
-	"refRange:".postln;
-	voiceData[\voiceNames].do { |v| refRange[v].postln };
-	"validNotes:".postln;
-	voiceData[\voiceNames].do { |v| chordState[\validNotes][v].postln };
 
 	voiceData[\voiceNames].do { |v, j|
 		result = result && ((refRange[v] -- chordState[\validNotes][v]) == exclude[j]);
 	};
 
+	"TEST #% | ~resolveMelodicIntervals | ".format(i).post;
+
 	if (result) {
 		"PASSED".postln;
 	} {
 		"FAILED".postln;
-	}
+	};
+	nil;
 };
 
 ~test_resolveMelodicIntervals = { |fixtures, triads, voiceData, chordData, chordState|
@@ -235,12 +182,11 @@
 	~loggerCount = 0;
 
 	fixtures.do { |f, i|
+		var cipher = f[0][1][0];
 
-		chordData[\chordProg] = f[0];
 		chordData[\chords] = ~getChordDegreeArrays.(triads, f[0]);
-		chordState[\nextCipher] = f[0][1][0];
 		chordState[\currChord] = f[1];
-		chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][f[0][1][0]][\notes]);
+		chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][cipher][\notes]);
 
 		~test_RMISubroutine.(voiceData, chordState, f[2], i);
 
@@ -251,7 +197,7 @@
 
 ~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
 )
-(Set[1, 2, 3, 4] -- Set[1, 2, 3, 4]) == Set[]
+
 /*************************************************************************************/
 // TEST: ~resolveCommonTones
 (
