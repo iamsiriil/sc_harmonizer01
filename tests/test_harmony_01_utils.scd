@@ -10,6 +10,7 @@
 )
 /*************************************************************************************/
 // TEST: ~getChordDegreePairs
+
 (
 ~test_getChordDegreePairs = { |chordProg, triads, chordData|
 	var triadKeys = triads.keys; // Get all keys from ~triads
@@ -60,6 +61,7 @@
 
 /*************************************************************************************/
 // TEST: ~getChordDegreeArrays
+
 ~test_getChordDegreeArray = { |chordProgs, triads, chordData|
 	var result = true;
 
@@ -81,6 +83,7 @@
 
 /*************************************************************************************/
 // TEST: ~getChordVocalRange
+
 ~test_GCVRSubroutine = { |voiceData, chordData, chordState, i|
 	var result = true;
 
@@ -121,6 +124,7 @@
 
 /*************************************************************************************/
 // TEST: ~resolveMelodicIntervals
+
 ~test_RMISubroutine = { |voiceData, chordState, exclude, i|
 	var refRange = chordState[\validNotes].copy;
 	var result = true;
@@ -158,6 +162,7 @@
 
 /*************************************************************************************/
 // TEST: ~resolveCommonTones
+
 ~test_RCTSubroutine = { |voiceData, chordState, functions, message, i, verbose|
 	var refRange = chordState[\validNotes].copy;
 	var result = true;
