@@ -1,48 +1,7 @@
 /**************************************************************************************
 - HARMONY 01 / Rule Enforcement and Tests
 **************************************************************************************/
-// Enforcement flags
 (
-~enforceVoiceCrossProhibition = true;  // Enforced in ~checkVoiceRange, during backtrack
-~enforceMelodicIntervals      = true;  // Enforced in ~getValidNotes, before backtrack
-~enforceVocalRange            = true;  // Enforced in ~getValidNotes, before backtrack
-~enforceCommonTones           = true;  // Enforced in ~getValidNotes, before backtrack
-
-~enforceParallelOctaves       = true;  // Enforced in ~chordIsValid, during backtrack
-~enforceParallelFifths        = true;  // Enforced in ~chordIsValid, during backtrack
-
-~enforceNoteDuplicate         = true;  // Enforced in ~chordIsValid, during backtrack
-// Note duplication enforcement flags: 1 true to 2 false
-~enforceRootDuplicate         = true;  // Enforced in ~checkNoteDuplicate, during backtrack
-~enforceThirdDuplicate        = false; // Enforced in ~checkNoteDuplicate, during backtrack
-~enforceFifthDuplicate        = false; // Enforced in ~checkNoteDuplicate, during backtrack
-
-~enforceChordPosition         = true;  // Enforced in ~chordIsValid, during backtrack
-// Chord position enforcement flags: 1 true to 2 false
-~enforceRootPosition          = true;  // Enforced in ~checkChordPosition, during backtrack
-~enforceFirstInversion        = false; // Enforced in ~checkChordPosition, during backtrack
-~enforceSecondInversion       = false; // Enforced in ~checkChordPosition, during backtrack
-
-~rules = Dictionary[
-	\enforceVoiceCrossProhibition -> true,
-	\enforceMelodicIntervals      -> true,
-	\enforceVocalRange            -> true,
-	\enforceCommonTones           -> true,
-	\enforceParallelOctaves       -> true,
-	\enforceParallelFifths        -> true,
-	\enforceNoteDuplicate         -> true,
-	\enforceRootDuplicate         -> true,
-	\enforceThirdDuplicate        -> false,
-	\enforceFifthDuplicate        -> false,
-	\enforceChordPosition         -> true,
-	\enforceRootPosition          -> true,
-	\enforceFirstInversion        -> false,
-	\enforceSecondInversion       -> false,
-	\toggleCount                  -> 0
-];
-
-// Toggle rules counter
-
 ~logger = true;
 
 /*************************************************************************************/
@@ -298,30 +257,6 @@
 	};
 
 	rules[\toggleCount] = rules[\toggleCount] + 1;
-	nil;
-};
-
-/*************************************************************************************/
-// Reset rules
-
-~resetRules = #{ |rules|
-
-	rules[\enforceVoiceCrossProhibition] = true;
-	rules[\enforceMelodicIntervals]      = true;
-	rules[\enforceVocalRange]            = true;
-	rules[\enforceParallelOctaves]       = true;
-	rules[\enforceParallelFifths]        = true;
-	rules[\enforceNoteDuplicate]         = true;
-	rules[\enforceRootDuplicate]         = true;
-	rules[\enforceThirdDuplicate]        = false;
-	rules[\enforceFifthDuplicate]        = false;
-	rules[\enforceChordPosition]         = true;
-	rules[\enforceRootPosition]          = true;
-	rules[\enforceFirstInversion]        = false;
-	rules[\enforceSecondInversion]       = false;
-	rules[\enforceCommonTone]            = true;
-
-	rules[\toggleCount] = 0;
 	nil;
 };
 )
