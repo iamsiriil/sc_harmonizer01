@@ -1,8 +1,18 @@
 /**************************************************************************************
 - HARMONY 01 / Test fixtures
 **************************************************************************************/
-// ~getVocalChordRange
 (
+// Chord progressions for ~getChordDegreePairs and ~getChordDegreeArrays
+~test_GCDFixture = [
+	[['CM', 2]],
+	[['CM', 2], ['FM', 1], ['GM', 1], ['CM', 4]],
+	[['F#m', 1], ['EM', 1], ['C#A', 1], ['Bm', 2], ['Ed', 1], ['F#m']],
+	[['Ebm', 1], ['Gm', 1], ['BA', 1], ['BbM', 2], ['Dm', 1], ['Ebm']],
+	[['AbM', 1], ['C#m', 1], ['EbM', 1], ['Bm', 2], ['Gd', 1], ['G#m']]
+];
+
+/*************************************************************************************/
+// ~getVocalChordRange
 // Returns an array of single chord progressions, with all the triads
 ~test_GVCRFixtures = { |triads|
 	var prog = Array.new(triads.keys.size);

@@ -1,3 +1,6 @@
+/**************************************************************************************
+- HARMONY 01 / Utility Functions and Data Structures / Tests
+**************************************************************************************/
 (
 "../src/sc_harmony_01_lib.scd".loadRelative;
 "../src/sc_harmony_01_utils.scd".loadRelative;
@@ -5,35 +8,17 @@
 "./test_harmony_01_fixtures.scd".loadRelative;
 "./test_harmony_01_message.scd".loadRelative;
 )
-
-/**************************************************************************************
-- HARMONY 01 / Utility Functions and Data Structures / Tests
-**************************************************************************************/
-// Fixtures
-
-// Chord progressions for ~getChordDegreePairs and ~getChordDegreeArrays
-(
-~chordProg = [
-	[['CM', 2]],
-	[['CM', 2], ['FM', 1], ['GM', 1], ['CM', 4]],
-	[['F#m', 1], ['EM', 1], ['C#A', 1], ['Bm', 2], ['Ed', 1], ['F#m']],
-	[['Ebm', 1], ['Gm', 1], ['BA', 1], ['BbM', 2], ['Dm', 1], ['Ebm']],
-	[['AbM', 1], ['C#m', 1], ['EbM', 1], ['Bm', 2], ['Gd', 1], ['G#m']]
-];
-
-)
-
 /*************************************************************************************/
-// Test ~getChordDegreePairs
+// TEST: ~getChordDegreePairs
 (
-~test_getChordDegreePairs = {
+~test_getChordDegreePairs = { |chordProg|
 	var triadKeys = ~triads.keys; // Get all keys from ~triads
 	var getSymbols, dict, result = true;
 
 	"\nFunction: ~getChordDegreePairs".postln;
 
 	"\nTEST #1 : Set of ciphers in progression, is subset of ~triads.keys:".postln;
-	~chordProg.do { |p, i|
+	chordProg.do { |p, i|
 		getSymbols = (p.collect { |a| a[0]});
 		result = result && getSymbols.isSubsetOf(triadKeys);
 
@@ -47,10 +32,10 @@
 
 
 	"\nTEST #2 : Set of keys from returned dictionary is subset of ~triads.keys:".postln;
-	~chordProg.do { |p, i|
+	chordProg.do { |p, i|
 		~chordData[\chordProg] = p;
 
-		dict = ~getChordDegreePairs.();
+		dict = ~getChordDegreePairs.(~triads, p);
 		result = result && dict.keys.isSubsetOf(triadKeys);
 
 		if (result) {
@@ -63,10 +48,10 @@
 
 
 	"\nTEST #3 : Pairing of midi note numbers and scale degrees is correct:".postln;
-	~chordProg.do { |p, i|
+	chordProg.do { |p, i|
 		~chordData[\chordProg] = p;
 
-		dict = ~getChordDegreePairs.();
+		dict = ~getChordDegreePairs.(~triads, p);
 		10.do {
 			var key = dict.keys.choose;
 			var pair = dict[key].choose;
@@ -83,10 +68,10 @@
 	};
 	~chordData[\chordProg] = nil; dict = nil; result = true; // Reset variables after test
 };
-~test_getChordDegreePairs.();
-)
+~test_getChordDegreePairs.(~test_GCDFixture);
 
-(
+/*************************************************************************************/
+// TEST: ~getChordDegreeArrays
 ~test_getChordDegreeArray = { |chordProgs|
 
 	chordProgs.do { |p|
@@ -102,12 +87,10 @@
 		}
 	};
 };
-~test_getChordDegreeArray.(~chordProg);
-)
+~test_getChordDegreeArray.(~test_GCDFixture);
 
 /*************************************************************************************/
 // TEST: ~getChordVocalRange
-(
 ~test_GCVRSubroutine = { |voiceData, chordData, chordState, i|
 	var result = true;
 
@@ -130,7 +113,7 @@
 ~test_getChordVocalRange = { |triads, voiceData, chordData, chordState|
 	var prog = ~test_GVCRFixtures.(triads);
 
-	"\nTEST: ~getChordVocalRange".postln;
+	"\nFunction: ~getChordVocalRange".postln;
 
 	~logger = false;
 	~loggerCount = 0;
@@ -168,7 +151,7 @@
 
 ~test_resolveMelodicIntervals = { |fixtures, triads, voiceData, chordData, chordState|
 
-	"\nTEST: ~resolveMelodicIntervals".postln;
+	"\nFunction: ~resolveMelodicIntervals".postln;
 
 	~logger = false;
 	~loggerCount = 0;
@@ -212,7 +195,7 @@
 
 ~test_resolveCommonTones = { |fixtures, triads, voiceData, chordData, chordState, verbose|
 
-	"\nTEST: ~resolveCommonTones".postln;
+	"\nFunction: ~resolveCommonTones".postln;
 
 	~logger = false;
 	~loggerCount = 0;
@@ -234,6 +217,8 @@
 )
 
 (
+~test_getChordDegreePairs.(~test_GCDFixture);
+~test_getChordDegreeArray.(~test_GCDFixture);
 ~test_getChordVocalRange.(~triads, ~voiceData, ~chordData, ~chordState);
 ~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState, verbose: false);
 ~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
