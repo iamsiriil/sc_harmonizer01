@@ -3,6 +3,7 @@
 "../src/sc_harmony_01_utils.scd".loadRelative;
 "../src/sc_harmony_01_rules.scd".loadRelative;
 "./test_harmony_01_fixtures.scd".loadRelative;
+"./test_harmony_01_message.scd".loadRelative;
 )
 
 /**************************************************************************************
@@ -107,8 +108,10 @@
 /*************************************************************************************/
 // TEST: ~getChordVocalRange
 (
-~test_GCVRSubroutine = { |chordState, voiceData, i|
+~test_GCVRSubroutine = { |voiceData, chordData, chordState, i|
 	var result = true;
+
+	chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][chordState[\nextCipher]][\notes]);
 
 	voiceData[\voiceNames].do { |v|
 
@@ -120,19 +123,14 @@
 		};
 	};
 
-	"TEST #% ".format(i).padRight(9).post;
-	"| ~getChordVocalRange | ".post;
-	"chord: % ".format(chordState[\nextCipher]).padRight(12).post;
-
-	if (result) {
-		"| PASSED".postln;
-	} {
-		"| FAILED".postln;
-	};
+	~test_resultMessage.(result, "~getChordVocalRange", "chord: %".format(chordState[\nextCipher]), i);
+	nil;
 };
 
 ~test_getChordVocalRange = { |triads, voiceData, chordData, chordState|
 	var prog = ~test_GVCRFixtures.(triads);
+
+	"\nTEST: ~getChordVocalRange".postln;
 
 	~logger = false;
 	~loggerCount = 0;
@@ -142,9 +140,7 @@
 		chordData[\chords] = ~getChordDegreeArrays.(triads, chordData[\chordProg]);
 		chordState[\nextCipher] = p.unbubble[0];
 
-		chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][chordState[\nextCipher]][\notes]);
-
-		~test_GCVRSubroutine.(chordState, voiceData, i);
+		~test_GCVRSubroutine.(voiceData, chordData, chordState, i);
 	};
 	~resetChordData.(chordData); ~resetChordState.(chordState);
 	nil;
@@ -166,17 +162,13 @@
 		result = result && ((refRange[v] -- chordState[\validNotes][v]) == exclude[j]);
 	};
 
-	"TEST #% | ~resolveMelodicIntervals | ".format(i).post;
-
-	if (result) {
-		"PASSED".postln;
-	} {
-		"FAILED".postln;
-	};
+	~test_resultMessage.(result, "~resolveMelodicIntervals", nil, i);
 	nil;
 };
 
 ~test_resolveMelodicIntervals = { |fixtures, triads, voiceData, chordData, chordState|
+
+	"\nTEST: ~resolveMelodicIntervals".postln;
 
 	~logger = false;
 	~loggerCount = 0;
@@ -201,30 +193,26 @@
 /*************************************************************************************/
 // TEST: ~resolveCommonTones
 (
-~test_RCTSubroutine = { |voiceData, chordState, functions, i|
+~test_RCTSubroutine = { |voiceData, chordState, functions, message, i, verbose|
 	var refRange = chordState[\validNotes].copy;
 	var result = true;
 
 	~resolveCommonTones.(voiceData, chordState[\validNotes], chordState[\currChord]);
 
-	voiceData[\voiceNames].do { |v|
-		"%: %".format(v, refRange[v].asArray).padRight(30).post;
-		"| %".format(chordState[\validNotes][v].asArray).postln;
-	};
-
 	voiceData[\voiceNames].do { |v, j|
 		result = result && functions[j].(chordState[\validNotes][v].size);
 	};
 
-	if (result) {
-		"PASSED".postln;
-	} {
-		"FAILED".postln;
-	}
-
+	~test_resultMessage.(result, "~resolveCommonTones", message, i);
+	if (verbose) {
+		~test_RCTVerbose.(voiceData[\voiceNames], chordState[\validNotes], refRange);
+	};
+	nil;
 };
 
-~test_resolveCommonTones = { |fixtures, triads, voiceData, chordData, chordState|
+~test_resolveCommonTones = { |fixtures, triads, voiceData, chordData, chordState, verbose|
+
+	"\nTEST: ~resolveCommonTones".postln;
 
 	~logger = false;
 	~loggerCount = 0;
@@ -236,11 +224,17 @@
 		~chordState[\currChord] = f[\chord];
 		~chordState[\validNotes] = ~getChordVocalRange.(voiceData, chordData[\chords][cipher][\notes]);
 
-		~test_RCTSubroutine.(voiceData, chordState, f[\functions], i);
+		~test_RCTSubroutine.(voiceData, chordState, f[\functions], f[\message], i, verbose);
 
 		~resetChordData.(chordData); ~resetChordState.(chordState);
 	};
 	nil;
 };
-~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
+~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState, true);
+)
+
+(
+~test_getChordVocalRange.(~triads, ~voiceData, ~chordData, ~chordState);
+~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState, verbose: false);
+~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
 )

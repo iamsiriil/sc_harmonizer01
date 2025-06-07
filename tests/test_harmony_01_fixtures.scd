@@ -1,7 +1,7 @@
 /**************************************************************************************
-- HARMONY 01 / Utility Functions and Data Structures / Tests
+- HARMONY 01 / Test fixtures
 **************************************************************************************/
-// ~getVocalChordRange fixture
+// ~getVocalChordRange
 (
 // Returns an array of single chord progressions, with all the triads
 ~test_GVCRFixtures = { |triads|
@@ -15,7 +15,7 @@
 };
 
 /*************************************************************************************/
-// ~resolveMelodicInterval fixture
+// ~resolveMelodicInterval
 ~test_RMIFixtures = (
 	\00: (
 		\chord: [48, 55, 60, 64],
@@ -83,34 +83,40 @@
 );
 
 /*************************************************************************************/
-// ~resolveCommonTone fixture
+// ~resolveCommonTone
 ~test_RCTFixtures = (
 	\00: (
+		\message: "CT: ten, alt",
 		\chord: [48, 55, 64, 72],
 		\chordProg: [['CM', 1], ['Em', 1]],
 		\functions: [(_ > 1), (_ == 1), (_ == 1), (_ > 1)]
 	),
 	\01: (
+		\message: "CT: ten, spn",
 		\chord: [48, 55, 60, 64],
 		\chordProg: [['CM', 1], ['Em', 1]],
 		\functions: [(_ > 1), (_ == 1), (_ > 1), (_ == 1)]
 	),
 	\02: (
+		\message: "CT: alt, spn",
 		\chord: [48, 60, 67, 76],
 		\chordProg: [['CM', 1], ['Em', 1]],
 		\functions: [(_ > 1), (_ > 1), (_ == 1), (_ == 1)]
 	),
 	\03: (
+		\message: "CT: ten",
 		\chord: [48, 60, 64, 67],
 		\chordProg: [['CM', 1], ['FM', 1]],
 		\functions: [(_ > 1), (_ == 1), (_ > 1), (_ > 1)]
 	),
 	\04: (
+		\message: "CT: alt",
 		\chord: [48, 55, 60, 64],
 		\chordProg: [['CM', 1], ['FM', 1]],
 		\functions: [(_ > 1), (_ > 1), (_ == 1), (_ > 1)]
 	),
 	\05: (
+		\message: "CT: spn",
 		\chord: [48, 55, 64, 72],
 		\chordProg: [['CM', 1], ['FM', 1]],
 		\functions: [(_ > 1), (_ > 1), (_ > 1), (_ == 1)]
