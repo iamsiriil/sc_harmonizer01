@@ -12,12 +12,6 @@
 )
 
 (
-// Test parallel octaves
-~test_parallelOctaves = Dictionary[
-	\frtChord    -> [[41, 53, 60, 69], [41, 57, 65, 72], [41, 57, 60, 65], [43, 52, 64, 71], [43, 52, 59, 64], [40, 55, 60, 72]],
-	\scdChordPLO -> [[[48, 60, 64, 67], [48, 55, 72, 76], [48, 55, 64, 72], [40, 55, 67, 72], [48, 55, 64, 67], [48, 57, 65, 77]], false], // Has parallel octaves
-	\scdChordVAL -> [[[48, 52, 60, 67], [48, 55, 64, 72], [48, 55, 60, 64], [48, 55, 64, 72], [48, 55, 60, 64], [41, 53, 60, 69]], true]   // Progression is valid
-];
 
 // Test parallel fifths
 ~test_parallelFifths = Dictionary[
@@ -150,43 +144,32 @@
 /*************************************************************************************/
 // Test ~checkParallelOctaves
 (
-~test_checkParallelOctaves = {
-	var expect, result = true;
+~test_CPOSubroutine = { |fChord, sChord, numVoices|
+	var expect = sChord[1], result;
 
-	( // Test 00
-		expect = ~test_parallelOctaves[\scdChordPLO][1];
+	~testCounter = 0;
 
-		~test_parallelOctaves[\frtChord].do { |c, i|
+	fChord.do { |c, i|
+		result = ~checkParallelOctaves.(sChord[0][i], c, numVoices);
+		result = (result == expect);
 
-			~chordState[\currChord] = c;
-			result = result && ~checkParallelOctaves.(~test_parallelOctaves[\scdChordPLO][0][i]);
-		};
-		if (result == expect) {
-			"TEST #0 | expected: % got: % | PASSED".format(expect, result).postln;
-		} {
-			"TEST #0 | expected: % got: % | FAILED".format(expect, result).postln;
-		};
-	);
-	expect = nil; result = true;
-
-	( // Test 01
-		expect = ~test_parallelOctaves[\scdChordVAL][1];
-
-		~test_parallelOctaves[\frtChord].do { |c, i|
-
-			~chordState[\currChord] = c;
-			result = result && ~checkParallelOctaves.(~test_parallelOctaves[\scdChordVAL][0][i]);
-		};
-		if (result == expect) {
-			"TEST #1 | expected: % got: % | PASSED".format(expect, result).postln;
-		} {
-			"TEST #1 | expected: % got: % | FAILED".format(expect, result).postln;
-		};
-	);
-	expect = nil; result = true;
+		~test_resultMessage.(result, "~checkParallelOctaves", nil, ~testCounter);
+		~testCounter = ~testCounter + 1;
+	};
 	nil;
 };
-~test_checkParallelOctaves.();
+
+~test_checkParallelOctaves = { |fixtures, rules, voiceData|
+
+	~logger = false;
+	~loggerCount = 0;
+
+	~test_CPOSubroutine.(fixtures[\fChord], fixtures[\sChordPO], voiceData[\numVoices]);
+	~test_CPOSubroutine.(fixtures[\fChord], fixtures[\sChordVL], voiceData[\numVoices]);
+
+	nil;
+};
+~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~voiceData);
 )
 
 /*************************************************************************************/

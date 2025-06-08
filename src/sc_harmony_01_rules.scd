@@ -70,9 +70,8 @@
 // Check for parallel octaves
 
 ~checkParallelOctaves = #{ |nextChord, currChord, numVoices|
-	var index, result;
+	var index, result = false;
 	var octaves = [12, 24, 36];
-
 	var i = 0, j;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelOctaves: Function Call".format(~loggerCount).postln; };
@@ -87,9 +86,10 @@
 		};
 		i = i + 1;
 	};
+
 	result = (
-		(currChord[index[1]] - currChord[index[0]]) ==
-		(nextChord[index[1]] - nextChord[index[0]])
+		(currChord[index[1]] - currChord[index[0]]).abs ==
+		(nextChord[index[1]] - nextChord[index[0]]).abs
 	);
 	result.not;
 };
@@ -98,9 +98,8 @@
 // Check for parallel fifths
 
 ~checkParallelFifths = #{ |nextChord, currChord, numVoices|
-	var index = Array.new(4), result = false;
+	var index = Array.new(6), result = false;
 	var fifths = [7, 19, 31, 43];
-
 	var i = 0, j;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelFifths: Function Call".format(~loggerCount).postln; };
@@ -110,15 +109,17 @@
 		j = i + 1;
 		while {j < numVoices} {
 
-			if (fifths.includes((currChord[i] - currChord[j]).abs)) { index = [i, j] };
+			if (fifths.includes((currChord[i] - currChord[j]).abs)) { index.add([i, j]) };
 			j = j + 1;
 		};
 		i = i + 1;
 	};
+
 	index.do { |i|
-		result = result ||
-		((currChord[i[1]] - currChord[i[0]]) ==
-		(nextChord[i[1]] - nextChord[i[0]]));
+		result = result || (
+			(currChord[i[1]] - currChord[i[0]]).abs ==
+			(nextChord[i[1]] - nextChord[i[0]]).abs
+		);
 	};
 	result.not;
 };
