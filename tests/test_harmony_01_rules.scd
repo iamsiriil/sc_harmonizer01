@@ -13,12 +13,6 @@
 
 (
 
-// Test parallel fifths
-~test_parallelFifths = Dictionary[
-	\frtChord    -> [[48, 55, 64, 72], [41, 53, 60, 69], [41, 57, 65, 72], [43, 55, 62, 71], [43, 52, 64, 71], [53, 55, 64, 71]],
-	\scdChordPLF -> [[[50, 57, 62, 65], [48, 55, 67, 76], [46, 62, 70, 77], [48, 57, 64, 69], [43, 55, 59, 74], [53, 57, 65, 72]], false], // Has parallel fifths
-	\scdChordVAL -> [[[50, 53, 62, 69], [48, 55, 60, 64], [46, 58, 65, 74], [48, 57, 60, 64], [43, 59, 62, 71], [41, 57, 60, 65]], true]   // Progression is valid
-];
 
 ~voiceData[\voiceRange];
 // Test voice spacing
@@ -167,6 +161,7 @@
 	~test_CPOSubroutine.(fixtures[\fChord], fixtures[\sChordPO], voiceData[\numVoices]);
 	~test_CPOSubroutine.(fixtures[\fChord], fixtures[\sChordVL], voiceData[\numVoices]);
 
+	~resetRules.(rules);
 	nil;
 };
 ~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~voiceData);
@@ -175,49 +170,32 @@
 /*************************************************************************************/
 // Test ~checkParallelFifths
 (
-~test_checkParallelFifths = {
-	var expect, result = true;
+~test_CPFSubroutine = { |fChord, sChord, numVoices|
+	var expect = sChord[1], result;
 
-	// Test 00: Two chord progression containing parallel fifths
-	(
-		expect = ~test_parallelFifths[\scdChordPLF][1];
+	~testCounter = 0;
 
-		~test_parallelFifths[\frtChord].do { |c, i|
+	fChord.do { |c, i|
+		result = ~checkParallelFifths.(sChord[0][i], c, numVoices);
+		result = (result == expect);
 
-			~chordState[\currChord] = c;
-			result = result && ~checkParallelFifths.(~test_parallelFifths[\scdChordPLF][0][i]);
-		};
-		if (result == expect) {
-			"TEST #0 | expected: % got: % | PASSED".format(expect, result).postln;
-		} {
-			"TEST #0 | expected: % got: % | FAILED".format(expect, result).postln;
-		};
-
-		~chordState[\currChord] = nil;
-		expect = nil; result = true;
-	);
-
-	// Test 01: Two chord progression containing no parallel fifths
-	(
-		expect = ~test_parallelFifths[\scdChordVAL][1];
-
-		~test_parallelFifths[\frtChord].do { |c, i|
-
-			~chordState[\currChord] = c;
-			result = result && ~checkParallelFifths.(~test_parallelFifths[\scdChordVAL][0][i]);
-		};
-		if (result == expect) {
-			"TEST #1 | expected: % got: % | PASSED".format(expect, result).postln;
-		} {
-			"TEST #1 | expected: % got: % | FAILED".format(expect, result).postln;
-		};
-
-		~chordState[\currChord] = nil;
-		expect = nil; result = true;
-		nil;
-	);
+		~test_resultMessage.(result, "~checkParallelFifths", nil, ~testCounter);
+		~testCounter = ~testCounter + 1;
+	};
+	nil;
 };
-~test_checkParallelFifths.();
+
+~test_checkParallelFifths = { |fixtures, rules, voiceData|
+
+	~logger = false;
+	~loggerCount = 0;
+
+	~test_CPFSubroutine.(fixtures[\fChord], fixtures[\sChordPF], voiceData[\numVoices]);
+	~test_CPFSubroutine.(fixtures[\fChord], fixtures[\sChordVL], voiceData[\numVoices]);
+
+	nil;
+};
+~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~voiceData);
 )
 
 /*************************************************************************************/
@@ -276,6 +254,9 @@
 
 (
 ~test_checkChordPosition.(~test_CCPFixtures, ~triads, ~rules);
+~test_checkVoiceRange.(~test_CVRFixtures, ~rules);
+~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~voiceData);
+~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~voiceData);
 )
 
 
