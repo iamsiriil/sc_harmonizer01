@@ -7,7 +7,7 @@
 /*************************************************************************************/
 // Check chord position: Root, first inversion, second inversion
 
-~checkChordPosition = #{ |nextChord, cipher, chords,rules|
+~checkChordPosition = #{ |nextChord, cipher, chords, rules|
 	var bassNote = ~getNoteDegree.(nextChord[0], cipher, chords);
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkChordPosition: Function Call".format(~loggerCount).postln; };

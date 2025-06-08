@@ -1,5 +1,5 @@
 /**************************************************************************************
-- HARMONY 01 / Test fixtures
+- HARMONY 01 / Test fixtures: Range
 **************************************************************************************/
 (
 // Chord progressions for ~getChordDegreePairs and ~getChordDegreeArrays
@@ -131,5 +131,28 @@
 		\chordProg: [['CM', 1], ['FM', 1]],
 		\functions: [(_ > 1), (_ > 1), (_ > 1), (_ == 1)]
 	)
+);
+
+/**************************************************************************************
+- HARMONY 01 / Test fixtures: Rules
+**************************************************************************************/
+
+~test_CCPFixtures = (
+	\chords: [
+		[[48, 60, 64, 67], [60, 64, 67, 72]], // Root position
+		[[40, 55, 64, 72], [52, 55, 60, 64]], // First inversion
+		[[43, 55, 64, 72], [55, 60, 67, 76]]  // Second inversion
+	],
+	\flags: [
+		[[true, false, false], true],
+		[[false, true, false], true],
+		[[false, false, true], true],
+		[[false, false, false], false]
+	],
+	\expect: [
+		[true, false, false, true],
+		[false, true, false, true],
+		[false, false, true, true]
+	];
 );
 )

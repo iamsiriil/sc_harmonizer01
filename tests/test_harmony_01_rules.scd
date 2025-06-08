@@ -1,13 +1,16 @@
-(
-"../sc_harmony_01_rules.scd".loadRelative;
-"../sc_harmony_01_utils.scd".loadRelative;
-"../sc_harmony_01_lib.scd".loadRelative;
-)
-
 /**************************************************************************************
 - HARMONY 01 / Test rules
 **************************************************************************************/
-// Test fixtures
+(
+"../src/sc_harmony_01_rules.scd".loadRelative;
+"../src/sc_harmony_01_utils.scd".loadRelative;
+"../src/sc_harmony_01_range.scd".loadRelative;
+"../src/sc_harmony_01_dicts.scd".loadRelative;
+"../src/sc_harmony_01_lib.scd".loadRelative;
+"./test_harmony_01_message.scd".loadRelative;
+"./test_harmony_01_fixtures.scd".loadRelative;
+)
+
 (
 // Test parallel octaves
 ~test_parallelOctaves = Dictionary[
@@ -71,64 +74,52 @@
 		\expect: [false, false, true, true]    // Expected return for flags: [RD, TD, FD, ND]
 	)
 );
-
-~test_CCPData = Dictionary[
-	\chords -> [
-		[[48, 60, 64, 67], [60, 64, 67, 72]], // Root position
-		[[40, 55, 64, 72], [52, 55, 60, 64]], // First inversion
-		[[43, 55, 64, 72], [55, 60, 67, 76]]  // Second inversion
-	],
-	\flags -> [
-		[[true, false, false], true],
-		[[false, true, false], true],
-		[[false, false, true], true],
-		[[false, false, false], false]
-	],
-	\expect -> [
-		[true, false, false, true],
-		[false, true, false, true],
-		[false, false, true, true]
-	];
-];
 )
-
+/*************************************************************************************/
 (
-//~test_CCPSubroutine = {
-
-~test_checkChordPosition = {
-	var chords = ~test_CCPData[\chords];
-	var expect = ~test_CCPData[\expect];
+~test_CCPSubroutine = { |flags, chords, expect, dict, rules, i|
+	var flagRP, flagFI, flagSI, flagCP;
 	var result = true;
 
-	~chordState[\nextCipher] = 'CM';
-	~chordData[\chordProg] = [['CM', 2]];
-	~getChordDegreeArrays.();
+	#flagRP, flagFI, flagSI = flags[0];
+	flagCP = flags[1];
 
-	~test_CCPData[\flags].do { |f, i|
-		var flagRP, flagFI, flagSI, flagCP;
+	rules[\enforceChordPosition]   = flagCP;
+	rules[\enforceRootPosition]    = flagRP;
+	rules[\enforceFirstInversion]  = flagFI;
+	rules[\enforceSecondInversion] = flagSI;
 
-		#flagRP, flagFI, flagSI = f[0];
-		flagCP = f[1];
+	chords.do { |a, j|
 
-		~enforceChordPosition   = flagCP;
-		~enforceRootPosition    = flagRP;
-		~enforceFirstInversion  = flagFI;
-		~enforceSecondInversion = flagSI;
-
-		chords.do { |a|
-			a. do { |c|
-				result = result && ~checkChordPosition.(c).postln;
-			};
-			(result == expect[i]);
+		a.do { |c|
+			result = result && ~checkChordPosition.(c, 'CM', dict, rules);
 		};
+		result = (result == expect[j][i]);
 
-		flagRP = flagFI = flagSI = nil;
-		result = true;
-		~resetRules.();
-		nil;
- 	}
+		~test_resultMessage.(result, "~checkChordPosition", nil, i);
+
+		flagRP = flagFI = flagSI = nil; result = true;
+	};
+	~resetRules.(rules);
+	nil;
 };
-~test_checkChordPosition.();
+
+~test_checkChordPosition = { |fixtures, triads, rules|
+	var dict = Dictionary.new();
+	var result = true;
+
+	~logger = false;
+	~loggerCount = 0;
+
+	dict = ~getChordDegreeArrays.(triads, [['CM', 2]]);
+
+	fixtures[\flags].do { |f, i|
+
+		~test_CCPSubroutine.(f, fixtures[\chords], fixtures[\expect], dict, rules, i);
+ 	};
+	nil;
+};
+~test_checkChordPosition.(~test_CCPFixtures, ~triads, ~rules);
 )
 
 /*************************************************************************************/
