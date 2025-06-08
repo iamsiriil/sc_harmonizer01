@@ -186,9 +186,49 @@
 
 /*************************************************************************************/
 // Test parallel fifths
+
 ~test_CPFFixtures = (
 	\fChord:    [[48, 55, 64, 72], [41, 53, 60, 69], [41, 57, 65, 72], [43, 55, 62, 71], [43, 52, 64, 71], [53, 55, 64, 71]],
 	\sChordPF: [[[50, 57, 62, 65], [48, 55, 67, 76], [46, 62, 70, 77], [48, 57, 64, 69], [43, 55, 59, 74], [53, 57, 65, 72]], false], // Has parallel fifths
 	\sChordVL: [[[50, 53, 62, 69], [48, 55, 60, 64], [46, 58, 65, 74], [48, 57, 60, 64], [43, 59, 62, 71], [41, 57, 60, 65]], true]   // Progression is valid
+);
+
+/*************************************************************************************/
+// Test Note Duplicates
+
+~test_CNDFixtures = (
+	\00: (
+		\message: "Chord Set #1: Root duplicate",
+		\chords: [[48, 60, 64, 67], [48, 55, 60, 64], [48, 64, 67, 72], [52, 60, 72, 79], [52, 60, 67, 72], [52, 55, 60, 72]],
+		\flags: [
+			[[true, false, false], true, "Test #1: Flags: RD true; TD false; FD false; ND true"],  // Expect: true
+			[[false, true, false], true, "Test #2: Flags: RD false; TD true; FD false; ND true"],  // Expect: false
+			[[false, false, true], true, "Test #3: Flags: RD false; TD false; FD true; ND true"],  // Expect: false
+			[[true, true, true], false, "Test #4: Flags: RD true; TD true; FD true; ND false"]     // Expect: true
+		],
+		\expect: [true, false, false, true]    // Expected return for flags: [RD, TD, FD, ND]
+	),
+	\01: (
+		\message: "Chord Set #2: Third duplicate",
+		\chords: [[40, 52, 60, 67], [40, 55, 64, 72], [40, 55, 60, 64], [48, 52, 64, 67], [48, 52, 55, 64], [48, 55, 64, 76]],
+		\flags: [
+			[[true, false, false], true, "Test #1: Flags: RD true; TD false; FD false; ND true"],     // Expect: false
+			[[false, true, false], true, "Test #2: Flags: RD false; TD true; FD false; ND true"],     // Expect: true
+			[[false, false, true], true, "Test #3: Flags: RD false; TD false; FD true; ND true"],     // Expect: false
+			[[false, false, false], false, "Test #4: Flags: RD false; TD false; FD false; ND false"]  // Expect: true
+		],
+		\expect: [false, true, false, true]    // Expected return for flags: [RD, TD, FD, ND]
+	),
+	\02: (
+		\message: "Chord Set #3: Fifth duplicate",
+		\chords: [[43, 55, 60, 64], [43, 60, 67, 76], [43, 60, 64, 67], [48, 55, 67, 76], [48, 55, 64, 67], [48, 52, 55, 67]],
+		\flags: [
+			[[true, false, false], true, "Test #1: Flags: RD true; TD false; FD false; ND true"],    // Expect: false
+			[[false, true, false], true, "Test #2: Flags: RD false; TD true; FD false; ND true"],    // Expect: false
+			[[false, false, true], true, "Test #3: Flags: RD false; TD false; FD true; ND true"],    // Expect: true
+			[[false, true, false], false, "Test #4: Flags: RD false; TD true; FD false; ND false"]   // Expect: true
+		],
+		\expect: [false, false, true, true]    // Expected return for flags: [RD, TD, FD, ND]
+	)
 );
 )

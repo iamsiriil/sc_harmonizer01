@@ -10,51 +10,9 @@
 "./test_harmony_01_message.scd".loadRelative;
 "./test_harmony_01_fixtures.scd".loadRelative;
 )
-
-(
-
-
-~voiceData[\voiceRange];
-// Test voice spacing
-
-~test_CNDData = (
-	\chordSetRD: (
-		\message: "Chord Set #1: Root duplicate",
-		\chords: [[48, 60, 64, 67], [48, 55, 60, 64], [48, 64, 67, 72], [52, 60, 72, 79], [52, 60, 67, 72], [52, 55, 60, 72]],
-		\flags: [
-			[[true, false, false], true, "Test #1: Flags: RD true; TD false; FD false; ND true"],  // Expect: true
-			[[false, true, false], true, "Test #2: Flags: RD false; TD true; FD false; ND true"],  // Expect: false
-			[[false, false, true], true, "Test #3: Flags: RD false; TD false; FD true; ND true"],  // Expect: false
-			[[true, true, true], false, "Test #4: Flags: RD true; TD true; FD true; ND false"]     // Expect: true
-		],
-		\expect: [true, false, false, true]    // Expected return for flags: [RD, TD, FD, ND]
-	),
-	\chordSetTD: (
-		\message: "Chord Set #2: Third duplicate",
-		\chords: [[40, 52, 60, 67], [40, 55, 64, 72], [40, 55, 60, 64], [48, 52, 64, 67], [48, 52, 55, 64], [48, 55, 64, 76]],
-		\flags: [
-			[[true, false, false], true, "Test #1: Flags: RD true; TD false; FD false; ND true"],     // Expect: false
-			[[false, true, false], true, "Test #2: Flags: RD false; TD true; FD false; ND true"],     // Expect: true
-			[[false, false, true], true, "Test #3: Flags: RD false; TD false; FD true; ND true"],     // Expect: false
-			[[false, false, false], false, "Test #4: Flags: RD false; TD false; FD false; ND false"]  // Expect: true
-		],
-		\expect: [false, true, false, true]    // Expected return for flags: [RD, TD, FD, ND]
-	),
-	\chordSetFD: (
-		\message: "Chord Set #3: Fifth duplicate",
-		\chords: [[43, 55, 60, 64], [43, 60, 67, 76], [43, 60, 64, 67], [48, 55, 67, 76], [48, 55, 64, 67], [48, 52, 55, 67]],
-		\flags: [
-			[[true, false, false], true, "Test #1: Flags: RD true; TD false; FD false; ND true"],    // Expect: false
-			[[false, true, false], true, "Test #2: Flags: RD false; TD true; FD false; ND true"],    // Expect: false
-			[[false, false, true], true, "Test #3: Flags: RD false; TD false; FD true; ND true"],    // Expect: true
-			[[false, true, false], false, "Test #4: Flags: RD false; TD true; FD false; ND false"]   // Expect: true
-		],
-		\expect: [false, false, true, true]    // Expected return for flags: [RD, TD, FD, ND]
-	)
-);
-)
 /*************************************************************************************/
 // TEST ~checkChordPosition
+
 (
 ~test_CCPSubroutine = { |flags, chords, expect, dict, rules, i|
 	var flagRP, flagFI, flagSI, flagCP;
@@ -96,12 +54,10 @@
  	};
 	nil;
 };
-~test_checkChordPosition.(~test_CCPFixtures, ~triads, ~rules);
-)
 
 /*************************************************************************************/
 // TEST ~checkVoiceSpacing
-(
+
 ~test_CVRSubroutine = { |fixture, rules, i|
 	var flag = fixture[1][0];
 	var expect = fixture[1][1];
@@ -132,12 +88,10 @@
 	};
 	nil;
 };
-~test_checkVoiceRange.(~test_CVRFixtures, ~rules);
-)
 
 /*************************************************************************************/
 // Test ~checkParallelOctaves
-(
+
 ~test_CPOSubroutine = { |fChord, sChord, numVoices|
 	var expect = sChord[1], result;
 
@@ -164,12 +118,10 @@
 	~resetRules.(rules);
 	nil;
 };
-~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~voiceData);
-)
 
 /*************************************************************************************/
 // Test ~checkParallelFifths
-(
+
 ~test_CPFSubroutine = { |fChord, sChord, numVoices|
 	var expect = sChord[1], result;
 
@@ -195,61 +147,50 @@
 
 	nil;
 };
-~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~voiceData);
-)
 
 /*************************************************************************************/
 // Test Note Duplicates
-(
-~test_CNDSubroutine = { |dict|
+
+~test_CNDSubroutine = { |dict, chords, cipher, rules|
+	var flagRD, flagTD, flagFD, flagND;
 	var result = true;
-	var chords = dict[\chords];
-	var expect = dict[\expect];
+
+	~testCounter = 0;
 
 	dict[\flags]. do { |f, i|
-		var flagRD, flagTD, flagFD, flagND;
 
 		#flagRD, flagTD, flagFD = f[0];
 		flagND = f[1];
 
-		~enforceNoteDuplicate  = flagND;
-		~enforceRootDuplicate  = flagRD;
-		~enforceThirdDuplicate = flagTD;
-		~enforceFifthDuplicate = flagFD;
+		rules[\enforceNoteDuplicate]  = flagND;
+		rules[\enforceRootDuplicate]  = flagRD;
+		rules[\enforceThirdDuplicate] = flagTD;
+		rules[\enforceFifthDuplicate] = flagFD;
 
-		chords.do { |c|
-			result = result && ~checkNoteDuplicate.(c);
+		dict[\chords].do { |c|
+			result = result && ~checkNoteDuplicate.(c, cipher, chords, rules);
 		};
-		if (result == expect[i]) {
-			"TEST #% | expected: % got: % | PASSED".format(i, expect[i], result).postln;
-		} {
-			"TEST #% | expected: % got: % | FAILED".format(i, expect[i], result).postln;
-		};
-		flagRD = flagTD = flagFD = flagND = nil;
-		result = true;
-		~resetRules.();
+
+		result = (result == dict[\expect][i]);
+		~test_resultMessage.(result, "~checkNoteDuplicate", [dict[\message], 32], ~testCounter);
+		~testCounter = ~testCounter + 1;
+
+		~resetRules.(rules);
  	};
 	nil;
 };
 
-~test_checkNoteDuplicate = {
-	var result;
+~test_checkNoteDuplicate = { |fixtures, triads, rules|
+	var chords = Dictionary.new();
 
-	"\nTEST : ~checkNoteDuplicate".format().postln;
+	chords = ~getChordDegreeArrays.(triads, [['CM', 2], ['FM', 1], ['GM', 1], ['CM', 2]]);
 
-	~chordState[\nextCipher] = 'CM';
-	~chordData[\chordProg] = [['CM', 2], ['FM', 1], ['GM', 1], ['CM', 2]];
-	~getChordDegreeArrays.();
+	fixtures.do { |d|
 
-	~test_CNDData.do { |dict|
-
-		"\n%\n".format(dict[\message]).postln;
-		~test_CNDSubroutine.(dict);
+		~test_CNDSubroutine.(d, chords, 'CM', rules);
 	};
 	nil;
 };
-
-~test_checkNoteDuplicate.();
 )
 
 (
@@ -257,6 +198,7 @@
 ~test_checkVoiceRange.(~test_CVRFixtures, ~rules);
 ~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~voiceData);
 ~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~voiceData);
+~test_checkNoteDuplicate.(~test_CNDFixtures, ~triads, ~rules);
 )
 
 
