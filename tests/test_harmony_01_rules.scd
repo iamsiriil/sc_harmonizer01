@@ -28,16 +28,6 @@
 
 ~voiceData[\voiceRange];
 // Test voice spacing
-~test_voiceRange = Dictionary[
-	\test00 -> [[[55, 52, 60, 72], [48, 67, 64, 72], [48, 60, 67, 64]], [true, false]],
-	\test01 -> [[[55, 52, 60, 72], [48, 67, 64, 72], [48, 60, 67, 64]], [false, true]],
-	\test02 -> [[[48, 55, 60, 64], [48, 55, 64, 72], [48, 60, 67, 76]], [true, true]],
-	\test03 -> [[[48, 55, 60, 64], [48, 55, 64, 72], [48, 60, 67, 76]], [false, true]],
-	\test04 -> [[[55, 48, 60, 64], [48, 67, 60, 76], [48, 64, 72, 67]], [true, false]],
-	\test05 -> [[[55, 48, 60, 64], [48, 67, 60, 76], [48, 64, 72, 67]], [false, false]],
-	\test06 -> [[[40, 67, 72, 76], [48, 55, 72, 76], [48, 55, 60, 76]], [true, false]],
-	\test07 -> [[[40, 67, 72, 76], [48, 55, 72, 76], [48, 55, 60, 76]], [false, false]]
-];
 
 ~test_CNDData = (
 	\chordSetRD: (
@@ -76,6 +66,7 @@
 );
 )
 /*************************************************************************************/
+// TEST ~checkChordPosition
 (
 ~test_CCPSubroutine = { |flags, chords, expect, dict, rules, i|
 	var flagRP, flagFI, flagSI, flagCP;
@@ -123,159 +114,39 @@
 )
 
 /*************************************************************************************/
-// Test ~checkVoiceSpacing
+// TEST ~checkVoiceSpacing
 (
-~test_checkVoiceRange = {
-	var flagTrue, flagFalse;
-	var expTrue, expFalse;
+~test_CVRSubroutine = { |fixture, rules, i|
+	var flag = fixture[1][0];
+	var expect = fixture[1][1];
 	var result = true;
 
-	(
-		flagTrue = ~test_voiceRange[\test00][1][0];
-		expFalse = ~test_voiceRange[\test00][1][1];
+	rules[\enforceVoiceCrossProhibition] = flag;
 
-		~enforceVoiceCrossProhibition = flagTrue;
-
-		~test_voiceRange[\test00][0].do { |c, i|
-			result = result && ~checkVoiceSpacing.(c, (i + 1));
+	fixture[0].do { |c|
+		c.do { |n, j|
+			result = result && ~checkVoiceSpacing.(c, j, rules);
 		};
-		if (result == expFalse) {
-			"TEST #0 | expected: % got: % | PASSED".format(expFalse, result).postln;
-		} {
-			"TEST #0 | expected: % got: % | FAILED".format(expFalse, result).postln;
-		};
-	);
-	flagTrue = nil; expFalse = nil; result = true;
-	~resetRules.();
+	};
 
-	(
-		flagFalse = ~test_voiceRange[\test01][1][0];
-		expTrue = ~test_voiceRange[\test01][1][1];
+	result = (result == expect);
+	~test_resultMessage.(result, "~checkVoiceSpacing", nil, i);
 
-		~enforceVoiceCrossProhibition = flagFalse;
-
-		~test_voiceRange[\test01][0].do { |c, i|
-			result = result && ~checkVoiceSpacing.(c, (i + 1));
-		};
-		if (result == expTrue) {
-			"TEST #1 | expected: % got: % | PASSED".format(expTrue, result).postln;
-		} {
-			"TEST #1 | expected: % got: % | FAILED".format(expTrue, result).postln;
-		};
-	);
-	flagFalse = nil; expTrue = nil; result = true;
-	~resetRules.();
-
-	(
-		flagTrue = ~test_voiceRange[\test02][1][0];
-		expTrue = ~test_voiceRange[\test02][1][1];
-
-		~enforceVoiceCrossProhibition = flagTrue;
-
-		~test_voiceRange[\test02][0].do { |c, i|
-			result = result && ~checkVoiceSpacing.(c, (i + 1));
-		};
-		if (result == expTrue) {
-			"TEST #2 | expected: % got: % | PASSED".format(expTrue, result).postln;
-		} {
-			"TEST #2 | expected: % got: % | FAILED".format(expTrue, result).postln;
-		};
-	);
-	flagTrue = nil; expTrue = nil; result = true;
-	~resetRules.();
-
-	(
-		flagFalse = ~test_voiceRange[\test03][1][0];
-		expTrue = ~test_voiceRange[\test03][1][1];
-
-		~enforceVoiceCrossProhibition = flagFalse;
-
-		~test_voiceRange[\test03][0].do { |c, i|
-			result = result && ~checkVoiceSpacing.(c, (i + 1));
-		};
-		if (result == expTrue) {
-			"TEST #3 | expected: % got: % | PASSED".format(expTrue, result).postln;
-		} {
-			"TEST #3 | expected: % got: % | FAILED".format(expTrue, result).postln;
-		};
-	);
-	flagFalse = nil; expTrue = nil; result = true;
-	~resetRules.();
-
-	(
-		flagTrue = ~test_voiceRange[\test04][1][0];
-		expFalse = ~test_voiceRange[\test04][1][1];
-
-		~enforceVoiceCrossProhibition = flagTrue;
-
-		~test_voiceRange[\test04][0].do { |c, i|
-			result = result && ~checkVoiceSpacing.(c, (i + 1));
-		};
-		if (result == expFalse) {
-			"TEST #4 | expected: % got: % | PASSED".format(expFalse, result).postln;
-		} {
-			"TEST #4 | expected: % got: % | FAILED".format(expFalse, result).postln;
-		};
-	);
-	flagTrue = nil; expFalse = nil; result = true;
-	~resetRules.();
-
-	(
-		flagFalse = ~test_voiceRange[\test05][1][0];
-		expFalse = ~test_voiceRange[\test05][1][1];
-
-		~enforceVoiceCrossProhibition = flagFalse;
-
-		~test_voiceRange[\test05][0].do { |c, i|
-			result = result && ~checkVoiceSpacing.(c, (i + 1));
-		};
-		if (result == expFalse) {
-			"TEST #5 | expected: % got: % | PASSED".format(expFalse, result).postln;
-		} {
-			"TEST #5 | expected: % got: % | FAILED".format(expFalse, result).postln;
-		};
-	);
-	flagFalse = nil; expFalse = nil; result = true;
-	~resetRules.();
-
-	(
-		flagTrue = ~test_voiceRange[\test06][1][0];
-		expFalse = ~test_voiceRange[\test06][1][1];
-
-		~enforceVoiceCrossProhibition = flagTrue;
-
-		~test_voiceRange[\test06][0].do { |c, i|
-			result = result && ~checkVoiceSpacing.(c, (i + 1));
-		};
-		if (result == expFalse) {
-			"TEST #6 | expected: % got: % | PASSED".format(expFalse, result).postln;
-		} {
-			"TEST #6 | expected: % got: % | FAILED".format(expFalse, result).postln;
-		};
-	);
-	flagFalse = nil; expFalse = nil; result = true;
-	~resetRules.();
-
-	(
-		flagFalse = ~test_voiceRange[\test07][1][0];
-		expFalse = ~test_voiceRange[\test07][1][1];
-
-		~enforceVoiceCrossProhibition = flagFalse;
-
-		~test_voiceRange[\test07][0].do { |c, i|
-			result = result && ~checkVoiceSpacing.(c, (i + 1));
-		};
-		if (result == expFalse) {
-			"TEST #7 | expected: % got: % | PASSED".format(expFalse, result).postln;
-		} {
-			"TEST #7 | expected: % got: % | FAILED".format(expFalse, result).postln;
-		};
-	);
-	flagFalse = nil; expFalse = nil; result = true;
-	~resetRules.();
+	~resetRules.(rules);
 	nil;
 };
-~test_checkVoiceRange.();
+
+~test_checkVoiceRange = { |fixtures, rules|
+
+	~logger = false;
+	~loggerCount = 0;
+
+	fixtures.do { |f, i|
+		~test_CVRSubroutine.(f, rules, i);
+	};
+	nil;
+};
+~test_checkVoiceRange.(~test_CVRFixtures, ~rules);
 )
 
 /*************************************************************************************/
@@ -422,22 +293,9 @@
 ~test_checkNoteDuplicate.();
 )
 
-~test_CNDData[\chordSetRD][\chords][0]
-~test_CNDData[\chordSetRD][\flags]
-
-
-
 (
-~e = IdentityDictionary[
-	\a -> 1,
-	\b -> 2,
-	\c -> 3
-];
-~e.do { |i| i.postln };
+~test_checkChordPosition.(~test_CCPFixtures, ~triads, ~rules);
 )
-
-
-
 
 
 
