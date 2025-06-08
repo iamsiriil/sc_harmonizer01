@@ -85,11 +85,9 @@
 		a.do { |c|
 			result = result && ~checkChordPosition.(c, 'CM', dict, rules);
 		};
+
 		result = (result == expect[j][i]);
-
 		~test_resultMessage.(result, "~checkChordPosition", nil, i);
-
-		flagRP = flagFI = flagSI = nil; result = true;
 	};
 	~resetRules.(rules);
 	nil;

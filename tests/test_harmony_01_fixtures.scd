@@ -3,6 +3,7 @@
 **************************************************************************************/
 (
 // Chord progressions for ~getChordDegreePairs and ~getChordDegreeArrays
+
 ~test_GCDFixture = [
 	[['CM', 2]],
 	[['CM', 2], ['FM', 1], ['GM', 1], ['CM', 4]],
@@ -14,6 +15,7 @@
 /*************************************************************************************/
 // ~getVocalChordRange
 // Returns an array of single chord progressions, with all the triads
+
 ~test_GVCRFixtures = { |triads|
 	var prog = Array.new(triads.keys.size);
 
@@ -26,6 +28,7 @@
 
 /*************************************************************************************/
 // ~resolveMelodicInterval
+
 ~test_RMIFixtures = (
 	\00: (
 		\chord: [48, 55, 60, 64],
@@ -94,6 +97,7 @@
 
 /*************************************************************************************/
 // ~resolveCommonTone
+
 ~test_RCTFixtures = (
 	\00: (
 		\message: "CT: ten, alt",
