@@ -49,4 +49,11 @@
 
 	note.collect { |n| ~midiRange[\octave][n] };
 };
+
+/*************************************************************************************/
+
+~getChordNoteNameOct = #{ |chord, midiRange|
+
+	chord.collect { |n| midiRange[\octave][n] };
+};
 )

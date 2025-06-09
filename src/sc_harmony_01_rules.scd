@@ -88,8 +88,9 @@
 	};
 
 	result = (
-		(currChord[index[1]] - currChord[index[0]]).abs ==
-		(nextChord[index[1]] - nextChord[index[0]]).abs
+		((currChord[index[1]] - currChord[index[0]]).abs ==
+		(nextChord[index[1]] - nextChord[index[0]]).abs) &&
+		(currChord[index[1]] != nextChord[index[1]])
 	);
 	result.not;
 };
@@ -117,8 +118,9 @@
 
 	index.do { |i|
 		result = result || (
-			(currChord[i[1]] - currChord[i[0]]).abs ==
-			(nextChord[i[1]] - nextChord[i[0]]).abs
+			((currChord[i[1]] - currChord[i[0]]).abs ==
+			(nextChord[i[1]] - nextChord[i[0]]).abs) &&
+			(currChord[i[1]] != nextChord[i[1]])
 		);
 	};
 	result.not;
@@ -179,12 +181,12 @@
 /*************************************************************************************/
 // Toggle rules
 
-~toggleRules = #{ |count, rules|
+~toggleRules = #{ |rules|
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~toggleRules: Function Call".format(~loggerCount).postln; };
 
-	"~toggleCount = %".format(~toggleCount).postln;
-	switch(count)
+	//"~toggleCount = %".format(~toggleCount).postln;
+	switch(rules[\toggleCount])
 	{ 0 } { // Root position with third duplicate
 		rules[\enforceRootDuplicate] = false;
 		rules[\enforceThirdDuplicate] = true;

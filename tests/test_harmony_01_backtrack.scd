@@ -13,7 +13,7 @@
 (
 //var buildChord = Array.fill(4, {0}).postln;
 //var validNextChords = Array.new(20);
-var chordProg = [['CM', 1], ['Em', 1]];
+var chordProg = [['CM', 1], ['C#m', 1]];
 var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 ~logger = true;
@@ -21,17 +21,25 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 ~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg).postln;
 
-~chordState[\currChord] = [48, 55, 64, 72];
+~currChord = [[60, 64, 67, 72], [48, 55, 64, 72]];
+
+~chordState[\currChord] = ~currChord[1];
 ~chordState[\nextChord] = Array.fill(4, {0});
-~chordState[\nextCipher] = 'Em';
+~chordState[\nextCipher] = 'C#m';
 ~chordState[\validNextChords] = Array.new(20);
+
+~rules[\enforceParallelOctaves] = false;
+~rules[\enforceParallelFifths] = false;
+~rules[\enforceCommonTones] = false;
+
+~rules[\toggleCount] = 0;
+~resetRules.(~rules);
 
 ~getValidNotes.(~chordData[\chords], ~chordState, ~voiceData, ~rules);
 
-
-~chordState[\validNotes].postln;
-
 ~getNextChords.(~voiceData, ~chordData[\chords], ~chordState, ~rules, 0);
+
+~chordState[\validNextChords].do { |c| (~getChordNoteNameOct.(c, ~midiRange)).postln };
 )
 
 
