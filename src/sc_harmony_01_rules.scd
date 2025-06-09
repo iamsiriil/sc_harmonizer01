@@ -256,7 +256,7 @@
 		rules[\enforceChordPosition] = false;
 
 		rules[\enforceParallelOctaves] = false;
-		rules[\enforceParallelfifths] = false;
+		rules[\enforceParallelFifths] = false;
 	};
 
 	rules[\toggleCount] = rules[\toggleCount] + 1;

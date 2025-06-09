@@ -96,8 +96,8 @@
 // Get valid notes
 
 ~getValidNotes = #{ |chords, chordState, voiceData, rules|
-	var nextCipher = chordState[\nextCipher].postln;
-	var currChord = chordState[\currChord].postln;
+	var nextCipher = chordState[\nextCipher];
+	var currChord = chordState[\currChord];
 	var validNotes = Dictionary.new();
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getValidNotes: Function Call".format(~loggerCount).postln; };
