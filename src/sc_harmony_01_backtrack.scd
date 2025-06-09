@@ -2,7 +2,9 @@
 - HARMONY 01 / Backtracking
 **************************************************************************************/
 (
-~getNextChords = { |buildChord, i|
+~logger = true;
+
+~getNextChord = { |buildChord, i|
 	var v = ~voiceData[\voiceNames][i];
 	var result = nil;
 
@@ -21,7 +23,7 @@
 
 		if ((i > 0) && (~chordState[\validNotes][v].size == 1)) {
 			buildChord[i] = ~chordState[\validNotes][v].asArray.at(0);
-			result = ~getNextChords.(buildChord, (i + 1));
+			result = ~getNextChord.(buildChord, (i + 1));
 			return.value(result);
 		};
 
@@ -30,7 +32,7 @@
 			buildChord[i] = n;
 
 			if (~checkVoiceSpacing.(buildChord, i)) {
-				result = ~getNextChords.(buildChord, (i + 1));
+				result = ~getNextChord.(buildChord, (i + 1));
 				if (result == true) { return.value(result) };
 			};
 
@@ -45,38 +47,35 @@
 
 /*************************************************************************************/
 
-~getNextChords02 = {
-	arg numVoices, nextChord, validNextChords, validNotes, i;
-	var isValid;
-	var voice = ~voiceData[\voiceNames][i];
+~getNextChords = { |voiceData, buildChord, chords, chordState, rules, i|
+	var voice = voiceData[\voiceNames][i];
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords02: Function Call".format(~loggerCount).postln; };
-	"i: % | nextChord: %".format(i, nextChord).postln;
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords: Function Call".format(~loggerCount).postln; };
 
-	if (i == numVoices) {
-		if (~chordIsValid.(nextChord)) {
-			nextChord.postln;
-			validNextChords.add(nextChord.copy);
+	if (i == voiceData[\numVoices]) {
+		if (~chordIsValid.(buildChord, chords, chordState, voiceData[\numVoices], rules)) {
+			buildChord.postln;
+			chordState[\validNextChords].add(buildChord.copy);
 		}
 	} {
-		if ((i > 0) && (~chordState[\validNotes][v].size == 1)) {
-			nextChord.put(i, ~chordState[\validNotes][v].asArray.at(0));
-			~getNextChords02.(numVoices, nextChord, validNextChords, validNotes, (i + 1));
+		if ((i > 0) && (chordState[\validNotes][v].size == 1)) {
+			buildChord.put(i, chordState[\validNotes][v].asArray.at(0));
+			~getNextChords.(voiceData, buildChord, chords, chordState, rules, (i + 1));
 		};
 
-		~chordState[\validNotes][voice].do { |note|
+		chordState[\validNotes][voice].do { |note|
 
-			nextChord.put(i, note);
+			buildChord.put(i, note);
 
-			isValid = ~checkVoiceSpacing.(nextChord, i);
-			if (isValid) {
-				~getNextChords02.(numVoices, nextChord, validNextChords, validNotes, (i + 1));
+			if (~checkVoiceSpacing.(buildChord, i, rules)) {
+				~getNextChords.(voiceData, buildChord, chords, chordState, rules, (i + 1));
 			} {
-				nextChord.put(i, 0);
+				buildChord.put(i, 0);
 			};
 		};
-		nil;//validNextChords;
+		nil;
 	};
+	chordState[\validNextChords];
 };
 
 

@@ -159,10 +159,10 @@
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~chordIsValid: Function Call".format(~loggerCount).postln; };
 
 	if (rules[\enforceChordPosition]) {
-		result = result && ~checkChordPosition.(nextChord, chordState[\nextCipher], chords);
+		result = result && ~checkChordPosition.(nextChord, chordState[\nextCipher], chords, rules);
 	};
 	if (rules[\enforceNoteDuplicate]) {
-		result = result && ~checkNoteDuplicate.(nextChord, chordState[\nextCipher], chords);
+		result = result && ~checkNoteDuplicate.(nextChord, chordState[\nextCipher], chords, rules);
 	};
 	if (rules[\enforceParallelOctaves]) {
 		result = result && ~checkParallelOctaves.(nextChord, chordState[\currChord], numVoices);
@@ -171,7 +171,7 @@
 		result = result && ~checkParallelFifths.(nextChord, chordState[\currChord], numVoices);
 	};
 	for (1, 3) { |i|
-		result = result && ~checkVoiceSpacing.(nextChord, i);
+		result = result && ~checkVoiceSpacing.(nextChord, i, rules);
 	};
 	result;
 };
