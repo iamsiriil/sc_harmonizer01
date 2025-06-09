@@ -47,30 +47,29 @@
 
 /*************************************************************************************/
 
-~getNextChords = { |voiceData, buildChord, chords, chordState, rules, i|
+~getNextChords = { |voiceData, chords, chordState, rules, i|
 	var voice = voiceData[\voiceNames][i];
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords: Function Call".format(~loggerCount).postln; };
 
 	if (i == voiceData[\numVoices]) {
-		if (~chordIsValid.(buildChord, chords, chordState, voiceData[\numVoices], rules)) {
-			buildChord.postln;
-			chordState[\validNextChords].add(buildChord.copy);
+		if (~chordIsValid.(chords, chordState, voiceData[\numVoices], rules)) {
+			chordState[\validNextChords].add(chordState[\nextChord].copy);
 		}
 	} {
 		if ((i > 0) && (chordState[\validNotes][v].size == 1)) {
-			buildChord.put(i, chordState[\validNotes][v].asArray.at(0));
-			~getNextChords.(voiceData, buildChord, chords, chordState, rules, (i + 1));
+			chordState[\nextChord].put(i, chordState[\validNotes][v].asArray.at(0));
+			~getNextChords.(voiceData, chords, chordState, rules, (i + 1));
 		};
 
 		chordState[\validNotes][voice].do { |note|
 
-			buildChord.put(i, note);
+			chordState[\nextChord].put(i, note);
 
-			if (~checkVoiceSpacing.(buildChord, i, rules)) {
-				~getNextChords.(voiceData, buildChord, chords, chordState, rules, (i + 1));
+			if (~checkVoiceSpacing.(chordState[\nextChord], i, rules)) {
+				~getNextChords.(voiceData, chords, chordState, rules, (i + 1));
 			} {
-				buildChord.put(i, 0);
+				chordState[\nextChord].put(i, 0);
 			};
 		};
 		nil;

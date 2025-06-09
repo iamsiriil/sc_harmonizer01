@@ -11,26 +11,27 @@
 )
 /*************************************************************************************/
 (
-var buildChord = Array.fill(4, {0}).postln;
+//var buildChord = Array.fill(4, {0}).postln;
 //var validNextChords = Array.new(20);
-var chordProg = [['CM', 1], ['FM', 1]];
+var chordProg = [['CM', 1], ['Em', 1]];
 var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 ~logger = true;
 ~loggerCount = 0;
 
-chords = ~getChordDegreeArrays.(~triads, chordProg).postln;
+~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg).postln;
 
 ~chordState[\currChord] = [48, 55, 64, 72];
-~chordState[\nextCipher] = 'FM';
+~chordState[\nextChord] = Array.fill(4, {0});
+~chordState[\nextCipher] = 'Em';
 ~chordState[\validNextChords] = Array.new(20);
 
-~getValidNotes.(chords, ~chordState, ~voiceData, ~rules);
+~getValidNotes.(~chordData[\chords], ~chordState, ~voiceData, ~rules);
 
 
 ~chordState[\validNotes].postln;
 
-~getNextChords.(~voiceData, buildChord, chords, ~chordState, ~rules, 0);
+~getNextChords.(~voiceData, ~chordData[\chords], ~chordState, ~rules, 0);
 )
 
 
