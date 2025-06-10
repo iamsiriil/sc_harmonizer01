@@ -59,27 +59,35 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 	prog;
 };
 
-~test_GNC = { |triads, voiceData, chordData, chordState, rules|
+~ciphers = ['Cd', 'Cm', 'CM', 'CA', 'C#d', 'C#m', 'C#M', 'C#A', 'Dd', 'Dm', 'DM', 'DA', 'Ebd', 'Ebm', 'EbM', 'EbA', 'Ed', 'Em', 'EM', 'EA', 'Fd', 'Fm', 'FM', 'FA', 'F#d', 'F#m', 'F#M', 'F#A', 'Gd', 'Gm', 'GM', 'GA', 'G#d', 'G#m', 'AbM', 'AbA', 'Ad', 'Am', 'AM', 'AA', 'Bbd', 'Bbm', 'BbM', 'BbA', 'Bd', 'Bm', 'BM', 'BA'];
+
+~flags = [\enforceVoiceCrossProhibition,
+	\enforceMelodicIntervals,
+	\enforceVocalRange,
+	\enforceCommonTones,
+	\enforceParallelOctaves,
+	\enforceParallelFifths,
+	\enforceNoteDuplicate,
+	\enforceChordPosition
+];
+
+~firstChords = [[60, 64, 67, 72]]; //[48, 55, 64, 72]];
+
+~test_GNCChords = { |triads, voiceData, chordData, chordState, rules, ciphers, firstChords|
 	var chordProg = ~getProgression.(triads);
-	var chords = [[60, 64, 67, 72], [48, 55, 64, 72]];
 	var dict = Dictionary.new();
+	var column = Array.new(ciphers.size);
 
 	~logger = false;
 	~loggerCount = 0;
 
-	rules[\enforceParallelFifths] = true;
-	rules[\enforceParallelOctaves] = true;
-	rules[\enforceNoteDuplicate] = true;
-	rules[\enforceCommonTones] = false;
-	rules[\enforceMelodicIntervals] = false;
-
 	chordData[\chords] = ~getChordDegreeArrays.(triads, chordProg);
 
-	chords.do { |c, i|
+	firstChords.do { |c, i|
 		"\nTEST: chord #%: %".format(i, c).postln;
 		chordState[\currChord] = c;
 
-		triads.keys.do { |k|
+		ciphers.do { |k|
 			chordState[\nextCipher] = k;
 			chordState[\nextChord] = Array.fill(4, {0});
 			chordState[\validNextChords] = Array.new(20);
@@ -88,15 +96,40 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 			~getNextChords.(voiceData, chordData[\chords], chordState, rules, 0);
 
+			column.add(chordState[\validNextChords].size.copy);
+
 			if (chordState[\validNextChords].isEmpty) {
 
 				"cipher: % ".format(k).padRight(12).post;
 				"| %".format(chordState[\validNextChords]).postln;
+
+			} {
+				"cipher: % ".format(k).padRight(12).post;
+				"| %".format(chordState[\validNextChords].size).postln;
 			};
 		};
 	};
 	~resetRules.(rules);
+	column.postln;
 };
 
-~test_GNC.(~triads, ~voiceData, ~chordData, ~chordState, ~rules);
+~test_GNCChords.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~ciphers, ~firstChords);
+
+~test_GNCFlags = { |triads, voiceData, chordData, chordState, rules, ciphers, firstChords, flags|
+	var results = Array.new(flags.size);
+
+	flags.do { |f, i|
+		"\nTEST | flag %: false".format(f).postln;
+
+		rules[f] = false;
+
+		results.add(~test_GNC.(triads, voiceData, chordData, chordState, rules, ciphers, firstChords));
+		//~resetRules.(rules);
+	};
+	results;
+};
+~results = ~test_GNCFlags.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~ciphers, ~firstChords, ~flags);
 )
+~ciphers = ['Cd', 'Cm', 'CM', 'CA', 'C#d', 'C#m', 'C#M', 'C#A', 'Dd', 'Dm', 'DM', 'DA', 'Ebd', 'Ebm', 'EbM', 'EbA', 'Ed', 'Em', 'EM', 'EA', 'Fd', 'Fm', 'FM', 'FA', 'F#d', 'F#m', 'F#M', 'F#A', 'Gd', 'Gm', 'GM', 'GA', 'G#d', 'G#m', 'AbM', 'AbA', 'Ad', 'Am', 'AM', 'AA', 'Bbd', 'Bbm', 'BbM', 'BbA', 'Bd', 'Bm', 'BM', 'BA'];
+
+~ciphers.do { |c| ~triads.keys.includes(c).postln };
