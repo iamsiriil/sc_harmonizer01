@@ -25,4 +25,20 @@
 	};
 	"".postln;
 };
+
+~test_GNCPrintResults = { |ciphers, flags, results|
+
+	"".padRight(5).post;
+	flags.do { |f| "| % ".format(f).padRight(f.asString.size + 2).post; };
+	"".postln;
+
+	ciphers.do { |c, i|
+		"%".format(c).padRight(5).post;
+
+		flags.do { |f, j|
+			"| %".format(results[j][i]).padRight(f.asString.size + 3).post;
+		};
+		"".postln;
+	}
+};
 )
