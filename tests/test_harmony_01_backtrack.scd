@@ -73,6 +73,22 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 ~firstChords = [[60, 64, 67, 72]]; //[48, 55, 64, 72]];
 
+~test_GNCPrintResults = { |ciphers, flags, results|
+
+	"".padRight(5).post;
+	flags.do { |f| "| % ".format(f).padRight(f.asString.size + 2).post; };
+	"".postln;
+
+	ciphers.do { |c, i|
+		"%".format(c).padRight(5).post;
+
+		flags.do { |f, j|
+			"| %".format(results[j][i]).padRight(f.asString.size + 2).post;
+		};
+		"".postln;
+	}
+};
+
 ~test_GNCChords = { |triads, voiceData, chordData, chordState, rules, ciphers, firstChords|
 	var chordProg = ~getProgression.(triads);
 	var dict = Dictionary.new();
@@ -98,7 +114,7 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 			column.add(chordState[\validNextChords].size.copy);
 
-			if (chordState[\validNextChords].isEmpty) {
+			/*if (chordState[\validNextChords].isEmpty) {
 
 				"cipher: % ".format(k).padRight(12).post;
 				"| %".format(chordState[\validNextChords]).postln;
@@ -106,30 +122,36 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 			} {
 				"cipher: % ".format(k).padRight(12).post;
 				"| %".format(chordState[\validNextChords].size).postln;
-			};
+			};*/
 		};
 	};
 	~resetRules.(rules);
-	column.postln;
+	column;
 };
 
 ~test_GNCChords.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~ciphers, ~firstChords);
 
 ~test_GNCFlags = { |triads, voiceData, chordData, chordState, rules, ciphers, firstChords, flags|
-	var results = Array.new(flags.size);
+	var results = Array.fill(flags.size, {Array.new(flags.size)});
 
 	flags.do { |f, i|
 		"\nTEST | flag %: false".format(f).postln;
 
 		rules[f] = false;
 
-		results.add(~test_GNC.(triads, voiceData, chordData, chordState, rules, ciphers, firstChords));
+		results.put(i, ~test_GNCChords.(triads, voiceData, chordData, chordState, rules, ciphers, firstChords));
 		//~resetRules.(rules);
 	};
 	results;
 };
 ~results = ~test_GNCFlags.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~ciphers, ~firstChords, ~flags);
 )
+~results.do { |r| r.postln };
+
+~test_GNCPrintResults.(~ciphers, ~flags, ~results);
+
 ~ciphers = ['Cd', 'Cm', 'CM', 'CA', 'C#d', 'C#m', 'C#M', 'C#A', 'Dd', 'Dm', 'DM', 'DA', 'Ebd', 'Ebm', 'EbM', 'EbA', 'Ed', 'Em', 'EM', 'EA', 'Fd', 'Fm', 'FM', 'FA', 'F#d', 'F#m', 'F#M', 'F#A', 'Gd', 'Gm', 'GM', 'GA', 'G#d', 'G#m', 'AbM', 'AbA', 'Ad', 'Am', 'AM', 'AA', 'Bbd', 'Bbm', 'BbM', 'BbA', 'Bd', 'Bm', 'BM', 'BA'];
 
 ~ciphers.do { |c| ~triads.keys.includes(c).postln };
+
+\enforceMelodicIntervals.asString.size
