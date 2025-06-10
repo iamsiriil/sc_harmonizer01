@@ -71,7 +71,17 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 	\enforceChordPosition
 ];
 
-~firstChords = [[60, 64, 67, 72]]; //[48, 55, 64, 72]];
+~firstChords = (
+	'Cd': [[60, 63, 66, 72], [48, 60, 66, 75]],
+	'Cm': [[60, 63, 67, 72], [48, 60, 67, 75]],
+	'CM': [[60, 64, 67, 72], [48, 60, 67, 76]],
+	'CA': [[60, 64, 68, 72], [48, 60, 68, 76]],
+	'C#d':[[49, 52, 55, 61], [49, 61, 67, 76]],
+	'C#m':[[49, 52, 56, 61], [49, 61, 68, 76]],
+	'C#M':[[49, 53, 56, 61], [49, 61, 68, 77]],
+	'C#A':[[49, 53, 57, 61], [49, 61, 69, 77]],
+
+);
 
 ~test_GNCPrintResults = { |ciphers, flags, results|
 
@@ -83,7 +93,7 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 		"%".format(c).padRight(5).post;
 
 		flags.do { |f, j|
-			"| %".format(results[j][i]).padRight(f.asString.size + 2).post;
+			"| %".format(results[j][i]).padRight(f.asString.size + 3).post;
 		};
 		"".postln;
 	}

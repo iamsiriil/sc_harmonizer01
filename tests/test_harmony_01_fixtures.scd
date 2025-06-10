@@ -232,3 +232,63 @@
 	)
 );
 )
+/**************************************************************************************
+- HARMONY 01 / Test fixtures: Backtrack
+**************************************************************************************/
+(
+~test_GNCFixtures = (
+	\ciphers : [
+		'Cd', 'Cm', 'CM', 'CA',
+		'C#d', 'C#m', 'C#M', 'C#A',
+		'Dd', 'Dm', 'DM', 'DA',
+		'Ebd', 'Ebm', 'EbM', 'EbA',
+		'Ed', 'Em', 'EM', 'EA',
+		'Fd', 'Fm', 'FM', 'FA',
+		'F#d', 'F#m', 'F#M', 'F#A',
+		'Gd', 'Gm', 'GM', 'GA',
+		'G#d', 'G#m', 'AbM', 'AbA',
+		'Ad', 'Am', 'AM', 'AA',
+		'Bbd', 'Bbm', 'BbM', 'BbA',
+		'Bd', 'Bm', 'BM', 'BA'
+	],
+	\flags: [
+		\enforceVoiceCrossProhibition,
+		\enforceMelodicIntervals,
+		\enforceVocalRange,
+		\enforceCommonTones,
+		\enforceParallelOctaves,
+		\enforceParallelFifths,
+		\enforceNoteDuplicate,
+		\enforceChordPosition
+	],
+	\firstChords : (
+		'Cd': [[60, 63, 66, 72], [48, 60, 66, 75]],
+		'Cm': [[60, 63, 67, 72], [48, 60, 67, 75]],
+		'CM': [[60, 64, 67, 72], [48, 60, 67, 76]],
+		'CA': [[60, 64, 68, 72], [48, 60, 68, 76]],
+		'C#d':[[49, 52, 55, 61], [49, 61, 67, 76]],
+		'C#m':[[49, 52, 56, 61], [49, 61, 68, 76]],
+		'C#M':[[49, 53, 56, 61], [49, 61, 68, 77]],
+		'C#A':[[49, 53, 57, 61], [49, 61, 69, 77]]
+	)
+);
+
+
+
+~checkFistChord = { |fixtures, triads|
+
+	fixtures[\ciphers].do { |c|
+
+		if (fixtures[\firstChords][c].notNil) {
+
+			fixtures[\firstChords][c].do { |i|
+
+				"%: ".format(c).padRight(5).post;
+				i.asSet.isSubsetOf(triads[c][\notes]).postln;
+			};
+		};
+	};
+};
+
+~checkFistChord.(~test_GNCFixtures, ~triads);
+)
