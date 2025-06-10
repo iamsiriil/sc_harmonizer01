@@ -4,47 +4,6 @@
 (
 ~logger = true;
 
-~getNextChord = { |buildChord, i|
-	var v = ~voiceData[\voiceNames][i];
-	var result = nil;
-
-	// Logger
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords: Function Call".format(~loggerCount).postln; };
-
-	block { |return|
-
-		if (i == 4) {
-			if (~chordIsValid.(buildChord)) {
-				~chordState[\nextValidChords].add(buildChord.copy).postln;
-				result = true;
-				return.value(result);
-			};
-		};
-
-		if ((i > 0) && (~chordState[\validNotes][v].size == 1)) {
-			buildChord[i] = ~chordState[\validNotes][v].asArray.at(0);
-			result = ~getNextChord.(buildChord, (i + 1));
-			return.value(result);
-		};
-
-		~chordState[\validNotes][v].do { |n|
-
-			buildChord[i] = n;
-
-			if (~checkVoiceSpacing.(buildChord, i)) {
-				result = ~getNextChord.(buildChord, (i + 1));
-				if (result == true) { return.value(result) };
-			};
-
-			buildChord[i] = 0;
-		};
-
-		result = false;
-		return.value(result);
-	};
-	result;
-};
-
 /*************************************************************************************/
 
 ~getNextChords = { |voiceData, chords, chordState, rules, i|
@@ -72,11 +31,26 @@
 				chordState[\nextChord].put(i, 0);
 			};
 		};
-		nil;
 	};
 	chordState[\validNextChords];
 };
 
+
+/*************************************************************************************/
+
+~getFirstChords = { |voiceData, chords, chordState, rules, i|
+
+	rules[\enforceMelodicIntervals] = false;
+	rules[\enforceCommonTones] = false;
+	rules[\enforceParallelOctaves] = false;
+	rules[\enforceParallelFifths] = false;
+
+	~getNextChords.(voiceData, chords, chordState, rules, i);
+
+	~resetRules.(rules);
+
+	chordState[\validNextChords];
+};
 
 /*************************************************************************************/
 

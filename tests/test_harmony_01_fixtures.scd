@@ -249,16 +249,16 @@
 ~test_GNCFixtures = (
 	\ciphers : [
 		'Cd', 'Cm', 'CM', 'CA',
-		'C#d', 'C#m', 'C#M', 'C#A',
+		'C#d','C#m','C#M','C#A',
 		'Dd', 'Dm', 'DM', 'DA',
-		'Ebd', 'Ebm', 'EbM', 'EbA',
+		'Ebd','Ebm','EbM','EbA',
 		'Ed', 'Em', 'EM', 'EA',
 		'Fd', 'Fm', 'FM', 'FA',
-		'F#d', 'F#m', 'F#M', 'F#A',
+		'F#d','F#m','F#M','F#A',
 		'Gd', 'Gm', 'GM', 'GA',
-		'G#d', 'G#m', 'AbM', 'AbA',
+		'G#d','G#m','AbM','AbA',
 		'Ad', 'Am', 'AM', 'AA',
-		'Bbd', 'Bbm', 'BbM', 'BbA',
+		'Bbd','Bbm','BbM','BbA',
 		'Bd', 'Bm', 'BM', 'BA'
 	],
 	\flags: [

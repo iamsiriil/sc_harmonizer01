@@ -14,7 +14,7 @@
 (
 //var buildChord = Array.fill(4, {0}).postln;
 //var validNextChords = Array.new(20);
-var chordProg = [['CM', 1], ['Dm', 1]];
+var chordProg = [['Dm', 1], ['AM', 1]];
 var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 ~logger = true;
@@ -22,9 +22,9 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 ~chordData[\chords] = ~getChordDegreeArrays.(~triads, chordProg).postln;
 
-~currChord = [[60, 64, 67, 72], [48, 55, 64, 72]];
+//~currChord = [[60, 64, 67, 72], [48, 55, 64, 72]];
 
-~chordState[\currChord] = ~currChord[0];
+//~chordState[\currChord] = ~currChord[0];
 ~chordState[\nextChord] = Array.fill(4, {0});
 ~chordState[\nextCipher] = 'Dm';
 ~chordState[\validNextChords] = Array.new(20);
@@ -38,7 +38,7 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 ~getValidNotes.(~chordData[\chords], ~chordState, ~voiceData, ~rules);
 
-~getNextChords.(~voiceData, ~chordData[\chords], ~chordState, ~rules, 0);
+~getFirstChords.(~voiceData, ~chordData[\chords], ~chordState, ~rules, 0).postln;
 
 ~chordState[\validNextChords].do { |c| (~getChordNoteNameOct.(c, ~midiRange)).postln };
 
