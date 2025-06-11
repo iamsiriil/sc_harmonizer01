@@ -50,6 +50,81 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 )
 /*************************************************************************************/
 (
+// Checks if chord notes belong to the given cipher
+
+~test_GFCSubroutine00 = { |triads, chordState|
+	var set, result = true;
+
+	"\nTEST #00: Notes belong to Chord".postln;
+
+	chordState[\validNextChords].do { |c|
+		set = c.asSet;
+		result = result && set.isSubsetOf(triads[chordState[\nextCipher]][\notes]);
+	};
+	~test_resultMessage.(result, "~getFirstChords", nil, 0);
+	nil;
+};
+
+// Checks if chords are complete
+~test_GFCSubroutine01 = { |triads, voiceData, chordData, chordState|
+	var set, result = true;
+
+	"\nTEST #01: Chord is complete".postln;
+
+	chordState[\validNextChords].do { |c|
+		set = ~getChordNotesDegree.(c, chordState[\nextCipher], chordData[\chords]).asSet;
+		result = result && (set == triads[chordState[\nextCipher]][\degree].asSet);
+	};
+	~test_resultMessage.(result, "~getFirstChords", nil, 1);
+	nil;
+};
+
+// Checks whether chord notes are within range
+~test_GFCSubroutine02 = { |voiceData, chordState|
+	var voiceRange = voiceData[\voiceRange];
+	var result;
+
+	"\nTEST #02: Notes are within range".postln;
+
+	chordState[\validNextChords].do { |c, i|
+		result = true;
+
+		voiceData[\voiceNames].do { |v, j|
+			result = result && ((c[j] >= voiceRange[v][0]) && (c[j] <= voiceRange[v][1]));
+		};
+		~test_resultMessage.(result, "~getFirstChords", nil, i);
+	};
+	nil;
+};
+
+~test_GFCSubroutine03 = { |chordState, rules|
+	var cross, result, n;
+
+	"\nTEST #03: Spacing is correct".postln;
+
+	cross = if (rules[\enforceVoiceCrossProhibition]) {
+			(_ >= 0);
+		} {
+			(_ >= -4);
+		};
+
+	chordState[\validNextChords].do { |c, i|
+		result = true;
+
+		for(1, 3) { |j|
+			n = (c[j] - c[j - 1]).abs;
+
+			if (j == 1){
+				result = result && (cross.(n) && (n <= 24));
+			} {
+				result = result && (cross.(n) && (n <= 12));
+			};
+		};
+		~test_resultMessage.(result, "~getFirstChords", nil, i);
+		nil;
+	};
+};
+
 ~test_getFirstChord = { |triads, voiceData, chordData, chordState, rules, firstCipher|
 	var chordProg = [[firstCipher, 1]];
 
@@ -62,9 +137,14 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 	chordState[\nextChord] = Array.fill(4, {0});
 	chordState[\validNextChords] = Array.new(20);
 
-	~getFirstChords.(voiceData, chordData, chordState, rules, 0).postln;
-
+	~getFirstChords.(voiceData, chordData, chordState, rules, 0);
 	~resetRules.(rules);
+
+	//chordState[\validNextChords];
+	~test_GFCSubroutine00.(triads, chordState);
+	~test_GFCSubroutine01.(triads, voiceData, chordData, chordState);
+	~test_GFCSubroutine02.(voiceData, chordState);
+	~test_GFCSubroutine03.(chordState, rules);
 };
 ~test_getFirstChord.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, 'Dm');
 )
