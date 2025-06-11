@@ -231,11 +231,11 @@
 		\expect: [false, false, true, true]    // Expected return for flags: [RD, TD, FD, ND]
 	)
 );
-)
+
 /**************************************************************************************
 - HARMONY 01 / Test fixtures: Backtrack
 **************************************************************************************/
-(
+
 ~getProgression = { |triads|
 	var prog = Array.new(triads.keys.size);
 
@@ -322,7 +322,6 @@
 		'BA' :[[59, 63, 67, 71], [47, 63, 71, 79]]
 	)
 );
-
 ~checkFistChord = { |fixtures, triads|
 
 	fixtures[\ciphers].do { |c|
@@ -340,3 +339,4 @@
 
 ~checkFistChord.(~test_GNCFixtures, ~triads);
 )
+

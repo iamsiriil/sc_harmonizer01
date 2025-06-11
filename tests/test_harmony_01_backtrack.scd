@@ -36,9 +36,9 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 ~rules[\toggleCount] = 0;
 ~resetRules.(~rules);
 
-~getValidNotes.(~chordData[\chords], ~chordState, ~voiceData, ~rules);
+//~getValidNotes.(~chordData[\chords], ~chordState, ~voiceData, ~rules);
 
-~getFirstChords.(~voiceData, ~chordData[\chords], ~chordState, ~rules, 0).postln;
+~getFirstChords.(~voiceData, ~chordData, ~chordState, ~rules, 0).postln;
 
 ~chordState[\validNextChords].do { |c| (~getChordNoteNameOct.(c, ~midiRange)).postln };
 
@@ -48,6 +48,29 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 	c.isSubsetOf(~triads[~chordState[\nextCipher]][\notes]).postln;
 };
 )
+/*************************************************************************************/
+(
+~test_getFirstChord = { |triads, voiceData, chordData, chordState, rules, firstCipher|
+	var chordProg = [[firstCipher, 1]];
+
+	~logger = false;
+	~loggerCount = 0;
+
+	chordData[\chords] = ~getChordDegreeArrays.(triads, chordProg);
+
+	chordState[\nextCipher] = firstCipher;
+	chordState[\nextChord] = Array.fill(4, {0});
+	chordState[\validNextChords] = Array.new(20);
+
+	~getFirstChords.(voiceData, chordData, chordState, rules, 0).postln;
+
+	~resetRules.(rules);
+};
+~test_getFirstChord.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, 'Dm');
+)
+
+/*************************************************************************************/
+
 (
 ~test_GNCChords = { |fixtures, triads, voiceData, chordData, chordState, rules|
 	var chordProg = ~getProgression.(triads);
@@ -92,7 +115,8 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 ~test_GNCChords.(~test_GNCFixtures, ~triads, ~voiceData, ~chordData, ~chordState, ~rules);
 )
 
-~test_GNCFixtures[\firstChords]['F#d']
+/*************************************************************************************/
+
 (
 ~test_GNCFlags = { |fixtures, triads, voiceData, chordData, chordState, rules|
 	var results = Array.fill(fixtures[\flags].size, {Array.new(fixtures[\flags].size)});
@@ -106,8 +130,9 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 	};
 	results;
 };
-~results = ~test_GNCFlags.(~test_GNCFixtures, ~triads, ~voiceData, ~chordData, ~chordState, ~rules);
-)
-~results.do { |r| r.postln };
 
+~results = ~test_GNCFlags.(~test_GNCFixtures, ~triads, ~voiceData, ~chordData, ~chordState, ~rules);
 ~test_GNCPrintResults.(~ciphers, ~flags, ~results);
+)
+~variable = 12;
+~test = [[~variable, 1]];

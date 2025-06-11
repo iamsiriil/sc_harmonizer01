@@ -6,19 +6,19 @@
 
 /*************************************************************************************/
 
-~getNextChords = { |voiceData, chords, chordState, rules, i|
+~getNextChords = { |voiceData, chordData, chordState, rules, i|
 	var voice = voiceData[\voiceNames][i];
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords: Function Call".format(~loggerCount).postln; };
 
 	if (i == voiceData[\numVoices]) {
-		if (~chordIsValid.(chords, chordState, voiceData[\numVoices], rules)) {
+		if (~chordIsValid.(chordData[\chords], chordState, voiceData[\numVoices], rules)) {
 			chordState[\validNextChords].add(chordState[\nextChord].copy);
 		}
 	} {
 		if ((i > 0) && (chordState[\validNotes][v].size == 1)) {
 			chordState[\nextChord].put(i, chordState[\validNotes][v].asArray.at(0));
-			~getNextChords.(voiceData, chords, chordState, rules, (i + 1));
+			~getNextChords.(voiceData, chordData, chordState, rules, (i + 1));
 		};
 
 		chordState[\validNotes][voice].do { |note|
@@ -26,7 +26,7 @@
 			chordState[\nextChord].put(i, note);
 
 			if (~checkVoiceSpacing.(chordState[\nextChord], i, rules)) {
-				~getNextChords.(voiceData, chords, chordState, rules, (i + 1));
+				~getNextChords.(voiceData, chordData, chordState, rules, (i + 1));
 			} {
 				chordState[\nextChord].put(i, 0);
 			};
@@ -38,14 +38,16 @@
 
 /*************************************************************************************/
 
-~getFirstChords = { |voiceData, chords, chordState, rules, i|
+~getFirstChords = { |voiceData, chordData, chordState, rules, i|
 
 	rules[\enforceMelodicIntervals] = false;
 	rules[\enforceCommonTones] = false;
 	rules[\enforceParallelOctaves] = false;
 	rules[\enforceParallelFifths] = false;
 
-	~getNextChords.(voiceData, chords, chordState, rules, i);
+	~getValidNotes.(chordData[\chords], chordState, voiceData, rules);
+
+	~getNextChords.(voiceData, chordData, chordState, rules, i);
 
 	~resetRules.(rules);
 
