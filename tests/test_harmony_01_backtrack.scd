@@ -148,7 +148,29 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 };
 ~test_getFirstChord.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, 'Dm');
 )
+(
+~test_getFirstChordArray = { |triads, voiceData, chordData, chordState, rules, firstCipher|
+	var chordProg = [[firstCipher, 1]];
 
+	~logger = false;
+	~loggerCount = 0;
+
+	chordData[\chords] = ~getChordDegreeArrays.(triads, chordProg);
+
+	chordState[\nextCipher] = firstCipher;
+	chordState[\nextChord] = Array.fill(4, {0});
+	chordState[\validNextChords] = Array.new(20);
+
+	~getFirstChords.(voiceData, chordData, chordState, rules, 0);
+	~resetRules.(rules);
+
+	chordState[\validNextChords];
+};
+~test_getFirstChordArray.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, 'AbM');
+)
+(
+
+)
 /*************************************************************************************/
 
 (
