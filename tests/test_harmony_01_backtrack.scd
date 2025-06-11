@@ -72,9 +72,8 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 /*************************************************************************************/
 
 (
-~test_GNCChords = { |fixtures, triads, voiceData, chordData, chordState, rules|
+~test_GNCChords = { |triads, voiceData, chordData, chordState, rules, fixtures|
 	var chordProg = ~getProgression.(triads);
-	var dict = Dictionary.new();
 	var column = Array.new(fixtures[\ciphers].size);
 
 	~logger = false;
@@ -93,7 +92,7 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 			~getValidNotes.(chordData[\chords], chordState, voiceData, rules);
 
-			~getNextChords.(voiceData, chordData[\chords], chordState, rules, 0);
+			~getNextChords.(voiceData, chordData, chordState, rules, 0);
 
 			column.add(chordState[\validNextChords].size.copy);
 
@@ -109,16 +108,16 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 		};
 	};
 	~resetRules.(rules);
-	column;
+	column.postln;
 };
 
-~test_GNCChords.(~test_GNCFixtures, ~triads, ~voiceData, ~chordData, ~chordState, ~rules);
+~test_GNCChords.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~test_GNCFixtures);
 )
 
 /*************************************************************************************/
 
 (
-~test_GNCFlags = { |fixtures, triads, voiceData, chordData, chordState, rules|
+~test_GNCFlags = { |triads, voiceData, chordData, chordState, rules, fixtures|
 	var results = Array.fill(fixtures[\flags].size, {Array.new(fixtures[\flags].size)});
 
 	fixtures[\flags].do { |f, i|
@@ -126,13 +125,12 @@ var validNotes = Dictionary.new(), chords = Dictionary.new();
 
 		rules[f] = false;
 
-		results.put(i, ~test_GNCChords.(fixtures, triads, voiceData, chordData, chordState, rules));
+		results.put(i, ~test_GNCChords.(triads, voiceData, chordData, chordState, rules, fixtures));
 	};
 	results;
 };
 
-~results = ~test_GNCFlags.(~test_GNCFixtures, ~triads, ~voiceData, ~chordData, ~chordState, ~rules);
+~results = ~test_GNCFlags.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~test_GNCFixtures);
 ~test_GNCPrintResults.(~ciphers, ~flags, ~results);
 )
-~variable = 12;
-~test = [[~variable, 1]];
+~results.size
