@@ -2,6 +2,39 @@
 - HARMONY 01 / Dictionaries and reset functions
 **************************************************************************************/
 (
+
+/*~data = Dictionary[
+	\voice -> Dictionary[
+		\range -> Dictionary[
+			\bas -> [40, 60],
+			\ten -> [48, 67],
+			\alt -> [55, 74],
+			\spn -> [60, 81]
+		],
+		\invIntervals -> Dictionary[
+			\bas -> [6, 10, 11, 18],
+			\ten -> [6, 10, 11],
+			\alt -> [6, 10, 11],
+			\spn -> [6, 10, 11]
+		],
+		\number -> 4,
+		\names  -> ['bas', 'ten', 'alt', 'spn']
+	],
+
+	\chords -> Dictionary[
+		\chordMidi        -> nil,
+		\progression      -> nil,
+		\duration         -> nil
+	],
+
+	\state -> Dictionary[
+		\currChord       -> nil,
+		\validNotes      -> nil,
+		\nextValidChords -> nil,
+		\nextCipher      -> nil
+	]
+];*/
+
 // Dictionary containing information about the voices
 ~voiceData = Dictionary[
 	// Range of each voice, from lowest note, to highest
@@ -59,6 +92,15 @@
 	\enforceSecondInversion       -> false,
 	\toggleCount                  -> 0
 ];
+
+/*~progState = Dictionary[
+	\chord -> Dictionary[
+
+	],
+	\rules -> Dictionary[
+
+	]
+];*/
 
 /*************************************************************************************/
 
