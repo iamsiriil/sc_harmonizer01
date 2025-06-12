@@ -30,7 +30,9 @@
 	chordState[\nextChord] = Array.fill(4, {0});
 	chordState[\validNextChords] = Array.new(20);
 
-	~getFirstChords.(voiceData, chordData, chordState, rules, 0);
+	~getValidNotes.(chordData[\chords], chordState, voiceData, rules);
+
+	~getNextChords.(voiceData, chordData, chordState, rules, 0);
 	~resetRules.(rules);
 
 	chordState[\validNextChords];

@@ -29,6 +29,7 @@
 };
 
 // Checks if chords are complete
+
 ~test_GXCSubroutine01 = { |triads, voiceData, chordData, chordState|
 	var set, result = true;
 
@@ -43,6 +44,7 @@
 };
 
 // Checks whether chord notes are within range
+
 ~test_GXCSubroutine02 = { |voiceData, chordState|
 	var voiceRange = voiceData[\voiceRange];
 	var result;
@@ -59,6 +61,8 @@
 	};
 	nil;
 };
+
+// Check whether voice spacing is correct
 
 ~test_GXCSubroutine03 = { |chordState, rules|
 	var cross, result, n;
@@ -105,11 +109,9 @@
 	~test_GXCSubroutine03.(chordState, rules);
 };
 ~test_getFirstChords.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, 'Dm');
-)
 
 /*************************************************************************************/
 
-(
 ~test_getNextChords = { |triads, voiceData, chordData, chordState, rules, fixtures, firstCipher, nextCipher, logger = false|
 	var chordProg = [[firstCipher, 1]];
 
@@ -131,7 +133,7 @@
 /*************************************************************************************/
 
 (
-~test_GNCChords = { |triads, voiceData, chordData, chordState, rules, fixtures|
+~an_getChordData = { |triads, voiceData, chordData, chordState, rules, fixtures|
 	var chordProg = ~getProgression.(triads);
 	var column = Array.new(fixtures[\ciphers].size);
 
@@ -170,7 +172,7 @@
 	column.postln;
 };
 
-~test_GNCChords.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~test_GNCFixtures);
+~an_getChordData.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~test_GNCFixtures);
 )
 
 /*************************************************************************************/
