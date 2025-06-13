@@ -3,7 +3,7 @@
 **************************************************************************************/
 (
 
-/*~data = Dictionary[
+~data = Dictionary[
 	\voice -> Dictionary[
 		\range -> Dictionary[
 			\bas -> [40, 60],
@@ -11,7 +11,7 @@
 			\alt -> [55, 74],
 			\spn -> [60, 81]
 		],
-		\invIntervals -> Dictionary[
+		\invalidIntervals -> Dictionary[
 			\bas -> [6, 10, 11, 18],
 			\ten -> [6, 10, 11],
 			\alt -> [6, 10, 11],
@@ -22,9 +22,9 @@
 	],
 
 	\chords -> Dictionary[
-		\chordMidi        -> nil,
+		\midi       -> nil,
 		\progression      -> nil,
-		\duration         -> nil
+		\durations        -> nil
 	],
 
 	\state -> Dictionary[
@@ -33,7 +33,7 @@
 		\nextValidChords -> nil,
 		\nextCipher      -> nil
 	]
-];*/
+];
 
 // Dictionary containing information about the voices
 ~voiceData = Dictionary[
@@ -121,6 +121,19 @@
 	chordState[\nextValidChords] = nil;
 	chordState[\lastValidChords] = nil;
 	chordState[\nextCipher]      = nil;
+	nil;
+};
+
+~resetDataDict = #{ |data|
+
+	data[\chords][\midiChords]     = nil;
+	data[\chords][\progression]      = nil;
+	data[\chords][\durations]      = nil;
+
+	data[\state][\currChord]       = nil;
+	data[\state][\validNotes]      = nil;
+	data[\state][\nextValidChords] = nil;
+	data[\state][\nextCipher]      = nil;
 	nil;
 };
 
