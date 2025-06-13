@@ -107,13 +107,13 @@
 	nil;
 };
 
-~test_checkParallelOctaves = { |fixtures, rules, voiceData|
+~test_checkParallelOctaves = { |fixtures, rules, voice|
 
 	~logger = false;
 	~loggerCount = 0;
 
-	~test_CPOSubroutine.(fixtures[\fChord], fixtures[\sChordPO], voiceData[\numVoices]);
-	~test_CPOSubroutine.(fixtures[\fChord], fixtures[\sChordVL], voiceData[\numVoices]);
+	~test_CPOSubroutine.(fixtures[\fChord], fixtures[\sChordPO], voice[\number]);
+	~test_CPOSubroutine.(fixtures[\fChord], fixtures[\sChordVL], voice[\number]);
 
 	~resetRules.(rules);
 	nil;
@@ -137,13 +137,13 @@
 	nil;
 };
 
-~test_checkParallelFifths = { |fixtures, rules, voiceData|
+~test_checkParallelFifths = { |fixtures, rules, voice|
 
 	~logger = false;
 	~loggerCount = 0;
 
-	~test_CPFSubroutine.(fixtures[\fChord], fixtures[\sChordPF], voiceData[\numVoices]);
-	~test_CPFSubroutine.(fixtures[\fChord], fixtures[\sChordVL], voiceData[\numVoices]);
+	~test_CPFSubroutine.(fixtures[\fChord], fixtures[\sChordPF], voice[\number]);
+	~test_CPFSubroutine.(fixtures[\fChord], fixtures[\sChordVL], voice[\number]);
 
 	nil;
 };
@@ -196,8 +196,8 @@
 (
 ~test_checkChordPosition.(~test_CCPFixtures, ~triads, ~rules);
 ~test_checkVoiceRange.(~test_CVRFixtures, ~rules);
-~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~voiceData);
-~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~voiceData);
+~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~data[\voice]);
+~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~data[\voice]);
 ~test_checkNoteDuplicate.(~test_CNDFixtures, ~triads, ~rules);
 )
 
