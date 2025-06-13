@@ -46,7 +46,7 @@
 	~logger = false;
 	~loggerCount = 0;
 
-	dict = ~getChordDegreeArrays.(triads, [['CM', 2]]);
+	dict = ~getChordDegreeArrays.(triads, ['CM']);
 
 	fixtures[\flags].do { |f, i|
 
@@ -183,7 +183,7 @@
 ~test_checkNoteDuplicate = { |fixtures, triads, rules|
 	var chords = Dictionary.new();
 
-	chords = ~getChordDegreeArrays.(triads, [['CM', 2], ['FM', 1], ['GM', 1], ['CM', 2]]);
+	chords = ~getChordDegreeArrays.(triads, ['CM', 'FM', 'GM', 'CM']);
 
 	fixtures.do { |d|
 

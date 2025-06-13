@@ -18,13 +18,14 @@
 ~test_GXCSubroutine00 = { |triads, chordState|
 	var set, result = true;
 
-	"\nTEST #00: Notes belong to Chord".postln;
+	"\nTEST #00: Notes belong to Chord\n".postln;
 
-	chordState[\validNextChords].do { |c|
+	chordState[\validNextChords].do { |c, i|
 		set = c.asSet;
 		result = result && set.isSubsetOf(triads[chordState[\nextCipher]][\notes]);
+
+		~test_resultMessage.(result, "~getFirstChords", nil, i);
 	};
-	~test_resultMessage.(result, "~getFirstChords", nil, 0);
 	nil;
 };
 
@@ -33,13 +34,14 @@
 ~test_GXCSubroutine01 = { |triads, voiceData, chordData, chordState|
 	var set, result = true;
 
-	"\nTEST #01: Chord is complete".postln;
+	"\nTEST #01: Chord is complete\n".postln;
 
-	chordState[\validNextChords].do { |c|
+	chordState[\validNextChords].do { |c, i|
 		set = ~getChordNotesDegree.(c, chordState[\nextCipher], chordData[\chords]).asSet;
 		result = result && (set == triads[chordState[\nextCipher]][\degree].asSet);
+
+		~test_resultMessage.(result, "~getFirstChords", nil, i);
 	};
-	~test_resultMessage.(result, "~getFirstChords", nil, 1);
 	nil;
 };
 
@@ -49,7 +51,7 @@
 	var voiceRange = voiceData[\voiceRange];
 	var result;
 
-	"\nTEST #02: Notes are within range".postln;
+	"\nTEST #02: Notes are within range\n".postln;
 
 	chordState[\validNextChords].do { |c, i|
 		result = true;
@@ -67,7 +69,7 @@
 ~test_GXCSubroutine03 = { |chordState, rules|
 	var cross, result, n;
 
-	"\nTEST #03: Spacing is correct".postln;
+	"\nTEST #03: Spacing is correct\n".postln;
 
 	cross = if (rules[\enforceVoiceCrossProhibition]) {
 			(_ >= 0);
@@ -108,7 +110,7 @@
 	~test_GXCSubroutine02.(voiceData, chordState);
 	~test_GXCSubroutine03.(chordState, rules);
 };
-~test_getFirstChords.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, 'Dm');
+~test_getFirstChords.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, 'CA');
 
 /*************************************************************************************/
 
@@ -118,7 +120,7 @@
 	~logger = false;
 	~loggerCount = 0;
 
-	~test_getNextChordsArray.(triads, voiceData, chordData, chordState, rules, fixtures, firstCipher, nextCipher);
+	~test_getNextChordsArray.(triads, voiceData, chordData, chordState, rules, fixtures, firstCipher, nextCipher).size.postln;
 
 	~resetRules.(rules);
 
@@ -127,7 +129,7 @@
 	~test_GXCSubroutine02.(voiceData, chordState);
 	~test_GXCSubroutine03.(chordState, rules);
 };
-~test_getNextChords.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~test_GNCFixtures, 'Em', 'C#M');
+~test_getNextChords.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~test_GNCFixtures, 'Em', 'CM');
 )
 
 /*************************************************************************************/

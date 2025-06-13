@@ -12,7 +12,8 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordDegreeArrays: Function Call".format(~loggerCount).postln; };
 
-	ciphers = (chordProg.collect { |c| c[0] }).asSet;
+	//ciphers = (chordProg.collect { |c| c[0] }).asSet;
+	ciphers = chordProg.asSet;
 	dictChords = Dictionary.new();
 
 	ciphers.do { |c|
@@ -23,24 +24,6 @@
 		dictChords[c] = dict;
 	};
 	dictChords;
-};
-
-/*************************************************************************************/
-// Get chord notes, within MIDI range, and respective degrees, as paired arrays
-
-~getChordDegreePairs = { |triads, chordProg|
-	var chords, dict;
-
-	chords = (chordProg.collect { |c| c[0] }).asSet;    // Separate ciphers from durations
-	dict = Dictionary.new();
-
-	chords.do { |c|
-		var notes;
-
-		notes = triads[c][\notes] +++ triads[c][\degree].bubble(1);
-		dict[c] = notes;
-	};
-	dict;
 };
 
 /*************************************************************************************/

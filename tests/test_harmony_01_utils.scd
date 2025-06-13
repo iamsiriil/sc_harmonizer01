@@ -4,7 +4,7 @@
 
 (
 ~test_getFirstChordsArray = { |triads, voiceData, chordData, chordState, rules, firstCipher|
-	var chordProg = [[firstCipher, 1]];
+	var chordProg = [firstCipher];
 
 	chordData[\chords] = ~getChordDegreeArrays.(triads, chordProg);
 
@@ -21,7 +21,7 @@
 /*************************************************************************************/
 
 ~test_getNextChordsArray = { |triads, voiceData, chordData, chordState, rules, fixtures, firstCipher, nextCipher|
-	var chordProg = [[firstCipher, 1], [nextCipher, 1]];
+	var chordProg = [firstCipher, nextCipher];
 
 	chordData[\chords] = ~getChordDegreeArrays.(triads, chordProg);
 

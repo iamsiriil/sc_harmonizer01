@@ -3,78 +3,31 @@
 **************************************************************************************/
 (
 "../src/sc_harmony_01_lib.scd".loadRelative;
+"../src/sc_harmony_01_dicts.scd".loadRelative;
 "../src/sc_harmony_01_utils.scd".loadRelative;
+"../src/sc_harmony_01_range.scd".loadRelative;
 "../src/sc_harmony_01_rules.scd".loadRelative;
 "./test_harmony_01_fixtures.scd".loadRelative;
 "./test_harmony_01_message.scd".loadRelative;
 )
 /*************************************************************************************/
-// TEST: ~getChordDegreePairs
-
-(
-~test_getChordDegreePairs = { |chordProg, triads, chordData|
-	var triadKeys = triads.keys; // Get all keys from ~triads
-	var getSymbols, dict, result = true;
-
-	"\nFunction: ~getChordDegreePairs".postln;
-
-	"Set of ciphers in progression, is subset of ~triads.keys:".postln;
-	chordProg.do { |p, i|
-		getSymbols = (p.collect { |a| a[0]});
-		result = result && getSymbols.isSubsetOf(triadKeys);
-
-		~test_resultMessage.(result, "~getChordDegreePairs", nil, i);
-	};
-	result = true;
-
-	"\nSet of keys from returned dictionary is subset of ~triads.keys:".postln;
-	chordProg.do { |p, i|
-		chordData[\chordProg] = p;
-
-		dict = ~getChordDegreePairs.(triads, p);
-		result = result && dict.keys.isSubsetOf(triadKeys);
-
-		~test_resultMessage.(result, "~getChordDegreePairs", nil, i);
-
-	};
-	~resetChordData.(chordData); dict = nil; result = true; // Reset variables after test
-
-	"\nPairing of midi note numbers and scale degrees is correct:".postln;
-	chordProg.do { |p, i|
-		chordData[\chordProg] = p;
-
-		dict = ~getChordDegreePairs.(triads, p);
-		10.do {
-			var key = dict.keys.choose;
-			var pair = dict[key].choose;
-			var notes = triads[key][\notes];
-			var degree = triads[key][\degree].wrapExtend(notes.size);
-
-			result = result && (degree[notes.indexOf(pair[0])] == pair[1]);
-		};
-
-		~test_resultMessage.(result, "~getChordDegreePairs", nil, i);
-	};
-	~resetChordData.(chordData); dict = nil; result = true; // Reset variables after test
-	nil;
-};
-
-/*************************************************************************************/
 // TEST: ~getChordDegreeArrays
-
-~test_getChordDegreeArray = { |chordProgs, triads, chordData|
+(
+~test_getChordDegreeArray = { |fixtures, triads, chordData|
 	var result = true;
 
-	"\nFunction: ~getChordDegreeArrays".postln;
+	~logger = false;
+	~loggerCount = 0;
 
-	chordProgs.do { |p|
-		var prog = p.collect{ |i| i[0] };
+	"\nFunction: ~getChordDegreeArrays\n".postln;
+
+	fixtures.do { |p|
 		chordData[\chords] = ~getChordDegreeArrays.(triads, p);
 
-		prog.do { |c, i|
+		p.do { |c, i|
 			result = result && (chordData[\chords][c][\notes].asArray == triads[c][\notes]);
 
-			~test_resultMessage.(result, "~getChordDegreeArrays", ["prog: %".format(prog), 37], i);
+			~test_resultMessage.(result, "~getChordDegreeArrays", ["prog: %".format(p), 37], i);
 		};
 		~resetChordData.(chordData);
 	};
@@ -99,22 +52,20 @@
 		};
 	};
 
-	~test_resultMessage.(result, "~getChordVocalRange", ["chord: %".format(chordState[\nextCipher]), 12], i);
+	~test_resultMessage.(result, "~getChordVocalRange", ["chord: %".format(chordState[\nextCipher]), 13], i);
 	nil;
 };
 
-~test_getChordVocalRange = { |triads, voiceData, chordData, chordState|
-	var prog = ~test_GVCRFixtures.(triads);
-
-	"\nFunction: ~getChordVocalRange".postln;
+~test_getChordVocalRange = { |fixtures, triads, voiceData, chordData, chordState|
 
 	~logger = false;
 	~loggerCount = 0;
 
-	prog.do { |p, i|
-		chordData[\chordProg] = p;
-		chordData[\chords] = ~getChordDegreeArrays.(triads, chordData[\chordProg]);
-		chordState[\nextCipher] = p.unbubble[0];
+	"\nFunction: ~getChordVocalRange\n".postln;
+
+	fixtures.do { |p, i|
+		chordData[\chords] = ~getChordDegreeArrays.(triads, p);
+		chordState[\nextCipher] = p[0];
 
 		~test_GCVRSubroutine.(voiceData, chordData, chordState, i);
 	};
@@ -141,13 +92,13 @@
 
 ~test_resolveMelodicIntervals = { |fixtures, triads, voiceData, chordData, chordState|
 
-	"\nFunction: ~resolveMelodicIntervals".postln;
-
 	~logger = false;
 	~loggerCount = 0;
 
+	"\nFunction: ~resolveMelodicIntervals\n".postln;
+
 	fixtures.do { |f, i|
-		var cipher = f[\chordProg][1][0];
+		var cipher = f[\chordProg][1];
 
 		chordData[\chords] = ~getChordDegreeArrays.(triads, f[\chordProg]);
 		chordState[\currChord] = f[\chord];
@@ -182,13 +133,13 @@
 
 ~test_resolveCommonTones = { |fixtures, triads, voiceData, chordData, chordState, verbose|
 
-	"\nFunction: ~resolveCommonTones".postln;
-
 	~logger = false;
 	~loggerCount = 0;
 
+	"\nFunction: ~resolveCommonTones\n".postln;
+
 	fixtures.do { |f, i|
-		var cipher = f[\chordProg][1][0];
+		var cipher = f[\chordProg][1];
 
 		~chordData[\chords] = ~getChordDegreeArrays.(triads, f[\chordProg]);
 		~chordState[\currChord] = f[\chord];
@@ -203,9 +154,8 @@
 )
 
 (
-~test_getChordDegreePairs.(~test_GCDFixture, ~triads, ~chordData);
 ~test_getChordDegreeArray.(~test_GCDFixture, ~triads, ~chordData);
-~test_getChordVocalRange.(~triads, ~voiceData, ~chordData, ~chordState);
-~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState, verbose: false);
+~test_getChordVocalRange.(~test_GCVRFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
 ~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~voiceData, ~chordData, ~chordState);
+~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~voiceData, ~chordData, ~chordState, verbose: false);
 )
