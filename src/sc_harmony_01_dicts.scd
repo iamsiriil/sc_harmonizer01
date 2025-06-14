@@ -29,6 +29,7 @@
 
 	\state -> Dictionary[
 		\currChord       -> nil,
+		\nextChord       -> nil,
 		\validNotes      -> nil,
 		\nextValidChords -> nil,
 		\nextCipher      -> nil

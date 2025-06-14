@@ -6,7 +6,7 @@
 
 /*************************************************************************************/
 
-~getNextChords = { |voiceData, chordData, chordState, rules, i|
+/*~getNextChords = { |voiceData, chordData, chordState, rules, i|
 	var voice = voiceData[\voiceNames][i];
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords: Function Call".format(~loggerCount).postln; };
@@ -19,6 +19,35 @@
 		if ((i > 0) && (chordState[\validNotes][v].size == 1)) {
 			chordState[\nextChord].put(i, chordState[\validNotes][v].asArray.at(0));
 			~getNextChords.(voiceData, chordData, chordState, rules, (i + 1));
+		};
+
+		chordState[\validNotes][voice].do { |note|
+
+			chordState[\nextChord].put(i, note);
+
+			if (~checkVoiceSpacing.(chordState[\nextChord], i, rules)) {
+				~getNextChords.(voiceData, chordData, chordState, rules, (i + 1));
+			} {
+				chordState[\nextChord].put(i, 0);
+			};
+		};
+	};
+	chordState[\validNextChords];
+};*/
+
+~getNextChords = { |data, rules, i|
+	var voice = data[\voice][\names][i];
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords: Function Call".format(~loggerCount).postln; };
+
+	if (i == data[\voice][\number]) {
+		if (~chordIsValid.(data[\chords][\midi], data[\state], data[\voice][\number], rules)) {
+			data[\state][\validNextChords].add(data[\state][\nextChord].copy);
+		}
+	} {
+		if ((i > 0) && (data[\state][\validNotes][v].size == 1)) {
+			data[\state][\nextChord].put(i, data[\state][\validNotes][v].asArray.at(0));
+			~getNextChords.(data, rules, (i + 1)); // <--- YOU ARE HERE
 		};
 
 		chordState[\validNotes][voice].do { |note|
