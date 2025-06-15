@@ -50,24 +50,24 @@
 			~getNextChords.(data, rules, (i + 1)); // <--- YOU ARE HERE
 		};
 
-		chordState[\validNotes][voice].do { |note|
+		data[\state][\validNotes][voice].do { |note|
 
-			chordState[\nextChord].put(i, note);
+			data[\state][\nextChord].put(i, note);
 
-			if (~checkVoiceSpacing.(chordState[\nextChord], i, rules)) {
-				~getNextChords.(voiceData, chordData, chordState, rules, (i + 1));
+			if (~checkVoiceSpacing.(data[\state][\nextChord], i, rules)) {
+				~getNextChords.(data, rules, (i + 1));
 			} {
-				chordState[\nextChord].put(i, 0);
+				data[\state][\nextChord].put(i, 0);
 			};
 		};
 	};
-	chordState[\validNextChords];
+	data[\state][\validNextChords];
 };
 
 
 /*************************************************************************************/
 
-~getFirstChords = { |voiceData, chordData, chordState, rules, i|
+/*~getFirstChords = { |voiceData, chordData, chordState, rules, i|
 
 	rules[\enforceMelodicIntervals] = false;
 	rules[\enforceCommonTones] = false;
@@ -81,6 +81,22 @@
 	~resetRules.(rules);
 
 	chordState[\validNextChords];
+};*/
+
+~getFirstChords = { |data, rules, i|
+
+	rules[\enforceMelodicIntervals] = false;
+	rules[\enforceCommonTones] = false;
+	rules[\enforceParallelOctaves] = false;
+	rules[\enforceParallelFifths] = false;
+
+	~getValidNotes.(data, rules);
+
+	~getNextChords.(data, rules, i);
+
+	~resetRules.(rules);
+
+	data[\state][\validNextChords];
 };
 
 /*************************************************************************************/

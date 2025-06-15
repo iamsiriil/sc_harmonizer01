@@ -3,7 +3,7 @@
 **************************************************************************************/
 
 (
-~test_getFirstChordsArray = { |triads, voiceData, chordData, chordState, rules, firstCipher|
+/*~test_getFirstChordsArray = { |triads, voiceData, chordData, chordState, rules, firstCipher|
 	var chordProg = [firstCipher];
 
 	chordData[\chords] = ~getChordDegreeArrays.(triads, chordProg);
@@ -16,11 +16,26 @@
 	~resetRules.(rules);
 
 	chordState[\validNextChords];
+};*/
+
+~test_getFirstChordsArray = { |triads, data, rules, firstCipher|
+	var chordProg = [firstCipher];
+
+	data[\chords][\midi] = ~getChordDegreeArrays.(triads, chordProg);
+
+	data[\state][\nextCipher] = firstCipher;
+	data[\state][\nextChord] = Array.fill(4, {0});
+	data[\state][\validNextChords] = Array.new(20);
+
+	~getFirstChords.(data, rules, 0);
+	~resetRules.(rules);
+
+	data[\state][\validNextChords];
 };
 
 /*************************************************************************************/
 
-~test_getNextChordsArray = { |triads, voiceData, chordData, chordState, rules, fixtures, firstCipher, nextCipher|
+/*~test_getNextChordsArray = { |triads, voiceData, chordData, chordState, rules, fixtures, firstCipher, nextCipher|
 	var chordProg = [firstCipher, nextCipher];
 
 	chordData[\chords] = ~getChordDegreeArrays.(triads, chordProg);
@@ -36,5 +51,23 @@
 	~resetRules.(rules);
 
 	chordState[\validNextChords];
+};*/
+
+~test_getNextChordsArray = { |triads, data, rules, fixtures, firstCipher, nextCipher|
+	var chordProg = [firstCipher, nextCipher];
+
+	data[\chords][\midi] = ~getChordDegreeArrays.(triads, chordProg);
+
+	data[\state][\currChord] = fixtures[\firstChords][firstCipher][1];
+	data[\state][\nextCipher] = nextCipher;
+	data[\state][\nextChord] = Array.fill(4, {0});
+	data[\state][\validNextChords] = Array.new(20);
+
+	~getValidNotes.(data, rules);
+
+	~getNextChords.(data, rules, 0);
+	~resetRules.(rules);
+
+	data[\state][\validNextChords];
 };
 )
