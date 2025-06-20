@@ -19,12 +19,13 @@
 
 /*************************************************************************************/
 
-~test_getNextChordsArray = { |triads, data, rules, fixtures, firstCipher, nextCipher|
+~test_getNextChordsArray = { |triads, data, rules, fixtures, firstCipher, nextCipher, open = true|
 	var chordProg = [firstCipher, nextCipher];
+	var n = if (open) { 1 } { 0 };
 
 	data[\chords] = ~getChordDegreeArrays.(triads, chordProg);
 
-	data[\state][\currChord] = fixtures[\firstChords][firstCipher][1];
+	data[\state][\currChord] = fixtures[\firstChords][firstCipher][n];
 	data[\state][\nextCipher] = nextCipher;
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\state][\validNextChords] = Array.new(20);

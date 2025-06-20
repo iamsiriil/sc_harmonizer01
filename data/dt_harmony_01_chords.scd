@@ -13,7 +13,7 @@
 )
 /*************************************************************************************/
 (
-~an_getChordData = { |triads, data, rules, fixtures|
+~an_getChordData = { |triads, data, rules, fixtures, open = true|
 	var store = Array.new(fixtures[\ciphers].size);
 
 	~logger = false;
@@ -23,7 +23,7 @@
 		var array = Array.new(fixtures[\ciphers].size);
 
 		fixtures[\ciphers].do { |c2|
-			~test_getNextChordsArray.(triads, data, rules, fixtures, c1, c2);
+			~test_getNextChordsArray.(triads, data, rules, fixtures, c1, c2, open);
 			"ci: % | c2: % | nextChords: %".format(c1, c2, data[\state][\validNextChords]).postln;
 			array.add(data[\state][\validNextChords].size);
 		};
@@ -32,7 +32,8 @@
 	~resetRules.(rules);
 	store;
 };
-~results = ~an_getChordData.(~triads, ~data, ~rules, ~test_GNCFixtures);
+~resultsOpen = ~an_getChordData.(~triads, ~data, ~rules, ~test_GNCFixtures, true);
+~resultsClosed = ~an_getChordData.(~triads, ~data, ~rules, ~test_GNCFixtures, false);
 )
 
 (
@@ -51,14 +52,15 @@
 
 ~printRows = { |ciphers, results, file|
 
-	ciphers.do { |c, i|
+	results.do { |r, i|
 		var string = "";
 
-		string = c ++ ",";
+		string = ciphers[i] ++ ",";
 
-		results.do { |r, j|
-			string = string ++ r[i];
-			if (j < (results.size - 1)) {
+		r.do { |n, j|
+			string = string ++ n;
+
+			if (j < (r.size - 1)) {
 				string = string ++ ",";
 			};
 		};
@@ -68,7 +70,7 @@
 };
 
 ~getCSV = { |ciphers, results, fileName|
-	var path = PathName.new("csv/%".format(fileName).resolveRelative);
+	var path = PathName.new("csv/%.csv".format(fileName).resolveRelative);
 	var file = File(path.fullPath, "a");
 
 	~printHeader.(ciphers, results, file);
@@ -76,6 +78,6 @@
 
 	file.close;
 };
-~getCSV.(~test_GNCFixtures[\ciphers], ~results, "chordData00.csv");
+~getCSV.(~test_GNCFixtures[\ciphers], ~resultsOpen, "chordDataO00");
+~getCSV.(~test_GNCFixtures[\ciphers], ~resultsClosed, "chordDataC00");
 )
-
