@@ -341,6 +341,4 @@
 		};
 	};
 };
-
-//~checkFistChord.(~test_GNCFixtures, ~triads);
 )

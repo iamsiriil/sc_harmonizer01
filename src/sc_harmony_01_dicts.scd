@@ -21,11 +21,11 @@
 		\names  -> ['bas', 'ten', 'alt', 'spn']
 	],
 
-	\chords -> Dictionary[
+	/*\chords -> Dictionary[
 		\midi       -> nil,
 		\progression      -> nil,
 		\durations        -> nil
-	],
+	],*/
 
 	\state -> Dictionary[
 		\currChord       -> nil,
@@ -34,9 +34,18 @@
 		\nextValidChords -> nil,
 		\nextCipher      -> nil
 	]
+
+	\chords -> nil
 ];
 
-// Dictionary containing information about the voices
+~progState = Dictionary[
+	\progression     -> nil,
+	\durations       -> nil,
+	\ruleEnforcement -> nil,
+	\validChords     -> nil
+];
+
+/*// Dictionary containing information about the voices
 ~voiceData = Dictionary[
 	// Range of each voice, from lowest note, to highest
 	\voiceRange -> Dictionary[
@@ -73,7 +82,7 @@
 	\nextValidChords -> nil,  // OrderedIdentitySet
 	\lastValidChords -> nil,  // OrderedIdentitySet
 	\nextCipher      -> nil   // Symbol
-];
+];*/
 
 // Dictionary containing default rule settings
 ~rules = Dictionary[
