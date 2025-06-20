@@ -27,7 +27,7 @@
 		\validNotes      -> nil,
 		\nextValidChords -> nil,
 		\nextCipher      -> nil
-	]
+	],
 
 	\chords -> nil
 ];

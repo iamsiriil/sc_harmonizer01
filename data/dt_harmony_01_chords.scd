@@ -26,24 +26,41 @@ file.close;
 )
 
 (
-~an_getChordData = { |triads, voiceData, chordData, chordState, rules, fixtures|
-	var data = Array.fill(fixtures[\ciphers].size, {Array.new(fixtures[\ciphers].size)});
+~an_getChordData = { |triads, data, rules, fixtures|
+	var store = Array.new(fixtures[\ciphers].size);
 
 	~logger = false;
 	~loggerCount = 0;
 
-	fixtures[\ciphers].do { |c1|
+	fixtures[\ciphers][0..5].do { |c1|
+		var array = Array.new(fixtures[\ciphers].size);
 
 		fixtures[\ciphers].do { |c2|
-			~test_getNextChordsArray.(triads, voiceData, chordData, chordState, rules, fixtures, c1, c2);
-			"ci: % | c2: % | nextChords: %".format(c1, c2, chordState[\validNextChords]).postln;
+			~test_getNextChordsArray.(triads, data, rules, fixtures, c1, c2);
+			"ci: % | c2: % | nextChords: %".format(c1, c2, data[\state][\validNextChords]).postln;
+			array.add(data[\state][\validNextChords].size);
 		};
+		store.add(array.copy);
 	};
 	~resetRules.(rules);
+	store;
 };
-~an_getChordData.(~triads, ~voiceData, ~chordData, ~chordState, ~rules, ~test_GNCFixtures);
+~results = ~an_getChordData.(~triads, ~data, ~rules, ~test_GNCFixtures);
 )
 
-0.asSymbol
-~dict = Dictionary[\0->"one", \1->"two"];
-~dict[1.asSymbol]
+~results.do { |n| n.postln; };
+(
+~createHeader = { |array|
+	var string = ",";
+
+	array.do { |c, i|
+		string = string ++ c;
+		if (i < (array.size - 1)) {
+			string = string ++ ",";
+		}
+	};
+	string;
+};
+~createHeader.(~test_GNCFixtures[\ciphers]);
+)
+

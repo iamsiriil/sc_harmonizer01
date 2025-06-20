@@ -14,7 +14,6 @@
 // TEST: ~getChordDegreeArrays
 (
 ~test_getChordDegreeArray = { |fixtures, triads, data|
-	//var chords = data[\chords];
 	var result = true;
 
 	~logger = false;
