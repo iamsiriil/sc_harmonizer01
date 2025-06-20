@@ -21,12 +21,6 @@
 		\names  -> ['bas', 'ten', 'alt', 'spn']
 	],
 
-	/*\chords -> Dictionary[
-		\midi       -> nil,
-		\progression      -> nil,
-		\durations        -> nil
-	],*/
-
 	\state -> Dictionary[
 		\currChord       -> nil,
 		\nextChord       -> nil,
@@ -44,45 +38,6 @@
 	\ruleEnforcement -> nil,
 	\validChords     -> nil
 ];
-
-/*// Dictionary containing information about the voices
-~voiceData = Dictionary[
-	// Range of each voice, from lowest note, to highest
-	\voiceRange -> Dictionary[
-		\bas -> [40, 60],
-		\ten -> [48, 67],
-		\alt -> [55, 74],
-		\spn -> [60, 81]
-	],
-	// Allowed melodic intervals
-	\invalidIntervals -> Dictionary[
-		// All except tritone and sevenths. Spn, alt and ten, one octave. Bass, two
-		\bas -> [6, 10, 11, 18],
-		\ten -> [6, 10, 11],
-		\alt -> [6, 10, 11],
-		\spn -> [6, 10, 11]
-	],
-	// Number of voices
-	\numVoices -> 4,
-	// Reference names for each of the voices
-	\voiceNames -> ['bas', 'ten', 'alt', 'spn']
-];
-
-// Dictionary containing sets of necessary chords and the chord progression to be played
-~chordData = Dictionary[
-	\chords        -> nil,        // Dictionary with arrays
-	\chordProg     -> nil         // 2D Array
-];
-
-// Dictionary containing the state of chords as they're built and played'
-~chordState = Dictionary[
-	\currChord       -> nil,  // Array
-	\nextChord       -> nil,  // Array
-	\validNotes      -> nil,  // OrderedIdentitySet with arrays ??
-	\nextValidChords -> nil,  // OrderedIdentitySet
-	\lastValidChords -> nil,  // OrderedIdentitySet
-	\nextCipher      -> nil   // Symbol
-];*/
 
 // Dictionary containing default rule settings
 ~rules = Dictionary[
@@ -102,15 +57,6 @@
 	\enforceSecondInversion       -> false,
 	\toggleCount                  -> 0
 ];
-
-/*~progState = Dictionary[
-	\chord -> Dictionary[
-
-	],
-	\rules -> Dictionary[
-
-	]
-];*/
 
 /*************************************************************************************/
 
