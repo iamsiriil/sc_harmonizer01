@@ -12,19 +12,6 @@
 "../tests/test_harmony_01_utils.scd".loadRelative;
 )
 /*************************************************************************************/
-
-(
-var name = "TestFile.csv";
-var path = PathName.new("csv/%".format(~name).resolveRelative);
-var file;
-
-file = File(~path.fullPath, "a");
-
-10.do { |n| file.write("This is line number %\n".format(n)) };
-
-file.close;
-)
-
 (
 ~an_getChordData = { |triads, data, rules, fixtures|
 	var store = Array.new(fixtures[\ciphers].size);
@@ -32,7 +19,7 @@ file.close;
 	~logger = false;
 	~loggerCount = 0;
 
-	fixtures[\ciphers][0..5].do { |c1|
+	fixtures[\ciphers].do { |c1|
 		var array = Array.new(fixtures[\ciphers].size);
 
 		fixtures[\ciphers].do { |c2|
@@ -48,19 +35,47 @@ file.close;
 ~results = ~an_getChordData.(~triads, ~data, ~rules, ~test_GNCFixtures);
 )
 
-~results.do { |n| n.postln; };
 (
-~createHeader = { |array|
+~printHeader = { |ciphers, results, file|
 	var string = ",";
 
-	array.do { |c, i|
-		string = string ++ c;
-		if (i < (array.size - 1)) {
+	results.size.do { |i|
+		string = string ++ ciphers[i];
+		if (i < (results.size - 1)) {
 			string = string ++ ",";
 		}
 	};
-	string;
+	string = string ++ "\n";
+	file.write(string);
 };
-~createHeader.(~test_GNCFixtures[\ciphers]);
+
+~printRows = { |ciphers, results, file|
+
+	ciphers.do { |c, i|
+		var string = "";
+
+		string = c ++ ",";
+
+		results.do { |r, j|
+			string = string ++ r[i];
+			if (j < (results.size - 1)) {
+				string = string ++ ",";
+			};
+		};
+		string = string ++ "\n";
+		file.write(string);
+	};
+};
+
+~getCSV = { |ciphers, results, fileName|
+	var path = PathName.new("csv/%".format(fileName).resolveRelative);
+	var file = File(path.fullPath, "a");
+
+	~printHeader.(ciphers, results, file);
+	~printRows.(ciphers, results, file);
+
+	file.close;
+};
+~getCSV.(~test_GNCFixtures[\ciphers], ~results, "chordData00.csv");
 )
 
