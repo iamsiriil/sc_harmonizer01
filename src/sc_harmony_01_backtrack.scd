@@ -53,4 +53,63 @@
 
 	data[\state][\validNextChords];
 };
+
+/*************************************************************************************/
+
+~getProgression = { |data, progState, rules, i|
+	var result;
+
+	block { |return|
+
+		if (i == progState[\progression].size && ~progIsValid.(progState[\result])) {
+			result = true;
+			return.value(result);
+		};
+
+		if (i == 0) {
+
+			if (progState[\ruleEnforcement][i].notEmpty) {
+				progState[\ruleEnforcement][i].do { |k|
+					rules[k[0]] = k[1];
+				};
+			};
+
+			~getFirstChords.(data, rules, 0);
+			progState[\validChords][i] = data[\state][\validNextChords];
+
+			~resetRules.(rules);
+		};
+
+		if ((i > 0 && i < progState[\progression].size) && chordData[\validChords][i].isNil) {
+
+			if (progState[\ruleEnforcement][i].notEmpty) {
+				progState[\ruleEnforcement][i].do { |k|
+					rules[k[0]] = k[1];
+				};
+			};
+
+			~getValidNotes.(data, rules);
+			~getNextChords.(data, rules, 0);
+			progState[\validChords][i] = data[\state][\validNextChords];
+
+			~resetRules.(rules);
+		};
+
+		progState[\validChords][i].do { |c|
+
+			progState[\result][i] = c;
+			if (~progIsValid.(progState[\result])) {
+				result = ~getProgression.(data, progState, rules, i + 1);
+				if (result) {
+					return.value(result);
+				}
+			} {
+				progState[\result][i] = [];
+			};
+		};
+		result = false;
+		rsturn.value(result);
+	};
+	result;
+};
 )
