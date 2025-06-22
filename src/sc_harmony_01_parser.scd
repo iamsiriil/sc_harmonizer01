@@ -74,11 +74,27 @@
 	progState[\progression].size.do { |i|
 		var arr = Array.new(10);
 
-		if (chordDict[i][\distance] == 5) {
+		if (chordDict[i][\distance] == 6) {
 			arr.add([\enforceMelodicIntervals, false]);
 		};
 		dict[i] = arr;
 	};
+	dict.postln;
 	progState[\ruleEnforcement] = dict;
 }
 )
+
+(
+~chords = Dictionary.new();
+~prog = ['CM', 'F#d', 'GM', 'CM'];
+~progState[\progression] = ~prog;
+
+~progParser.(~prog, ~chords);
+~ruleToggler.(~progState, ~chords);
+)
+~chords[1][\distance]
+~progState[\ruleEnforcement][1]
+
+~arr = Array.new(3);
+
+~arr.add([\enforceMelodicIntervals, false])

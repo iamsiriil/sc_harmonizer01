@@ -4,8 +4,11 @@ s.quit;
 // Load project files
 (
 "./sc_harmony_01_lib.scd".loadRelative;
+"./sc_harmony_01_dicts.scd".loadRelative;
 "./sc_harmony_01_utils.scd".loadRelative;
+"./sc_harmony_01_range.scd".loadRelative;
 "./sc_harmony_01_rules.scd".loadRelative;
+"./sc_harmony_01_parser.scd".loadRelative;
 "./sc_harmony_01_backtrack.scd".loadRelative;
 )
 /**************************************************************************************
@@ -50,12 +53,29 @@ var progression = Array.new(50);
 ~chordData[\chordProg] = [['CM', 2], ['Cm', 1], ['Fm', 1], ['CM', 2]];
 
 ~chordData[\chords] = ~getChordDegreeArrays.(~triads, ~chordData[\chordProg]);
-
-
-//~prog = ~harmonizeProg.(firstChord, progression);
-//~progVoices = ~prog.flop;
 )
-~prog
+
+(
+~logger = true;
+~loggerCount = 0;
+
+~harmonizeProg = { |triads, data, progState, rules|
+	var chords = Dictionary.new();
+
+	progState[\result] = Array.fill(progState[\progression].size, {[]});
+	data[\state][\nextChord] = Array.fill(4, {0});
+
+	~progParser.(progState[\progression], chords);
+	~ruleToggler.(progState, chords);
+
+	~getProgression.(data, progState, rules, 0);
+
+};
+
+~progState[\progression] = ['CM', 'F#d', 'GM', 'CM'];
+~harmonizeProg.(~triads, ~data, ~progState, ~rules);
+)
+
 (
 Ppar([
 	// Bass
@@ -91,7 +111,3 @@ Ppar([
 	),
 ]).play;
 )
-~a = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]];
-~b = (1..10).iter;
-~a = ~a.iter;
-~a.next;

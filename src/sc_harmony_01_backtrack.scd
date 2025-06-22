@@ -59,6 +59,8 @@
 ~getProgression = { |data, progState, rules, i|
 	var result;
 
+	data[\state][\nextCipher] = progState[\progression][i];
+
 	block { |return|
 
 		if (i == progState[\progression].size && ~progIsValid.(progState[\result])) {
@@ -68,11 +70,11 @@
 
 		if (i == 0) {
 
-			if (progState[\ruleEnforcement][i].notEmpty) {
-				progState[\ruleEnforcement][i].do { |k|
-					rules[k[0]] = k[1];
+			/*if (progState[\ruleEnforcement][i].notEmpty) {
+				progState[\ruleEnforcement][i].do { |r|
+					rules[r[0]] = r[1];
 				};
-			};
+			};*/
 
 			~getFirstChords.(data, rules, 0);
 			progState[\validChords][i] = data[\state][\validNextChords];
@@ -80,11 +82,11 @@
 			~resetRules.(rules);
 		};
 
-		if ((i > 0 && i < progState[\progression].size) && chordData[\validChords][i].isNil) {
+		if ((i > 0 && i < progState[\progression].size) && progState[\validChords][i].isNil) {
 
 			if (progState[\ruleEnforcement][i].notEmpty) {
-				progState[\ruleEnforcement][i].do { |k|
-					rules[k[0]] = k[1];
+				progState[\ruleEnforcement][i].do { |r|
+					rules[r[0]] = r[1];
 				};
 			};
 
@@ -108,7 +110,7 @@
 			};
 		};
 		result = false;
-		rsturn.value(result);
+		return.value(result);
 	};
 	result;
 };

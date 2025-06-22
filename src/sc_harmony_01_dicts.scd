@@ -35,7 +35,8 @@
 	\progression     -> nil,
 	\durations       -> nil,
 	\ruleEnforcement -> nil,
-	\validChords     -> nil
+	\validChords     -> nil,
+	\result          -> nil
 ];
 
 // Dictionary containing default rule settings
