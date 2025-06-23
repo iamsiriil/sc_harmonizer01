@@ -2,15 +2,15 @@
 - HARMONY 01 / Dictionaries and reset functions
 **************************************************************************************/
 (
-~midiRoot = { |str|
+~midiRoot = { |note|
 	var midi = 0;
 
 	~noteNames.do { |n, i|
 
-		if ((str.size == 1) && (n.size == 1) && (n.contains(str))) {
+		if ((note.size == 1) && (n.size == 1) && (n.contains(note))) {
 			midi = i;
 		};
-		if ((str.size > 1) && (n.size > 1) && (n.contains(str))) {
+		if ((note.size > 1) && (n.size > 1) && (n.contains(note))) {
 			midi = i;
 		};
 	};

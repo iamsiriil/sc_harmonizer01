@@ -245,11 +245,13 @@
 	progState[\validChords] = Dictionary.new();
 
 	~progParser.(progState[\progression], parsedChords);
-	~ruleToggler.(progState, parsedChords);
+	~setRules.(progState, parsedChords);
 
 	progState[\ruleEnforcement][1].postln;
-	~backtrackProg.(data, progState, rules, 0);
-
-	progState[\result];
+	if (~backtrackProg.(data, progState, rules, 0)) {
+		progState[\result];
+	} {
+		"HarmonizeProg was NOT able to generate a progression".throw;
+	}
 };
 )
