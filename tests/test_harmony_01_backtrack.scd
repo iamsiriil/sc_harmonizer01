@@ -3,11 +3,12 @@
 **************************************************************************************/
 (
 "../src/sc_harmony_01_lib.scd".loadRelative;
-"../src/sc_harmony_01_utils.scd".loadRelative;
-"../src/sc_harmony_01_rules.scd".loadRelative;
-"../src/sc_harmony_01_backtrack.scd".loadRelative;
-"../src/sc_harmony_01_range.scd".loadRelative;
 "../src/sc_harmony_01_dicts.scd".loadRelative;
+"../src/sc_harmony_01_utils.scd".loadRelative;
+"../src/sc_harmony_01_range.scd".loadRelative;
+"../src/sc_harmony_01_rules.scd".loadRelative;
+"../src/sc_harmony_01_parser.scd".loadRelative;
+"../src/sc_harmony_01_backtrack.scd".loadRelative;
 "./test_harmony_01_fixtures.scd".loadRelative;
 "./test_harmony_01_message.scd".loadRelative;
 "./test_harmony_01_utils.scd".loadRelative;
@@ -97,12 +98,12 @@
 
 /*************************************************************************************/
 
-~test_getFirstChords = { |triads, data, rules, firstCipher|
+~test_getFirstChords = { |triads, data, progState, rules, firstCipher|
 
 	~logger = false;
 	~loggerCount = 0;
 
-	~test_getFirstChordsArray.(triads, data, rules, firstCipher);
+	~test_getFirstChordsArray.(triads, data, progState, rules, firstCipher);
 
 	~resetRules.(rules);
 
@@ -114,12 +115,12 @@
 
 /*************************************************************************************/
 
-~test_getNextChords = { |triads, data, rules, fixtures, firstCipher, nextCipher|
+~test_getNextChords = { |triads, data, progState, rules, fixtures, firstCipher, nextCipher|
 
 	~logger = false;
 	~loggerCount = 0;
 
-	~test_getNextChordsArray.(triads, data, rules, fixtures, firstCipher, nextCipher);
+	~test_getNextChordsArray.(triads, data, progState, rules, fixtures, firstCipher, nextCipher);
 
 	~resetRules.(rules);
 
@@ -131,8 +132,8 @@
 
 )
 (
-~test_getFirstChords.(~triads, ~data, ~rules, 'CA');
-~test_getNextChords.(~triads, ~data, ~rules, ~test_GNCFixtures, 'Em', 'CM');
+~test_getFirstChords.(~triads, ~data, ~progState, ~rules, 'CA');
+~test_getNextChords.(~triads, ~data, ~progState, ~rules, ~test_GNCFixtures, 'Em', 'CM');
 )
 /*************************************************************************************/
 

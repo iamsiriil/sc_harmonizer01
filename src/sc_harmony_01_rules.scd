@@ -191,7 +191,7 @@
 
 /*************************************************************************************/
 
-~setRules = { |progState, chordDict|
+~setRules = { |progState, chordDict, test = false|
 	var dict = Dictionary.new();
 
 	progState[\progression].size.do { |i|
@@ -204,7 +204,7 @@
 			arr.add([\enforceParallelFifths, false]);
 		};
 
-		if (chordDict[i][\distance] == 6) {
+		if ((chordDict[i][\distance] == 6) && (test == false)) {
 			arr.add([\enforceMelodicIntervals, false]);
 			arr.add([\enforceParallelOctaves, false]);
 			arr.add([\enforceParallelFifths, false]);

@@ -2,38 +2,38 @@
 - HARMONY 01 / Test utility Functions
 **************************************************************************************/
 (
-~test_getFirstChordsArray = { |triads, data, rules, firstCipher|
-	var chordProg = [firstCipher];
+~test_getFirstChordsArray = { |triads, data, progState, rules, firstCipher|
+	var parsedChords = Dictionary.new();
 
-	data[\chords] = ~getChordDegreeArrays.(triads, chordProg);
+	progState[\progression] = [firstCipher].postln;
 
-	data[\state][\nextCipher] = firstCipher;
-	data[\state][\nextChord] = Array.fill(4, {0});
-	data[\state][\validNextChords] = Array.new(20);
+	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]).postln;
+	data[\state][\nextCipher] = firstCipher.postln;
 
-	~getFirstChords.(data, rules, 0);
-	~resetRules.(rules);
+	~progParser.(progState[\progression], parsedChords);
+	~setRules.(progState, parsedChords, true);
+
+	~getFirstChords.(data, progState, rules, 0);
 
 	data[\state][\validNextChords];
 };
 
 /*************************************************************************************/
 
-~test_getNextChordsArray = { |triads, data, rules, fixtures, firstCipher, nextCipher, open = true|
-	var chordProg = [firstCipher, nextCipher];
+~test_getNextChordsArray = { |triads, data, progState, rules, fixtures, firstCipher, nextCipher, open = true|
+	var parsedChords = Dictionary.new();
 	var n = if (open) { 1 } { 0 };
 
-	data[\chords] = ~getChordDegreeArrays.(triads, chordProg);
+	progState[\progression] = [firstCipher, nextCipher];
+	progState[\result] = [fixtures[\firstChords][firstCipher][n]];
 
-	data[\state][\currChord] = fixtures[\firstChords][firstCipher][n];
+	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
 	data[\state][\nextCipher] = nextCipher;
-	data[\state][\nextChord] = Array.fill(4, {0});
-	data[\state][\validNextChords] = Array.new(20);
 
-	~getValidNotes.(data, rules);
+	~progParser.(progState[\progression], parsedChords);
+	~setRules.(progState, parsedChords, false);
 
-	~getNextChords.(data, rules, 0);
-	~resetRules.(rules);
+	~getNextChords.(data, progState, rules, 0);
 
 	data[\state][\validNextChords];
 };

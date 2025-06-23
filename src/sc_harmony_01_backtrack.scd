@@ -48,7 +48,7 @@
 	} {
 		if ((i > 0) && (data[\state][\validNotes][v].size == 1)) {
 			data[\state][\nextChord].put(i, data[\state][\validNotes][v].asArray.at(0));
-			~getNextChords.(data, rules, (i + 1));
+			~backtrackChords.(data, rules, (i + 1));
 		};
 
 		data[\state][\validNotes][voice].do { |note|
@@ -56,7 +56,7 @@
 			data[\state][\nextChord].put(i, note);
 
 			if (~checkVoiceSpacing.(data[\state][\nextChord], i, rules)) {
-				~getNextChords.(data, rules, (i + 1));
+				~backtrackChords.(data, rules, (i + 1));
 			} {
 				data[\state][\nextChord].put(i, 0);
 			};
@@ -92,7 +92,9 @@
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\state][\validNextChords] = Array.new(20);
 
-	~toggleRules.(progState[\ruleEnforcement][i], rules);
+	if (progState[\ruleEnforcement].notNil) {
+		~toggleRules.(progState[\ruleEnforcement][i], rules);
+	};
 
 	~getValidNotes.(data, rules);
 	~backtrackChords.(data, rules, i);
@@ -112,15 +114,16 @@
 	data[\state][\validNextChords] = Array.new(20);
 	data[\state][\currChord] = progState[\result][i - 1].postln;
 
-	~toggleRules.(progState[\ruleEnforcement][i], rules);
-
+	if (progState[\ruleEnforcement].notNil) {
+		~toggleRules.(progState[\ruleEnforcement][i], rules);
+	};
 	~getValidNotes.(data, rules);
 	~backtrackChords.(data, rules, 0);
 
 	~resetRules.(rules);
 
 	data[\state][\validNextChords];
-}
+};
 
 /*************************************************************************************/
 
@@ -238,6 +241,8 @@
 ~harmonizeProg = { |triads, data, progState, rules|
 	var parsedChords = Dictionary.new();
 
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~harmonizeProg: Function Call".format(~loggerCount).postln; };
+
 	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
 	data[\state][\nextChord] = Array.fill(4, {0});
 
@@ -249,7 +254,7 @@
 
 	progState[\ruleEnforcement][1].postln;
 	if (~backtrackProg.(data, progState, rules, 0)) {
-		progState[\result];
+		progState[\result].flop;
 	} {
 		"HarmonizeProg was NOT able to generate a progression".throw;
 	}
