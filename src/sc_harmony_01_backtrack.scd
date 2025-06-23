@@ -6,7 +6,7 @@
 
 /*************************************************************************************/
 
-~getNextChords = { |data, rules, i|
+/*~getNextChords = { |data, rules, i|
 	var voice = data[\voice][\names][i];
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords: Function Call".format(~loggerCount).postln; };
@@ -33,12 +33,41 @@
 		};
 	};
 	data[\state][\validNextChords];
-};
+};*/
 
+
+~backtrackChords = { |data, rules, i|
+	var voice = data[\voice][\names][i];
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~backtrackChords: Function Call".format(~loggerCount).postln; };
+
+	if (i == data[\voice][\number]) {
+		if (~chordIsValid.(data[\chords], data[\state], data[\voice][\number], rules)) {
+			data[\state][\validNextChords].add(data[\state][\nextChord].copy);
+		}
+	} {
+		if ((i > 0) && (data[\state][\validNotes][v].size == 1)) {
+			data[\state][\nextChord].put(i, data[\state][\validNotes][v].asArray.at(0));
+			~getNextChords.(data, rules, (i + 1));
+		};
+
+		data[\state][\validNotes][voice].do { |note|
+
+			data[\state][\nextChord].put(i, note);
+
+			if (~checkVoiceSpacing.(data[\state][\nextChord], i, rules)) {
+				~getNextChords.(data, rules, (i + 1));
+			} {
+				data[\state][\nextChord].put(i, 0);
+			};
+		};
+	};
+	data[\state][\validNextChords];
+};
 
 /*************************************************************************************/
 
-~getFirstChords = { |data, rules, i|
+/*~getFirstChords = { |data, rules, i|
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getFirstChords: Function Call".format(~loggerCount).postln; };
 
@@ -54,7 +83,47 @@
 	~resetRules.(rules);
 
 	data[\state][\validNextChords];
+};*/
+
+~getFirstChords = { |data, rules, i|
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getFirstChords: Function Call".format(~loggerCount).postln; };
+
+	rules[\enforceMelodicIntervals] = false;
+	rules[\enforceCommonTones] = false;
+	rules[\enforceParallelOctaves] = false;
+	rules[\enforceParallelFifths] = false;
+
+	data[\state][\nextChord] = Array.fill(4, {0});
+	data[\state][\validNextChords] = Array.new(20);
+
+	//~toggleRules.();
+
+	~getValidNotes.(data, rules);
+	~backtrackChords.(data, rules, i);
+
+	~resetRules.(rules);
+
+	data[\state][\validNextChords];
 };
+
+/*************************************************************************************/
+
+~getNextChords = { |data, rules, i|
+
+	data[\state][\nextChord] = Array.fill(4, {0});
+	data[\state][\validNextChords] = Array.new(20);
+	data[\state][\currChord] = progState[\result][i - 1].postln;
+
+	//~toggleRules.();
+
+	~getValidNotes.(data, rules);
+	~backtrackChords.(data, rules, i);
+
+	~resetRules.(rules);
+
+	data[\state][\validNextChords];
+}
 
 /*************************************************************************************/
 

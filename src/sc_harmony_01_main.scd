@@ -72,7 +72,7 @@ var progression = Array.new(50);
 
 	~progParser.(progState[\progression], chords);
 	chords[1].postln;
-	~ruleToggler.(progState, chords);
+	~setRules.(progState, chords);
 
 	progState[\ruleEnforcement][1].postln;
 	~getProgression.(data, progState, rules, 0);
@@ -84,10 +84,20 @@ var progression = Array.new(50);
 ~harmonizeProg.(~triads, ~data, ~progState, ~rules);
 )
 ~progState[\result];
-
 ~progVoices = (~progState[\result].flop) + 12;
-
 ~getChordNoteNameOct.(~progState[\result][1], ~midiRange);
+
+(
+var chords = Dictionary.new();
+
+~progState[\progression] = ['CM', 'EM', 'AM', 'DM', 'Bd', 'CM'];
+
+~progParser.(~progState[\progression], chords);
+~setRules.(~progState, chords);
+
+~progState[\ruleEnforcement][0];
+)
+
 (
 Ppar([
 	// Bass

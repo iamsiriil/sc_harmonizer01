@@ -68,11 +68,18 @@
 
 /*************************************************************************************/
 
-~ruleToggler = { |progState, chordDict|
+~setRules = { |progState, chordDict|
 	var dict = Dictionary.new();
 
 	progState[\progression].size.do { |i|
 		var arr = Array.new(10);
+
+		if (i == 0) {
+			arr.add([\enforceMelodicIntervals, false]);
+			arr.add([\enforceCommonTones, false]);
+			arr.add([\enforceParallelOctaves, false]);
+			arr.add([\enforceParallelFifths, false]);
+		};
 
 		if (chordDict[i][\distance] == 6) {
 			arr.add([\enforceMelodicIntervals, false]);
@@ -81,22 +88,6 @@
 		};
 		dict[i] = arr;
 	};
-	dict;
-	progState[\ruleEnforcement] = dict;
+	progState[\ruleEnforcement] = dict.postln;
 }
 )
-/*
-(
-~chords = Dictionary.new();
-~prog = ['CM', 'F#d', 'GM', 'CM'];
-~progState[\progression] = ~prog;
-
-~progParser.(~prog, ~chords);
-~ruleToggler.(~progState, ~chords);
-)
-~chords[1][\distance]
-~progState[\ruleEnforcement][1]
-
-~arr = Array.new(3);
-
-~arr.add([\enforceMelodicIntervals, false])*/
