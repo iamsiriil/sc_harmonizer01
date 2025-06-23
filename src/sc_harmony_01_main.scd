@@ -44,34 +44,10 @@ SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2|
 Synth(\tone);
 
 (
-~logger = true;
-~loggerCount = 0;
+~prog = ['CM', 'EM', 'AM', 'DM', 'Bd', 'CM'];
+~dur = [1, 1, 1, 1, 1, 2];
 
-~noteNames = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"];
-
-~progState[\progression] = ['CM', 'EM', 'AM', 'DM', 'Bd', 'CM'];
-~progState[\durations] = [1, 1, 1, 1, 1, 2];
-~harmonizeProg.(~triads, ~data, ~progState, ~rules);
-)
-
-
-
-~progState[\result];
-~progVoices = (~progState[\result].flop) + 12;
-~getChordNoteNameOct.(~progState[\result][1], ~midiRange);
-
-
-
-
-(
-var chords = Dictionary.new();
-
-~progState[\progression] = ['CM', 'EM', 'AM', 'DM', 'Bd', 'CM'];
-
-~progParser.(~progState[\progression], chords);
-~setRules.(~progState, chords);
-
-~progState[\ruleEnforcement][0];
+~result = ~harmonizeProg.(~prog, ~dur);
 )
 
 (
@@ -79,32 +55,32 @@ Ppar([
 	// Bass
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~progVoices[0], 1),
-		\dur, Pseq(~progState[\durations], 1),
+		\midinote, Pseq(~result[0], 1),
+		\dur, Pseq(~dur, 1),
 		\amp, 0.1,
 	),
 
 	// Tenor
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~progVoices[1], 1),
-		\dur, Pseq(~progState[\durations], 1),
+		\midinote, Pseq(~result[1], 1),
+		\dur, Pseq(~dur, 1),
 		\amp, 0.1,
 	),
 
 	// Alto
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~progVoices[2], 1),
-		\dur, Pseq(~progState[\durations], 1),
+		\midinote, Pseq(~result[2], 1),
+		\dur, Pseq(~dur, 1),
 		\amp, 0.1,
 	),
 
 	// Soprano
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~progVoices[3], 1),
-		\dur, Pseq(~progState[\durations], 1),
+		\midinote, Pseq(~result[3], 1),
+		\dur, Pseq(~dur, 1),
 		\amp, 0.1,
 	),
 ]).play;

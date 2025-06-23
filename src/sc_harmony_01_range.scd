@@ -12,12 +12,12 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordDegreeArrays: Function Call".format(~loggerCount).postln; };
 
-	ciphers = chordProg.asSet.postln;
+	ciphers = chordProg.asSet;
 	dictChords = Dictionary.new();
 
 	ciphers.do { |c|
 		dict = Dictionary.new();
-		dict[\notes] = triads[c][\notes].as(OrderedIdentitySet).postln;
+		dict[\notes] = triads[c][\notes].as(OrderedIdentitySet);
 		dict[\degree] = (triads[c][\degree].wrapExtend(triads[c][\notes].size));
 
 		dictChords[c] = dict;

@@ -74,29 +74,25 @@
 	var octaves = [12, 24, 36];
 	var i = 0, j;
 
-	currChord.postln;
-	nextChord.postln;
-
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelOctaves: Function Call".format(~loggerCount).postln; };
 
 	while {i < (numVoices - 1)} {
 
-		j = i + 1.postln;
+		j = i + 1;
 		while {j < numVoices} {
 
-			if (octaves.includes((currChord[i] - currChord[j]).abs).postln) { index = [i, j] };
+			if (octaves.includes((currChord[i] - currChord[j]).abs)) { index = [i, j] };
 			j = j + 1;
 		};
 		i = i + 1;
 	};
 
-	"index: %".format(index).postln;
 	if (index == [0, 0]) {
 		result = false;
 	}{
 		result = (
 			((currChord[index[1]] - currChord[index[0]]).abs ==
-				(nextChord[index[1]] - nextChord[index[0]]).abs) &&
+			(nextChord[index[1]] - nextChord[index[0]]).abs) &&
 			(currChord[index[1]] != nextChord[index[1]])
 		);
 	};
@@ -110,9 +106,6 @@
 	var index = Array.new(6), result = false;
 	var fifths = [7, 19, 31, 43];
 	var i = 0, j;
-
-	nextChord.postln;
-	currChord.postln;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelFifths: Function Call".format(~loggerCount).postln; };
 
@@ -194,6 +187,8 @@
 ~setRules = { |progState, chordDict, test = false|
 	var dict = Dictionary.new();
 
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~setRules: Function Call".format(~loggerCount).postln; };
+
 	progState[\progression].size.do { |i|
 		var arr = Array.new(10);
 
@@ -211,12 +206,14 @@
 		};
 		dict[i] = arr;
 	};
-	progState[\ruleEnforcement] = dict.postln;
+	progState[\ruleEnforcement] = dict;
 };
 
 /*************************************************************************************/
 
 ~toggleRules = { |toggle, rules|
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~toggleRules: Function Call".format(~loggerCount).postln; };
 
 	toggle.do { |r|
 		rules[r[0]] = r[1];

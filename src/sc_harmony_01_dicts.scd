@@ -60,27 +60,9 @@
 
 /*************************************************************************************/
 
-// Resets ~chordData dictionary values to nil
-~resetChordData = #{ |chordData|
-
-	chordData[\chords]    = nil;
-	chordData[\chordProg] = nil;
-	nil;
-};
-
-// Resets ~chordState dictionary values to nil
-~resetChordState = #{ |chordState|
-
-	chordState[\currChord]       = nil;
-	chordState[\nextChord]       = nil;
-	chordState[\validNotes]      = nil;
-	chordState[\nextValidChords] = nil;
-	chordState[\lastValidChords] = nil;
-	chordState[\nextCipher]      = nil;
-	nil;
-};
-
 ~resetDataDict = #{ |data|
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetDataDict: Function Call".format(~loggerCount).postln; };
 
 	data[\chords][\midiChords]     = nil;
 	data[\chords][\progression]      = nil;
@@ -93,8 +75,12 @@
 	nil;
 };
 
+/*************************************************************************************/
+
 // Reset ~rules dictionary to default setting
 ~resetRules = #{ |rules|
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetRules: Function Call".format(~loggerCount).postln; };
 
 	rules[\enforceVoiceCrossProhibition] = true;
 	rules[\enforceMelodicIntervals]      = true;
