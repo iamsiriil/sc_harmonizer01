@@ -41,8 +41,8 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~backtrackChords: Function Call".format(~loggerCount).postln; };
 
-	if (i == data[\voice][\number]) {
-		if (~chordIsValid.(data[\chords], data[\state], data[\voice][\number], rules)) {
+	if (i == data[\voice][\number].postln) {
+		if (~chordIsValid.(data[\chords], data[\state], data[\voice][\number], rules).postln) {
 			data[\state][\validNextChords].add(data[\state][\nextChord].copy);
 		}
 	} {
@@ -92,7 +92,7 @@
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\state][\validNextChords] = Array.new(20);
 
-	if (progState[\ruleEnforcement].notNil) {
+	if (progState[\ruleEnforcement].notNil.postln) {
 		~toggleRules.(progState[\ruleEnforcement][i], rules);
 	};
 
@@ -114,7 +114,7 @@
 	data[\state][\validNextChords] = Array.new(20);
 	data[\state][\currChord] = progState[\result][i - 1].postln;
 
-	if (progState[\ruleEnforcement].notNil) {
+	if (progState[\ruleEnforcement].notNil.postln) {
 		~toggleRules.(progState[\ruleEnforcement][i], rules);
 	};
 	~getValidNotes.(data, rules);
@@ -212,12 +212,12 @@
 		};
 
 		if (i == 0) {
-			progState[\validChords][i] = ~getFirstChords.(data, progState, rules, i);
+			progState[\validChords][i] = ~getFirstChords.(data, progState, rules, 0);
 		};
 
 		if (((i > 0) && (i < progState[\progression].size)) && progState[\validChords][i].isNil) {
 
-			progState[\validChords][i] = ~getNextChords.(data, progState, rules, i);
+			progState[\validChords][i] = ~getNextChords.(data, progState, rules, 0);
 		};
 
 		progState[\validChords][i].do { |c|

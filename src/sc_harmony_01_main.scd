@@ -44,48 +44,24 @@ SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2|
 Synth(\tone);
 
 (
-var firstChord = [48, 55, 64, 72];
-var progression = Array.new(50);
-~loggerCount = 0;
-
-~chordState[\nextValidChords] = Array.new(50);
-
-~chordData[\chordProg] = [['CM', 2], ['Cm', 1], ['Fm', 1], ['CM', 2]];
-
-~chordData[\chords] = ~getChordDegreeArrays.(~triads, ~chordData[\chordProg]);
-)
-
-(
 ~logger = true;
 ~loggerCount = 0;
 
 ~noteNames = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"];
 
-~harmonizeProg = { |triads, data, progState, rules|
-	var chords = Dictionary.new();
-
-	progState[\result] = Array.fill(progState[\progression].size, {[]});
-	progState[\validChords] = Dictionary.new();
-	data[\state][\nextChord] = Array.fill(4, {0});
-
-	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
-
-	~progParser.(progState[\progression], chords);
-	chords[1].postln;
-	~setRules.(progState, chords);
-
-	progState[\ruleEnforcement][1].postln;
-	~getProgression.(data, progState, rules, 0);
-
-};
-
 ~progState[\progression] = ['CM', 'EM', 'AM', 'DM', 'Bd', 'CM'];
 ~progState[\durations] = [1, 1, 1, 1, 1, 2];
 ~harmonizeProg.(~triads, ~data, ~progState, ~rules);
 )
+
+
+
 ~progState[\result];
 ~progVoices = (~progState[\result].flop) + 12;
 ~getChordNoteNameOct.(~progState[\result][1], ~midiRange);
+
+
+
 
 (
 var chords = Dictionary.new();
