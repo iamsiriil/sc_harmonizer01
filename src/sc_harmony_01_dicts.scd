@@ -58,6 +58,8 @@
 	\toggleCount                  -> 0
 ];
 
+~dictionaries = [~triads, ~data, ~progState, ~rules];
+
 /*************************************************************************************/
 
 ~resetDataDict = #{ |data|

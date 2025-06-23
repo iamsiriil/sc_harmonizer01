@@ -124,10 +124,14 @@
 
 ~harmonizeProg = { |progression, durations, logger = false|
 	var parsedChords = Dictionary.new();
+	//var triads, data, progState, rules;
+
 	var progState = ~progState;
 	var triads = ~triads;
 	var rules = ~rules;
 	var data = ~data;
+
+	//#triads, data, progState, rules = ~dictionaries;
 
 	~logger = logger;
 	~loggerCount = 0;
@@ -135,11 +139,10 @@
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~harmonizeProg: Function Call".format(~loggerCount).postln; };
 
 	progState[\progression] = progression;
-	progState[\durations] = durations;
-
 	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
-	data[\state][\nextChord] = Array.fill(4, {0});
+	//progState[\durations] = durations;
 
+	data[\state][\nextChord] = Array.fill(4, {0});
 	progState[\result] = Array.fill(progState[\progression].size, {[]});
 	progState[\validChords] = Dictionary.new();
 
@@ -153,3 +156,4 @@
 	}
 };
 )
+~dictionaries[1]
