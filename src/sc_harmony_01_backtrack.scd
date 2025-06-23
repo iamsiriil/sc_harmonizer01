@@ -85,19 +85,14 @@
 	data[\state][\validNextChords];
 };*/
 
-~getFirstChords = { |data, rules, i|
+~getFirstChords = { |data, progState, rules, i|
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getFirstChords: Function Call".format(~loggerCount).postln; };
-
-	rules[\enforceMelodicIntervals] = false;
-	rules[\enforceCommonTones] = false;
-	rules[\enforceParallelOctaves] = false;
-	rules[\enforceParallelFifths] = false;
 
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\state][\validNextChords] = Array.new(20);
 
-	//~toggleRules.();
+	~toggleRules.(progState[\ruleEnforcement][i], rules);
 
 	~getValidNotes.(data, rules);
 	~backtrackChords.(data, rules, i);
@@ -109,16 +104,18 @@
 
 /*************************************************************************************/
 
-~getNextChords = { |data, rules, i|
+~getNextChords = { |data, progState, rules, i|
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords: Function Call".format(~loggerCount).postln; };
 
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\state][\validNextChords] = Array.new(20);
 	data[\state][\currChord] = progState[\result][i - 1].postln;
 
-	//~toggleRules.();
+	~toggleRules.(progState[\ruleEnforcement][i], rules);
 
 	~getValidNotes.(data, rules);
-	~backtrackChords.(data, rules, i);
+	~backtrackChords.(data, rules, 0);
 
 	~resetRules.(rules);
 
@@ -127,7 +124,7 @@
 
 /*************************************************************************************/
 
-~getProgression = { |data, progState, rules, i|
+/*~getProgression = { |data, progState, rules, i|
 	var result;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getProgression: Function Call".format(~loggerCount).postln; };
@@ -195,25 +192,64 @@
 		return.value(result);
 	};
 	result;
+};*/
+
+~backtrackProg = { |data, progState, rules, i|
+	var result;
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getProgression: Function Call".format(~loggerCount).postln; };
+
+	data[\state][\nextCipher] = progState[\progression][i].postln;
+
+	block { |return|
+
+		if (i == progState[\progression].size) {
+			result = true;
+			return.value(result);
+		};
+
+		if (i == 0) {
+			progState[\validChords][i] = ~getFirstChords.(data, progState, rules, i);
+		};
+
+		if (((i > 0) && (i < progState[\progression].size)) && progState[\validChords][i].isNil) {
+
+			progState[\validChords][i] = ~getNextChords.(data, progState, rules, i);
+		};
+
+		progState[\validChords][i].do { |c|
+
+			data[\state][\currChord] = c;
+			progState[\result][i] = c;
+
+			result = ~getProgression.(data, progState, rules, i + 1);
+			if (result) {
+				return.value(result);
+			}
+		};
+		result = false;
+		return.value(result);
+	};
+	result;
 };
 
 /*************************************************************************************/
 
 ~harmonizeProg = { |triads, data, progState, rules|
-	var chords = Dictionary.new();
+	var parsedChords = Dictionary.new();
+
+	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
+	data[\state][\nextChord] = Array.fill(4, {0});
 
 	progState[\result] = Array.fill(progState[\progression].size, {[]});
 	progState[\validChords] = Dictionary.new();
-	data[\state][\nextChord] = Array.fill(4, {0});
 
-	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
-
-	~progParser.(progState[\progression], chords);
-	chords[1].postln;
-	~ruleToggler.(progState, chords);
+	~progParser.(progState[\progression], parsedChords);
+	~ruleToggler.(progState, parsedChords);
 
 	progState[\ruleEnforcement][1].postln;
-	~getProgression.(data, progState, rules, 0);
+	~backtrackProg.(data, progState, rules, 0);
 
+	progState[\result];
 };
 )

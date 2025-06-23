@@ -65,29 +65,4 @@
 
 	~rootDistance.(prog, chords);
 };
-
-/*************************************************************************************/
-
-~setRules = { |progState, chordDict|
-	var dict = Dictionary.new();
-
-	progState[\progression].size.do { |i|
-		var arr = Array.new(10);
-
-		if (i == 0) {
-			arr.add([\enforceMelodicIntervals, false]);
-			arr.add([\enforceCommonTones, false]);
-			arr.add([\enforceParallelOctaves, false]);
-			arr.add([\enforceParallelFifths, false]);
-		};
-
-		if (chordDict[i][\distance] == 6) {
-			arr.add([\enforceMelodicIntervals, false]);
-			arr.add([\enforceParallelOctaves, false]);
-			arr.add([\enforceParallelFifths, false]);
-		};
-		dict[i] = arr;
-	};
-	progState[\ruleEnforcement] = dict.postln;
-}
 )
