@@ -127,4 +127,24 @@
 	};
 	result;
 };
+
+/*************************************************************************************/
+
+~harmonizeProg = { |triads, data, progState, rules|
+	var chords = Dictionary.new();
+
+	progState[\result] = Array.fill(progState[\progression].size, {[]});
+	progState[\validChords] = Dictionary.new();
+	data[\state][\nextChord] = Array.fill(4, {0});
+
+	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
+
+	~progParser.(progState[\progression], chords);
+	chords[1].postln;
+	~ruleToggler.(progState, chords);
+
+	progState[\ruleEnforcement][1].postln;
+	~getProgression.(data, progState, rules, 0);
+
+};
 )
