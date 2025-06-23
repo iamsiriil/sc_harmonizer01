@@ -76,14 +76,16 @@
 
 		if (chordDict[i][\distance] == 6) {
 			arr.add([\enforceMelodicIntervals, false]);
+			arr.add([\enforceParallelOctaves, false]);
+			arr.add([\enforceParallelFifths, false]);
 		};
 		dict[i] = arr;
 	};
-	dict.postln;
+	dict;
 	progState[\ruleEnforcement] = dict;
 }
 )
-
+/*
 (
 ~chords = Dictionary.new();
 ~prog = ['CM', 'F#d', 'GM', 'CM'];
@@ -97,4 +99,4 @@
 
 ~arr = Array.new(3);
 
-~arr.add([\enforceMelodicIntervals, false])
+~arr.add([\enforceMelodicIntervals, false])*/

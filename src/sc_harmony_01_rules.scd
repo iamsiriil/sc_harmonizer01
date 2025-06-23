@@ -70,28 +70,36 @@
 // Check for parallel octaves
 
 ~checkParallelOctaves = #{ |nextChord, currChord, numVoices|
-	var index, result = false;
+	var index = [0, 0], result = false;
 	var octaves = [12, 24, 36];
 	var i = 0, j;
+
+	currChord.postln;
+	nextChord.postln;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelOctaves: Function Call".format(~loggerCount).postln; };
 
 	while {i < (numVoices - 1)} {
 
-		j = i + 1;
+		j = i + 1.postln;
 		while {j < numVoices} {
 
-			if (octaves.includes((currChord[i] - currChord[j]).abs)) { index = [i, j] };
+			if (octaves.includes((currChord[i] - currChord[j]).abs).postln) { index = [i, j] };
 			j = j + 1;
 		};
 		i = i + 1;
 	};
 
-	result = (
-		((currChord[index[1]] - currChord[index[0]]).abs ==
-		(nextChord[index[1]] - nextChord[index[0]]).abs) &&
-		(currChord[index[1]] != nextChord[index[1]])
-	);
+	"index: %".format(index).postln;
+	if (index == [0, 0]) {
+		result = false;
+	}{
+		result = (
+			((currChord[index[1]] - currChord[index[0]]).abs ==
+				(nextChord[index[1]] - nextChord[index[0]]).abs) &&
+			(currChord[index[1]] != nextChord[index[1]])
+		);
+	};
 	result.not;
 };
 
@@ -102,6 +110,9 @@
 	var index = Array.new(6), result = false;
 	var fifths = [7, 19, 31, 43];
 	var i = 0, j;
+
+	nextChord.postln;
+	currChord.postln;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelFifths: Function Call".format(~loggerCount).postln; };
 

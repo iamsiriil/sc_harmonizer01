@@ -36,7 +36,7 @@ GOALS:
 (
 SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2|
 	var sig = SinOsc.ar(freq) * amp;
-	sig = sig * EnvGen.kr(Env.perc(0.01, (dur * 0.9)), doneAction: 2);
+	sig = sig * EnvGen.ar(Env.linen(0.1, (dur * 0.7)), doneAction: 2);
 	Out.ar(0, sig ! 2);
 }).add;
 )
@@ -59,55 +59,67 @@ var progression = Array.new(50);
 ~logger = true;
 ~loggerCount = 0;
 
+~noteNames = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"];
+
 ~harmonizeProg = { |triads, data, progState, rules|
 	var chords = Dictionary.new();
 
 	progState[\result] = Array.fill(progState[\progression].size, {[]});
+	progState[\validChords] = Dictionary.new();
 	data[\state][\nextChord] = Array.fill(4, {0});
 
+	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
+
 	~progParser.(progState[\progression], chords);
+	chords[1].postln;
 	~ruleToggler.(progState, chords);
 
+	progState[\ruleEnforcement][1].postln;
 	~getProgression.(data, progState, rules, 0);
 
 };
 
-~progState[\progression] = ['CM', 'F#d', 'GM', 'CM'];
+~progState[\progression] = ['CM', 'EM', 'AM', 'DM', 'Bd', 'CM'];
+~progState[\durations] = [1, 1, 1, 1, 1, 2];
 ~harmonizeProg.(~triads, ~data, ~progState, ~rules);
 )
+~progState[\result];
 
+~progVoices = (~progState[\result].flop) + 12;
+
+~getChordNoteNameOct.(~progState[\result][1], ~midiRange);
 (
 Ppar([
 	// Bass
 	Pbind(
 		\instrument, \tone,
 		\midinote, Pseq(~progVoices[0], 1),
-		\dur, Pseq([2, 1, 1, 2], 1),
-		\amp, 0.3,
+		\dur, Pseq(~progState[\durations], 1),
+		\amp, 0.1,
 	),
 
 	// Tenor
 	Pbind(
 		\instrument, \tone,
 		\midinote, Pseq(~progVoices[1], 1),
-		\dur, Pseq([2, 1, 1, 2], 1),
-		\amp, 0.3,
+		\dur, Pseq(~progState[\durations], 1),
+		\amp, 0.1,
 	),
 
 	// Alto
 	Pbind(
 		\instrument, \tone,
 		\midinote, Pseq(~progVoices[2], 1),
-		\dur, Pseq([2, 1, 1, 2], 1),
-		\amp, 0.3,
+		\dur, Pseq(~progState[\durations], 1),
+		\amp, 0.1,
 	),
 
 	// Soprano
 	Pbind(
 		\instrument, \tone,
 		\midinote, Pseq(~progVoices[3], 1),
-		\dur, Pseq([2, 1, 1, 2], 1),
-		\amp, 0.3,
+		\dur, Pseq(~progState[\durations], 1),
+		\amp, 0.1,
 	),
 ]).play;
 )
