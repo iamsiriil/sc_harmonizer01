@@ -1,7 +1,7 @@
+/**************************************************************************************
+- HARMONY 01 / Main
+**************************************************************************************/
 s.boot;
-s.quit;
-
-// Load project files
 (
 "./sc_harmony_01_lib.scd".loadRelative;
 "./sc_harmony_01_dicts.scd".loadRelative;
@@ -11,10 +11,9 @@ s.quit;
 "./sc_harmony_01_parser.scd".loadRelative;
 "./sc_harmony_01_backtrack.scd".loadRelative;
 )
-/**************************************************************************************
-- HARMONY 01 / Main
-**************************************************************************************/
-// -> SynthDef
+
+/*************************************************************************************/
+// Create a synth
 (
 SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2|
 	var sig = SinOsc.ar(freq) * amp;
@@ -23,15 +22,21 @@ SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2|
 }).add;
 )
 
+//  Test synth
 Synth(\tone);
 
+/*************************************************************************************/
+// Get harmonized progression
 (
 ~prog = ['CM', 'EM', 'AM', 'DM', 'Bd', 'CM'];
 ~dur = [1, 1, 1, 1, 1, 2];
 
-~result = ~harmonizeProg.(~prog, ~dur);
+~result = ~harmonizeProg.(~prog);
+~result = ~result + 12; // Raise octave
 )
 
+/*************************************************************************************/
+// Play progression
 (
 Ppar([
 	// Bass

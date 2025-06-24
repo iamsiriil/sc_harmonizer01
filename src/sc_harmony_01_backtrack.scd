@@ -53,7 +53,7 @@
 
 	~resetRules.(rules);
 
-	data[\state][\validNextChords];
+	data[\state][\validNextChords].scramble;
 };
 
 /*************************************************************************************/
@@ -74,7 +74,7 @@
 
 	~resetRules.(rules);
 
-	data[\state][\validNextChords];
+	data[\state][\validNextChords].scramble;
 };
 
 /*************************************************************************************/
@@ -122,38 +122,31 @@
 
 /*************************************************************************************/
 
-~harmonizeProg = { |progression, durations, logger = false|
+~harmonizeProg = { |progression, logger = false|
 	var parsedChords = Dictionary.new();
-	//var triads, data, progState, rules;
-
-	var progState = ~progState;
-	var triads = ~triads;
-	var rules = ~rules;
-	var data = ~data;
-
-	//#triads, data, progState, rules = ~dictionaries;
+	var triads, data, progState, rules;
 
 	~logger = logger;
 	~loggerCount = 0;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~harmonizeProg: Function Call".format(~loggerCount).postln; };
 
+	#triads, data, progState, rules = ~dictionaries;
+
 	progState[\progression] = progression;
-	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
-	//progState[\durations] = durations;
+	data[\chords] = ~getChordDegreeArrays.(triads, progression);
 
 	data[\state][\nextChord] = Array.fill(4, {0});
-	progState[\result] = Array.fill(progState[\progression].size, {[]});
 	progState[\validChords] = Dictionary.new();
+	progState[\result] = Array.fill(progression.size, {[]});
 
-	~progParser.(progState[\progression], parsedChords);
+	~progParser.(progression, parsedChords);
 	~setRules.(progState, parsedChords);
 
 	if (~backtrackProg.(data, progState, rules, 0)) {
 		progState[\result].flop;
 	} {
-		"HarmonizeProg was NOT able to generate a progression".throw;
+		"HarmonizeProg was NOT able to harmonize the progression".throw;
 	}
 };
 )
-~dictionaries[1]

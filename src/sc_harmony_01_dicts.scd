@@ -33,7 +33,6 @@
 
 ~progState = Dictionary[
 	\progression     -> nil,
-	\durations       -> nil,
 	\ruleEnforcement -> nil,
 	\validChords     -> nil,
 	\result          -> nil
@@ -55,7 +54,6 @@
 	\enforceRootPosition          -> true,
 	\enforceFirstInversion        -> false,
 	\enforceSecondInversion       -> false,
-	\toggleCount                  -> 0
 ];
 
 ~dictionaries = [~triads, ~data, ~progState, ~rules];
@@ -66,15 +64,26 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetDataDict: Function Call".format(~loggerCount).postln; };
 
-	data[\chords][\midiChords]     = nil;
-	data[\chords][\progression]      = nil;
-	data[\chords][\durations]      = nil;
+	data[\chords]                  = nil;
 
 	data[\state][\currChord]       = nil;
+	data[\state][\nextChord]       = nil;
 	data[\state][\validNotes]      = nil;
 	data[\state][\nextValidChords] = nil;
 	data[\state][\nextCipher]      = nil;
 	nil;
+};
+
+/*************************************************************************************/
+
+~resetProgState = #{ |progState|
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetProgState: Function Call".format(~loggerCount).postln; };
+
+	progState[\progression]     -> nil;
+	progState[\ruleEnforcement] -> nil;
+	progState[\validChords]     -> nil;
+	progState[\result]          -> nil;
 };
 
 /*************************************************************************************/
