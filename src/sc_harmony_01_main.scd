@@ -21,11 +21,11 @@ Synth(\tone);
 /*************************************************************************************/
 // Get harmonized progression
 (
-~prog = ['CM', 'EM', 'AM', 'DM', 'Bd', 'CM'];
+~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
 ~dur = [1, 1, 1, 1, 1, 2];
 
-~result = ~harmonizeProg.(~prog);
-~result = ~result + 12; // Raise octave
+~result = ~harmonizeProg.(~prog, ~dur, false);
+~result = ~result + 12;
 )
 
 /*************************************************************************************/

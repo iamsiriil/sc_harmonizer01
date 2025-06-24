@@ -33,6 +33,7 @@
 
 ~progState = Dictionary[
 	\progression     -> nil,
+	\durations       -> nil,
 	\ruleEnforcement -> nil,
 	\validChords     -> nil,
 	\result          -> nil

@@ -53,7 +53,7 @@
 
 	~resetRules.(rules);
 
-	data[\state][\validNextChords].scramble;
+	data[\state][\validNextChords];
 };
 
 /*************************************************************************************/
@@ -74,7 +74,7 @@
 
 	~resetRules.(rules);
 
-	data[\state][\validNextChords].scramble;
+	data[\state][\validNextChords];
 };
 
 /*************************************************************************************/
@@ -104,7 +104,6 @@
 
 		progState[\validChords][i].do { |c|
 
-			data[\state][\currChord] = c;
 			progState[\result][i] = c;
 
 			result = ~backtrackProg.(data, progState, rules, i + 1);
@@ -122,7 +121,7 @@
 
 /*************************************************************************************/
 
-~harmonizeProg = { |progression, logger = false|
+~harmonizeProg = { |progression, durations, logger = false|
 	var parsedChords = Dictionary.new();
 	var triads, data, progState, rules;
 
@@ -134,6 +133,7 @@
 	#triads, data, progState, rules = ~dictionaries;
 
 	progState[\progression] = progression;
+	progState[\durations] = durations;
 	data[\chords] = ~getChordDegreeArrays.(triads, progression);
 
 	data[\state][\nextChord] = Array.fill(4, {0});
