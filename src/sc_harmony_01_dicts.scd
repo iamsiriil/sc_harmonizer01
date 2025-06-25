@@ -82,13 +82,12 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetDataDict: Function Call".format(~loggerCount).postln; };
 
-	data[\chords]                  = nil;
-
 	data[\state][\currChord]       = nil;
 	data[\state][\nextChord]       = nil;
 	data[\state][\validNotes]      = nil;
 	data[\state][\nextValidChords] = nil;
 	data[\state][\nextCipher]      = nil;
+	data[\chords]                  = nil;
 	nil;
 };
 
@@ -98,10 +97,11 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetProgState: Function Call".format(~loggerCount).postln; };
 
-	progState[\progression]     -> nil;
-	progState[\ruleEnforcement] -> nil;
-	progState[\validChords]     -> nil;
-	progState[\result]          -> nil;
+	progState[\progression]     = nil;
+	progState[\ruleEnforcement] = nil;
+	progState[\validChords]     = nil;
+	progState[\result]          = nil;
+	nil;
 };
 
 /*************************************************************************************/
