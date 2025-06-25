@@ -94,7 +94,7 @@ Ppar([
 ~data[\voice][\number]
 ~progState[\ruleEnforcement]
 
-
+~ruleKeys.do { |k| "%".format(k).padRight(30).post; ": %".format(~rules[k]).postln; }
 
 
 

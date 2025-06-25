@@ -59,6 +59,23 @@
 
 ~dictionaries = [~triads, ~data, ~progState, ~rules];
 
+~ruleKeys = [
+	\enforceVoiceCrossProhibition,
+	\enforceMelodicIntervals,
+	\enforceCommonTones,
+	\enforceVocalRange,
+	\enforceParallelOctaves,
+	\enforceParallelFifths,
+	\enforceNoteDuplicate,
+	\enforceRootDuplicate,
+	\enforceThirdDuplicate,
+	\enforceFifthDuplicate,
+	\enforceChordPosition,
+	\enforceRootPosition,
+	\enforceFirstInversion,
+	\enforceSecondInversion
+];
+
 /*************************************************************************************/
 
 ~resetDataDict = #{ |data|
@@ -108,8 +125,6 @@
 	rules[\enforceFirstInversion]        = false;
 	rules[\enforceSecondInversion]       = false;
 	rules[\enforceCommonTone]            = true;
-
-	rules[\toggleCount] = 0;
 	nil;
 };
 )
