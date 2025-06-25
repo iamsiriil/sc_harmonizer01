@@ -65,3 +65,43 @@ Ppar([
 	),
 ]).play;
 )
+
+
+~result = ~result + 12;
+(
+~dumpProg = { |data, progState, name|
+	var path = PathName.new("../data/scdump/dump%.txt".format(name).resolveRelative);
+	var file = File(path.fullPath, "a");
+
+	file.write("%\n".format(data[\voice][\number]));
+
+	progState[\result].flop.do { |v|
+		file.write("%\n".format(v));
+		file.write("%\n".format(progState[\durations]));
+	};
+
+	progState[\progression].size.do { |i|
+		file.write("%\n".format(i));
+		progState[\ruleEnforcement][i].do { |r|
+			file.write("%\n".format(r));
+		};
+	};
+
+	file.close;
+};
+~dumpProg.(~data, ~progState, "01");
+)
+~data[\voice][\number]
+~progState[\ruleEnforcement]
+
+
+
+
+
+
+
+
+
+
+
+
