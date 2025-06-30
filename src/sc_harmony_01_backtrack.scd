@@ -83,15 +83,18 @@
 ~backtrackProg = #{ |data, progState, rules, i|
 	var result;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getProgression: Function Call".format(~loggerCount).postln; };
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~backtrackProg: Function Call".format(~loggerCount).postln; };
 
-	data[\state][\nextCipher] = progState[\progression][i];
+	data[\state][\nextCipher] = progState[\progression][i].postln;
 
 	block { |return|
 
-		if (i == progState[\progression].size) {
-			result = true;
-			return.value(result);
+		i.postln;
+		if ((i == progState[\progression].size)) {
+			if (~progIsValid.(progState)) {
+				result = true;
+				return.value(result);
+			};
 		};
 
 		if (i == 0) {
@@ -122,12 +125,14 @@
 
 /*************************************************************************************/
 
-~harmonizeProg = #{ |progression, durations, sustain = true, logger = false|
+~harmonizeProg = #{ |progression, durations, direction = "up", sustain = true, logger = false|
 	var parsedChords = Dictionary.new();
 	var triads, data, progState, rules;
 
-	~logger = logger;
-	~loggerCount = 0;
+	if (logger) {
+		~logger = logger;
+		~loggerCount = 0;
+	};
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~harmonizeProg: Function Call".format(~loggerCount).postln; };
 
@@ -136,6 +141,7 @@
 	if (progression.size != durations.size) {
 		"Progression and Durations arrays are NOT of same size.".throw;
 	} {
+		progState[\direction] = direction;
 		progState[\durations] = durations;
 		progState[\progression] = progression;
 	};
@@ -156,18 +162,17 @@
 	};
 
 	if (sustain) {
-		~susCommonTones.(progState);
+		~sustainCommonTones.(progState);
 	}
 };
 
-~susCommonTones = { |progState|
+~sustainCommonTones = { |progState|
 	var result = Array.new(4);
 
 	progState[\result].do { |v|
 		var nprog = Array.new(v.size);
 		var ndur = Array.new(v.size);
 
-		v.postln;
 		result.add(~mergeNotes.(v, progState[\durations], nprog, ndur, 0, 0));
 	};
 	result;

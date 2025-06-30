@@ -36,6 +36,7 @@
 	\durations       -> nil,
 	\ruleEnforcement -> nil,
 	\validChords     -> nil,
+	\direction       -> nil,
 	\result          -> nil
 ];
 

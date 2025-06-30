@@ -219,4 +219,29 @@
 		rules[r[0]] = r[1];
 	};
 };
+
+/*************************************************************************************/
+~checkDirection = { |progState|
+	var result = true;
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkDirection: Function Call".format(~loggerCount).postln; };
+
+	progState[\direction].postln;
+
+	if (progState[\direction] == "up") {
+		progState[\result].do { |n, i|
+			if (i > 0) {
+				result = result && (progState[\result][i][3] >= progState[\result][i - 1][3]);
+			}
+		};
+	};
+	result.postln;
+};
+
+~progIsValid = { |progState|
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~progIsValid: Function Call".format(~loggerCount).postln; };
+
+	~checkDirection.(progState);
+};
 )

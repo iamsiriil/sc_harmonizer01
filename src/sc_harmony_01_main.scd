@@ -21,10 +21,11 @@ Synth(\tone);
 /*************************************************************************************/
 // Get harmonized progression
 (
-~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
-~dur = [1, 1, 1, 1, 1, 2];
+//~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
+~prog = ['CM', 'Em', 'GM', 'Bd', 'Dm', 'FM', 'Am', 'CM'];
+~dur = [1, 1, 1, 1, 1, 1, 1, 2];
 
-~result = ~harmonizeProg.(~prog, ~dur, sustain: true, logger: false);
+~result = ~harmonizeProg.(~prog, ~dur, sustain: true, logger: true);
 //~result = ~result + 12;
 )
 ~result.do { |n| n[1].postln };
