@@ -122,7 +122,7 @@
 
 /*************************************************************************************/
 
-~harmonizeProg = #{ |progression, durations, logger = false|
+~harmonizeProg = #{ |progression, durations, sustain = true, logger = false|
 	var parsedChords = Dictionary.new();
 	var triads, data, progState, rules;
 
@@ -132,6 +132,10 @@
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~harmonizeProg: Function Call".format(~loggerCount).postln; };
 
 	#triads, data, progState, rules = ~dictionaries;
+
+	if (progression.size != durations.size) {
+		"Progression and Durations arrays are NOT of same size.".throw;
+	};
 
 	progState[\durations] = durations;
 	progState[\progression] = progression;
@@ -148,6 +152,60 @@
 		progState[\result].flop;
 	} {
 		"HarmonizeProg was NOT able to harmonize the progression".throw;
+	};
+
+	if (sustain) {
+		~susCommonTones.(progState);
 	}
+};
+
+~susCommonTones = { |progState|
+	var result = Array.new(4);
+
+	progState[\result].flop.do { |v|
+		var nprog = Array.new(v.size);
+		var ndur = Array.new(v.size);
+
+		result.add(~mergeNotes.(v, progState[\durations], nprog, ndur, 0, 0));
+	};
+	result;
+};
+
+~mergeNotes = { |prog, dur, nprog, ndur, new, i|
+	var result;
+
+	block { |return|
+
+		if (i == (prog.size)) {
+			result = [nprog, ndur];
+			return.value(result);
+		};
+
+		if (i == 0) {
+			new = prog[i];
+			nprog.add(prog[i]);
+			ndur.add(dur[i]);
+			ndur.postln;
+			result = ~func.(prog, dur, nprog, ndur, new, i + 1);
+			//return.value(result);
+		};
+
+		if ((i > 0) && (new != prog[i])) {
+			new = prog[i];
+			nprog.add(prog[i]);
+			ndur.add(dur[i]);
+			ndur.postln;
+			result = ~func.(prog, dur, nprog, ndur, new, i + 1);
+			//return.value(result);
+		} {
+			ndur[ndur.size - 1] = ndur[ndur.size - 1] + dur[i];
+			ndur.postln;
+		};
+
+		result = ~func.(prog, dur, nprog, ndur, new, i + 1);
+		return.value(result);
+
+	};
+	result;
 };
 )

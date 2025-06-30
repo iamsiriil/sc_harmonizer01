@@ -24,7 +24,7 @@ Synth(\tone);
 ~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
 ~dur = [1, 1, 1, 1, 1, 2];
 
-~result = ~harmonizeProg.(~prog, ~dur, false);
+~result = ~harmonizeProg.(~prog, ~dur, sustain: true, logger: false);
 ~result = ~result + 12;
 )
 
@@ -35,32 +35,32 @@ Ppar([
 	// Bass
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~result[0], 1),
-		\dur, Pseq(~dur, 1),
+		\midinote, Pseq(~result[0][0], 1),
+		\dur, Pseq(~result[0][1], 1),
 		\amp, 0.1,
 	),
 
 	// Tenor
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~result[1], 1),
-		\dur, Pseq(~dur, 1),
+		\midinote, Pseq(~result[1][0], 1),
+		\dur, Pseq(~result[1][1], 1),
 		\amp, 0.1,
 	),
 
 	// Alto
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~result[2], 1),
-		\dur, Pseq(~dur, 1),
+		\midinote, Pseq(~result[2][0], 1),
+		\dur, Pseq(~result[2][1], 1),
 		\amp, 0.1,
 	),
 
 	// Soprano
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~result[3], 1),
-		\dur, Pseq(~dur, 1),
+		\midinote, Pseq(~result[3][0], 1),
+		\dur, Pseq(~result[3][1], 1),
 		\amp, 0.1,
 	),
 ]).play;
