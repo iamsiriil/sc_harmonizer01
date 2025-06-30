@@ -25,7 +25,7 @@ Synth(\tone);
 ~prog = ['CM', 'FM', 'DM', 'Bd', 'CM'];
 ~dur = [1, 1, 1, 1, 2];
 
-~result = ~harmonizeProg.(~prog, ~dur, direction: "up", sustain: true, logger: false);
+~result = ~harmonizeProg.(~prog, ~dur, direction: "up", sustain: true, logger: true);
 //~result = ~result + 12;
 )
 ~result.do { |n| n[1].postln };

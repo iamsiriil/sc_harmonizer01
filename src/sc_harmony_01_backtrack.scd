@@ -120,6 +120,20 @@
 	};
 	result;
 };*/
+~checkChord = { |progState, i|
+	var result = true;
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~checkChord: Function Call".format(~loggerCount).postln; };
+
+	progState[\result][i].postln;
+	if (i == 0) {
+		result = result && (progState[\result][i][0] != progState[\result][i][1]);
+	};
+	if ((i > 1) && (progState[\direction] == "up")) {
+		result = result && (progState[\result][i][3] > progState[\result][i - 1][3]);
+	};
+	result.postln;
+};
 
 ~backtrackProg = #{ |data, progState, rules, i|
 	var result;
@@ -165,12 +179,16 @@
 
 			"Assign valid chord: % to cipher: % at position: %".format(c, progState[\progression][i], i).postln;
 			progState[\result][i] = c;
+			"result[i]: %".format(progState[\result][i]).postln;
 
-			result = ~backtrackProg.(data, progState, rules, i + 1);
-			if (result) {
-				return.value(result);
+			if (~checkChord.(progState, i) == true) {
+				result = ~backtrackProg.(data, progState, rules, i + 1);
+				if (result) {
+					return.value(result);
+				};
+			} {
+				progState[\result][i] = [];
 			};
-			progState[\result][i] = [];
 
 		};
 		"All valid chords have been exasted, backtrack".postln;
@@ -180,6 +198,7 @@
 	};
 	result;
 };
+
 
 /*************************************************************************************/
 
