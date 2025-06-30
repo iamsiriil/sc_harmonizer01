@@ -248,6 +248,6 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~progIsValid: Function Call".format(~loggerCount).postln; };
 
-	~checkDirection.(progState);
+	~checkDirection.(progState).postln;
 };
 )

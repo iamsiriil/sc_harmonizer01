@@ -126,32 +126,44 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~backtrackProg: Function Call".format(~loggerCount).postln; };
 
-	data[\state][\nextCipher] = progState[\progression][i];
-
 	block { |return|
 
-		i.postln;
 		if ((i == progState[\progression].size)) {
+			"End of progression, test validity".postln;
 			if (~progIsValid.(progState)) {
+				"Progression is valid".postln;
 				result = true;
 				return.value(result);
 			} {
+				"Progression is NOT valid".postln;
 				result = false;
 				return.value(result);
 			};
 		};
 
-		if ((i == 0) && (progState[\validChords][i].isNil)) {
-			progState[\validChords][i] = ~getFirstChords.(data, progState, rules, i);
-		};
+		data[\state][\nextCipher] = progState[\progression][i];
 
-		if (((i > 0) && (i < progState[\progression].size)) && progState[\validChords][i].isNil) {
+		if (progState[\validChords][i].isNil) {
+			if (i == 0) {
+				"Get first valid chords".postln;
+				progState[\validChords][i] = ~getFirstChords.(data, progState, rules, i);
 
-			progState[\validChords][i] = ~getNextChords.(data, progState, rules, i);
+			} {
+				"Get next valid chords".postln;
+				progState[\validChords][i] = ~getNextChords.(data, progState, rules, i);
+			};
+
+			if (progState[\validChords][i].isEmpty) {
+				"No valid chords were found, backtrack".postln;
+				progState[\validChords][i] = nil;
+				result = false;
+				return.value(result);
+			}
 		};
 
 		progState[\validChords][i].do { |c|
 
+			"Assign valid chord: % to cipher: % at position: %".format(c, progState[\progression][i], i).postln;
 			progState[\result][i] = c;
 
 			result = ~backtrackProg.(data, progState, rules, i + 1);
@@ -161,6 +173,7 @@
 			progState[\result][i] = [];
 
 		};
+		"All valid chords have been exasted, backtrack".postln;
 		progState[\validChords][i] = nil;
 		result = false;
 		return.value(result);
