@@ -9,7 +9,7 @@ s.boot;
 // Create a synth
 (
 SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2|
-	var sig = SinOsc.ar(freq) * amp;
+	var sig = Pulse.ar(freq) * amp;
 	sig = sig * EnvGen.ar(Env.linen(0.1, (dur * 0.7)), doneAction: 2);
 	Out.ar(0, sig ! 2);
 }).add;
@@ -22,10 +22,10 @@ Synth(\tone);
 // Get harmonized progression
 (
 //~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
-~prog = ['CM', 'Em', 'GM', 'Bd', 'Dm', 'FM', 'Am', 'CM'];
+~prog = ['CM', 'FM', 'DM', 'AbM', 'EM', 'BbM', 'F#M', 'CM'];
 ~dur = [1, 1, 1, 1, 1, 1, 1, 2];
 
-~result = ~harmonizeProg.(~prog, ~dur, sustain: true, logger: true);
+~result = ~harmonizeProg.(~prog, ~dur, sustain: true, logger: false);
 //~result = ~result + 12;
 )
 ~result.do { |n| n[1].postln };
