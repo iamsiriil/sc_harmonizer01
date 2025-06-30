@@ -25,9 +25,9 @@ Synth(\tone);
 ~dur = [1, 1, 1, 1, 1, 2];
 
 ~result = ~harmonizeProg.(~prog, ~dur, sustain: true, logger: false);
-~result = ~result + 12;
+//~result = ~result + 12;
 )
-
+~result.do { |n| n[1].postln };
 /*************************************************************************************/
 // Play progression
 (
@@ -35,7 +35,7 @@ Ppar([
 	// Bass
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~result[0][0], 1),
+		\midinote, Pseq((~result[0][0] + 12), 1),
 		\dur, Pseq(~result[0][1], 1),
 		\amp, 0.1,
 	),
@@ -43,7 +43,7 @@ Ppar([
 	// Tenor
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~result[1][0], 1),
+		\midinote, Pseq((~result[1][0] + 12), 1),
 		\dur, Pseq(~result[1][1], 1),
 		\amp, 0.1,
 	),
@@ -51,7 +51,7 @@ Ppar([
 	// Alto
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~result[2][0], 1),
+		\midinote, Pseq((~result[2][0] + 12), 1),
 		\dur, Pseq(~result[2][1], 1),
 		\amp, 0.1,
 	),
@@ -59,7 +59,7 @@ Ppar([
 	// Soprano
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq(~result[3][0], 1),
+		\midinote, Pseq((~result[3][0] + 12), 1),
 		\dur, Pseq(~result[3][1], 1),
 		\amp, 0.1,
 	),
