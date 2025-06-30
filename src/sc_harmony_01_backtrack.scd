@@ -53,7 +53,7 @@
 
 	~resetRules.(rules);
 
-	data[\state][\validNextChords];
+	data[\state][\validNextChords].scramble;
 };
 
 /*************************************************************************************/
@@ -75,7 +75,7 @@
 
 	~resetRules.(rules);
 
-	data[\state][\validNextChords];
+	data[\state][\validNextChords].scramble;
 };
 
 /*************************************************************************************/
@@ -130,7 +130,15 @@
 		result = result && (progState[\result][i][0] != progState[\result][i][1]);
 	};
 	if ((i > 1) && (progState[\direction] == "up")) {
-		result = result && (progState[\result][i][3] > progState[\result][i - 1][3]);
+		result = result && (progState[\result][i][3] >= progState[\result][i - 1][3]);
+	};
+	if ((i > 1) && (progState[\direction] == "down")) {
+		result = result && (progState[\result][i][3] <= progState[\result][i - 1][3]);
+	};
+	if ((i > 1) && (progState[\direction] == "line")) {
+		var min = progState[\result][0][3] - 4;
+		var max = progState[\result][0][3] + 4;
+		result = result && ((progState[\result][i][3] >= min) && (progState[\result][i][3] <= max));
 	};
 	result.postln;
 };
