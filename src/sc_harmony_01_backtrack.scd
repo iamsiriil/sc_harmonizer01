@@ -80,7 +80,7 @@
 
 /*************************************************************************************/
 
-~backtrackProg = #{ |data, progState, rules, i|
+/*~backtrackProg = #{ |data, progState, rules, i|
 	var result;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~backtrackProg: Function Call".format(~loggerCount).postln; };
@@ -119,14 +119,14 @@
 		return.value(result);
 	};
 	result;
-};
+};*/
 
-/*~backtrackProg = #{ |data, progState, rules, i|
+~backtrackProg = #{ |data, progState, rules, i|
 	var result;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~backtrackProg: Function Call".format(~loggerCount).postln; };
 
-	data[\state][\nextCipher] = progState[\progression][i].postln;
+	data[\state][\nextCipher] = progState[\progression][i];
 
 	block { |return|
 
@@ -135,10 +135,13 @@
 			if (~progIsValid.(progState)) {
 				result = true;
 				return.value(result);
+			} {
+				result = false;
+				return.value(result);
 			};
 		};
 
-		if (i == 0) {
+		if ((i == 0) && (progState[\validChords][i].isNil)) {
 			progState[\validChords][i] = ~getFirstChords.(data, progState, rules, i);
 		};
 
@@ -154,15 +157,16 @@
 			result = ~backtrackProg.(data, progState, rules, i + 1);
 			if (result) {
 				return.value(result);
-			} {
-				progState[\result][i] = [];
-			}
+			};
+			progState[\result][i] = [];
+
 		};
+		progState[\validChords][i] = nil;
 		result = false;
 		return.value(result);
 	};
 	result;
-};*/
+};
 
 /*************************************************************************************/
 
