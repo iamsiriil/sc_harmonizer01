@@ -233,16 +233,21 @@ Progression Rules
 	if (i == 0) {
 		result = result && (progState[\result][i][0] != progState[\result][i][1]);
 	};
-	if ((i > 1) && (progState[\direction] == "up")) {
+	if ((progState[\progression].size >= 2) && (i > 1) && (progState[\direction] == "up")) {
 		result = result && (progState[\result][i][3] >= progState[\result][i - 1][3]);
 	};
-	if ((i > 1) && (progState[\direction] == "down")) {
+	if ((progState[\progression].size >= 2) && (i > 1) && (progState[\direction] == "down")) {
 		result = result && (progState[\result][i][3] <= progState[\result][i - 1][3]);
 	};
-	if ((i > 1) && (progState[\direction] == "line")) {
+	if ((progState[\progression].size >= 2) && (i > 1) && (progState[\direction] == "line")) {
 		var min = progState[\result][0][3] - 4;
 		var max = progState[\result][0][3] + 4;
 		result = result && ((progState[\result][i][3] >= min) && (progState[\result][i][3] <= max));
+	};
+	if ((progState[\progression].size >= 2) && (i > 1)) {
+		for (0, 3) { |j|
+			result = result && ((progState[\result][i][j] - progState[\result][i][j]).abs <= 7);
+		};
 	};
 	result.postln;
 };

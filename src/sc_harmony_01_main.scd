@@ -23,7 +23,7 @@ Synth(\tone);
 (
 //~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
 ~prog = ['CM', 'Em', 'GM', 'Bd', 'Dm', 'FM', 'Am', 'CM'];
-~dur = [2, 0.5, 0.5, 1, 0.5, 0.5, 1, 2];
+~dur = [1, 1, 1, 1, 1, 1, 1, 2];
 
 ~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: true, logger: false);
 //~result = ~result + 12;
@@ -66,38 +66,6 @@ Ppar([
 	),
 ]).play;
 )
-
-
-~result = ~result + 12;
-(
-~dumpProg = { |data, progState, name|
-	var path = PathName.new("../data/scdump/dump%.txt".format(name).resolveRelative);
-	var file = File(path.fullPath, "a");
-
-	file.write("%\n".format(data[\voice][\number]));
-
-	progState[\result].flop.do { |v|
-		file.write("%\n".format(v));
-		file.write("%\n".format(progState[\durations]));
-	};
-
-	progState[\progression].size.do { |i|
-		file.write("%\n".format(i));
-		progState[\ruleEnforcement][i].do { |r|
-			file.write("%\n".format(r));
-		};
-	};
-
-	file.close;
-};
-~dumpProg.(~data, ~progState, "01");
-)
-~data[\voice][\number]
-~progState[\ruleEnforcement]
-
-~ruleKeys.do { |k| "%".format(k).padRight(30).post; ": %".format(~rules[k]).postln; }
-
-
 
 
 
