@@ -191,6 +191,7 @@
 ~harmonizeProg = #{ |progression, durations, direction = "up", sustain = true, logger = false|
 	var parsedChords = Dictionary.new();
 	var triads, data, progState, rules;
+	var return = Array.fill(2, {Array.new(4)});
 
 	~logger = logger;
 	~loggerCount = 0;
@@ -225,7 +226,11 @@
 	if (sustain) {
 		~sustainCommonTones.(progState);
 	} {
-		progState[\result];
+		progState[\result].do { |v|
+			return[0].add(v);
+			return[1].add(progState[\durations]);
+		};
+		return;
 	}
 };
 )

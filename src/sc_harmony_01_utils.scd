@@ -97,15 +97,20 @@
 /*************************************************************************************/
 
 ~sustainCommonTones = { |progState|
-	var result = Array.new(4);
+	var temp = Array.new(4);
+	var return = Array.fill(2, {Array.new(4)});
 
 	progState[\result].do { |v|
 		var nprog = Array.new(v.size);
 		var ndur = Array.new(v.size);
 
-		result.add(~mergeNotes.(v, progState[\durations], nprog, ndur, 0, 0));
+		temp.add(~mergeNotes.(v, progState[\durations], nprog, ndur, 0, 0));
 	};
-	result;
+	temp.do { |i|
+		return[0].add(i[0]);
+		return[1].add(i[1]);
+	};
+	return;
 };
 
 /*************************************************************************************/

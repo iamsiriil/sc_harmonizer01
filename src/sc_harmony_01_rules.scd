@@ -229,27 +229,31 @@ Progression Rules
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~checkChord: Function Call".format(~loggerCount).postln; };
 
-	progState[\result][i].postln;
 	if (i == 0) {
 		result = result && (progState[\result][i][0] != progState[\result][i][1]);
 	};
-	if ((progState[\progression].size >= 2) && (i > 1) && (progState[\direction] == "up")) {
+	if ((progState[\progression].size >= 2) && (i >= 1) && (progState[\direction] == "up")) {
 		result = result && (progState[\result][i][3] >= progState[\result][i - 1][3]);
 	};
-	if ((progState[\progression].size >= 2) && (i > 1) && (progState[\direction] == "down")) {
+	if ((progState[\progression].size >= 2) && (i >= 1) && (progState[\direction] == "down")) {
 		result = result && (progState[\result][i][3] <= progState[\result][i - 1][3]);
 	};
-	if ((progState[\progression].size >= 2) && (i > 1) && (progState[\direction] == "line")) {
+	if ((progState[\progression].size >= 2) && (i >= 1) && (progState[\direction] == "line")) {
 		var min = progState[\result][0][3] - 4;
 		var max = progState[\result][0][3] + 4;
 		result = result && ((progState[\result][i][3] >= min) && (progState[\result][i][3] <= max));
 	};
-	if ((progState[\progression].size >= 2) && (i > 1)) {
+	if ((progState[\progression].size >= 3) && (i > 1)) {
+		var a = (progState[\result][i - 2][0] - progState[\result][i - 1][0]).postln;
+		var b = (progState[\result][i - 1][0] - progState[\result][i][0]).postln;
+		result = result && (((a + b).abs != 10) && ((a + b).abs != 11));
+	};
+	if ((progState[\progression].size >= 2) && (i >= 2)) {
 		for (0, 3) { |j|
-			result = result && ((progState[\result][i][j] - progState[\result][i][j]).abs <= 7);
+			result = result && ((progState[\result][i][j] - progState[\result][i - 1][j]).abs <= 7);
 		};
 	};
-	result.postln;
+	result;
 };
 
 /*************************************************************************************/

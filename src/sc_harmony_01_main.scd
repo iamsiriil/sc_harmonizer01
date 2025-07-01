@@ -8,10 +8,10 @@ s.boot;
 /*************************************************************************************/
 // Create a synth
 (
-SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2|
+SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2, pan = 0|
 	var sig = Pulse.ar(freq) * amp;
 	sig = sig * EnvGen.ar(Env.linen(0.1, (dur * 0.7)), doneAction: 2);
-	Out.ar(0, sig ! 2);
+	Out.ar(0, Pan2.ar((sig ! 2), pan));
 }).add;
 )
 
@@ -22,53 +22,54 @@ Synth(\tone);
 // Get harmonized progression
 (
 //~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
-~prog = ['CM', 'Em', 'GM', 'Bd', 'Dm', 'FM', 'Am', 'CM'];
-~dur = [1, 1, 1, 1, 1, 1, 1, 2];
+~prog = ['Cm', 'Fm', 'F#d', 'GM', 'CM'];
+~dur = [2, 1, 2, 1, 2];
 
-~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: true, logger: false);
-//~result = ~result + 12;
+~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: false, logger: false);
 )
-~result.do { |n| n[1].postln };
+~result;
 /*************************************************************************************/
 // Play progression
 (
+~octave = (_ + 12);
 Ppar([
 	// Bass
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq((~result[0][0] + 12), 1),
-		\dur, Pseq(~result[0][1], 1),
+		\midinote, Pseq(~octave.(~result[0][0]), 1),
+		\dur, Pseq(~result[1][0], 1),
 		\amp, 0.1,
+		\pan, -0.9
 	),
 
 	// Tenor
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq((~result[1][0] + 12), 1),
+		\midinote, Pseq(~octave.(~result[0][1]), 1),
 		\dur, Pseq(~result[1][1], 1),
 		\amp, 0.1,
+		\pan, -0.3
 	),
 
 	// Alto
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq((~result[2][0] + 12), 1),
-		\dur, Pseq(~result[2][1], 1),
+		\midinote, Pseq(~octave.(~result[0][2]), 1),
+		\dur, Pseq(~result[1][2], 1),
 		\amp, 0.1,
+		\pan, 0.3
 	),
 
 	// Soprano
 	Pbind(
 		\instrument, \tone,
-		\midinote, Pseq((~result[3][0] + 12), 1),
-		\dur, Pseq(~result[3][1], 1),
+		\midinote, Pseq(~octave.(~result[0][3]), 1),
+		\dur, Pseq(~result[1][3], 1),
 		\amp, 0.1,
+		\pan, 0.9
 	),
 ]).play;
 )
-
-
-
 
 
 
