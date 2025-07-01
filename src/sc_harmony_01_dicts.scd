@@ -100,9 +100,12 @@
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetProgState: Function Call".format(~loggerCount).postln; };
 
 	progState[\progression]     = nil;
+	progState[\durations]       = nil;
 	progState[\ruleEnforcement] = nil;
 	progState[\validChords]     = nil;
+	progState[\direction]       = nil;
 	progState[\result]          = nil;
+	progState[\dump]            = nil;
 	nil;
 };
 
