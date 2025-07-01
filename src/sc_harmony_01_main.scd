@@ -9,7 +9,7 @@ s.boot;
 // Create a synth
 (
 SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2, pan = 0|
-	var sig = Pulse.ar(freq) * amp;
+	var sig = Saw.ar(freq) * amp;
 	sig = sig * EnvGen.ar(Env.linen(0.1, (dur * 0.7)), doneAction: 2);
 	Out.ar(0, Pan2.ar((sig ! 2), pan));
 }).add;
@@ -22,10 +22,10 @@ Synth(\tone);
 // Get harmonized progression
 (
 //~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
-~prog = ['Cm', 'Fm', 'F#d', 'GM', 'CM'];
-~dur = [2, 1, 2, 1, 2];
+~prog = ['Cm', 'Bd', 'EbM', 'Fm', 'C#M', 'GM', 'Cm'];
+~dur = [1, 1, 1, 1, 1, 1, 4];
 
-~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: false, logger: false);
+~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: false, logger: false, dump: false);
 )
 ~result;
 /*************************************************************************************/
@@ -71,7 +71,13 @@ Ppar([
 ]).play;
 )
 
+(
 
+~prog.do { |k, i|
+	var names = ~triads[k][\names].wrapExtend(~triads[k][\notes].size).postln;
+	names.collect { |n| ~result[i]}
+};
+)
 
 
 

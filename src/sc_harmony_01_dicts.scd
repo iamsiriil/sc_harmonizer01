@@ -37,7 +37,8 @@
 	\ruleEnforcement -> nil,
 	\validChords     -> nil,
 	\direction       -> nil,
-	\result          -> nil
+	\result          -> nil,
+	\dump            -> nil
 ];
 
 // Dictionary containing default rule settings

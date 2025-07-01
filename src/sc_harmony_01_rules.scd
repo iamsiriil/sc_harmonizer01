@@ -197,6 +197,11 @@
 			arr.add([\enforceCommonTones, false]);
 			arr.add([\enforceParallelOctaves, false]);
 			arr.add([\enforceParallelFifths, false]);
+		} {
+			/*arr.add([\enforceNoteDuplicate, false]);
+			arr.add([\enforceRootDuplicate, false]);*/
+			arr.add([\enforceChordPosition, false]);
+			arr.add([\enforceRootPosition, false])
 		};
 
 		if ((chordDict[i][\distance] == 6) && (test == false)) {
@@ -204,9 +209,10 @@
 			arr.add([\enforceParallelOctaves, false]);
 			arr.add([\enforceParallelFifths, false]);
 		};
+
 		dict[i] = arr;
 	};
-	progState[\ruleEnforcement] = dict;
+	progState[\ruleEnforcement] = dict.postln;
 };
 
 /*************************************************************************************/

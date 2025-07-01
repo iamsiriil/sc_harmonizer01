@@ -147,7 +147,7 @@
 
 /*************************************************************************************/
 
-~harmonizeProg = #{ |progression, durations, direction = "up", sustain = true, logger = false|
+~harmonizeProg = #{ |progression, durations, direction = "up", sustain = true, logger = false, dump = false|
 	var parsedChords = Dictionary.new();
 	var triads, data, progState, rules;
 	var return = Array.fill(2, {Array.new(4)});
@@ -177,9 +177,14 @@
 	~setRules.(progState, parsedChords);
 
 	if (~backtrackProg.(data, progState, rules, 0)) {
+		progState[\dump] = progState[\result];
 		progState[\result] = progState[\result].flop;
 	} {
 		"HarmonizeProg was NOT able to harmonize the progression".throw;
+	};
+
+	if (dump) {
+		progState[\dump];
 	};
 
 	if (sustain) {
@@ -190,6 +195,6 @@
 			return[1].add(progState[\durations]);
 		};
 		return;
-	}
+	};
 };
 )
