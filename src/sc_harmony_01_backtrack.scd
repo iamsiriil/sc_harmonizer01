@@ -80,47 +80,6 @@
 
 /*************************************************************************************/
 
-/*~backtrackProg = #{ |data, progState, rules, i|
-	var result;
-
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~backtrackProg: Function Call".format(~loggerCount).postln; };
-
-	data[\state][\nextCipher] = progState[\progression][i].postln;
-
-	block { |return|
-
-		i.postln;
-		if ((i == progState[\progression].size)) {
-			result = true;
-			return.value(result);
-		};
-
-		if (i == 0) {
-			progState[\validChords][i] = ~getFirstChords.(data, progState, rules, i);
-		};
-
-		if (((i > 0) && (i < progState[\progression].size)) && progState[\validChords][i].isNil) {
-
-			progState[\validChords][i] = ~getNextChords.(data, progState, rules, i);
-		};
-
-		progState[\validChords][i].do { |c|
-
-			progState[\result][i] = c;
-
-			result = ~backtrackProg.(data, progState, rules, i + 1);
-			if (result) {
-				return.value(result);
-			} {
-				progState[\result][i] = [];
-			}
-		};
-		result = false;
-		return.value(result);
-	};
-	result;
-};*/
-
 ~backtrackProg = #{ |data, progState, rules, i|
 	var result;
 
