@@ -21,10 +21,10 @@ Synth(\tone);
 /*************************************************************************************/
 // Get harmonized progression
 (
-~prog = ['Cm', 'FM', 'BbM', 'Bbm', 'EbM', 'AbM'];
-~dur = [1, 1, 1, 1, 1, 4];
+~prog = ['Cm', 'FM', 'BbM', 'Bbm', 'EbM', 'AbM', 'G#m', 'C#M', 'F#M', 'F#m', 'BM', 'EM'];
+~dur = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4];
 
-~result = ~harmonizeProg.(~prog, ~dur, direction: "up", sustain: false, logger: false, dump: false);
+~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: true, logger: false, dump: false);
 )
 ~result;
 /*************************************************************************************/
@@ -81,7 +81,14 @@ Ppar([
 (
 ~progState[\progression].do { |c, i|
 	"Chord: %".format(c).postln;
-	~progState[\ruleEnforcement][i].do { |r| r.postln }
+	~ruleKeys.do { |k|
+
+		if (~progState[\ruleEnforcement][i][k] == nil) {
+			[k, ~rules[k]].postln;
+		} {
+			[k, ~progState[\ruleEnforcement][i][k]].postln;
+		}
+	};
 };
 )
 
