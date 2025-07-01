@@ -120,28 +120,6 @@
 	};
 	result;
 };*/
-~checkChord = { |progState, i|
-	var result = true;
-
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~checkChord: Function Call".format(~loggerCount).postln; };
-
-	progState[\result][i].postln;
-	if (i == 0) {
-		result = result && (progState[\result][i][0] != progState[\result][i][1]);
-	};
-	if ((i > 1) && (progState[\direction] == "up")) {
-		result = result && (progState[\result][i][3] >= progState[\result][i - 1][3]);
-	};
-	if ((i > 1) && (progState[\direction] == "down")) {
-		result = result && (progState[\result][i][3] <= progState[\result][i - 1][3]);
-	};
-	if ((i > 1) && (progState[\direction] == "line")) {
-		var min = progState[\result][0][3] - 4;
-		var max = progState[\result][0][3] + 4;
-		result = result && ((progState[\result][i][3] >= min) && (progState[\result][i][3] <= max));
-	};
-	result.postln;
-};
 
 ~backtrackProg = #{ |data, progState, rules, i|
 	var result;
@@ -249,52 +227,5 @@
 	} {
 		progState[\result];
 	}
-};
-
-~sustainCommonTones = { |progState|
-	var result = Array.new(4);
-
-	progState[\result].do { |v|
-		var nprog = Array.new(v.size);
-		var ndur = Array.new(v.size);
-
-		result.add(~mergeNotes.(v, progState[\durations], nprog, ndur, 0, 0));
-	};
-	result;
-};
-
-~mergeNotes = { |prog, dur, nprog, ndur, new, i|
-	var result;
-
-	block { |return|
-
-		if (i == (prog.size)) {
-			result = [nprog, ndur];
-			return.value(result);
-		};
-
-		if (i == 0) {
-			new = prog[i];
-			nprog.add(prog[i]);
-			ndur.add(dur[i]);
-			result = ~mergeNotes.(prog, dur, nprog, ndur, new, i + 1);
-			return.value(result);
-		};
-
-		if ((i > 0) && (new != prog[i])) {
-			new = prog[i];
-			nprog.add(prog[i]);
-			ndur.add(dur[i]);
-			result = ~mergeNotes.(prog, dur, nprog, ndur, new, i + 1);
-			return.value(result);
-		} {
-			ndur[ndur.size - 1] = ndur[ndur.size - 1] + dur[i];
-		};
-
-		result = ~mergeNotes.(prog, dur, nprog, ndur, new, i + 1);
-		return.value(result);
-
-	};
-	result;
 };
 )

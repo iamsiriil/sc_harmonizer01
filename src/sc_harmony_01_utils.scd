@@ -56,4 +56,55 @@
 
 	chord.collect { |n| midiRange[\octave][n] };
 };
+
+/*************************************************************************************/
+
+~mergeNotes = { |prog, dur, nprog, ndur, new, i|
+	var result;
+
+	block { |return|
+
+		if (i == (prog.size)) {
+			result = [nprog, ndur];
+			return.value(result);
+		};
+
+		if (i == 0) {
+			new = prog[i];
+			nprog.add(prog[i]);
+			ndur.add(dur[i]);
+			result = ~mergeNotes.(prog, dur, nprog, ndur, new, i + 1);
+			return.value(result);
+		};
+
+		if ((i > 0) && (new != prog[i])) {
+			new = prog[i];
+			nprog.add(prog[i]);
+			ndur.add(dur[i]);
+			result = ~mergeNotes.(prog, dur, nprog, ndur, new, i + 1);
+			return.value(result);
+		} {
+			ndur[ndur.size - 1] = ndur[ndur.size - 1] + dur[i];
+		};
+
+		result = ~mergeNotes.(prog, dur, nprog, ndur, new, i + 1);
+		return.value(result);
+
+	};
+	result;
+};
+
+/*************************************************************************************/
+
+~sustainCommonTones = { |progState|
+	var result = Array.new(4);
+
+	progState[\result].do { |v|
+		var nprog = Array.new(v.size);
+		var ndur = Array.new(v.size);
+
+		result.add(~mergeNotes.(v, progState[\durations], nprog, ndur, 0, 0));
+	};
+	result;
+};
 )
