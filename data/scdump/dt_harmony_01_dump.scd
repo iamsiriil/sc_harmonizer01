@@ -5,7 +5,7 @@
 ~dumpChords = { |midiRange, triads, progState, file|
 	var names, notes;
 
-	file.write("%\n".format(progState[\progression].size.asString));
+	file.write("%\n".format(progState[\progression].size));
 
 	progState[\progression].do { |p, i|
 
