@@ -2,7 +2,7 @@
 - HARMONY 01 / Dictionaries and reset functions
 **************************************************************************************/
 (
-~midiRoot = { |note|
+~midiRoot = #{ |note|
 	var midi = 0;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~midiRoot: Function Call".format(~loggerCount).postln; };
@@ -21,7 +21,7 @@
 
 /*************************************************************************************/
 
-~rootDistance = { |prog, chords|
+~rootDistance = #{ |prog, chords|
 	var arr = Array.new(prog.size);
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~rootDistance: Function Call".format(~loggerCount).postln; };
@@ -50,7 +50,7 @@
 
 /*************************************************************************************/
 
-~progParser = { |prog, chords|
+~progParser = #{ |prog, chords|
 	var arr;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~progParser: Function Call".format(~loggerCount).postln; };
@@ -72,5 +72,38 @@
 	if (prog.size > 1){
 		~rootDistance.(prog, chords);
 	}
+};
+
+/*************************************************************************************/
+
+~setRules = { |progState, chordDict, test = false|
+	var dict = Dictionary.new();
+
+	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~setRules: Function Call".format(~loggerCount).postln; };
+
+	progState[\progression].size.do { |i|
+		var arr = Array.new(10);
+
+		if (i == 0) {
+			arr.add([\enforceMelodicIntervals, false]);
+			arr.add([\enforceCommonTones, false]);
+			arr.add([\enforceParallelOctaves, false]);
+			arr.add([\enforceParallelFifths, false]);
+		} {
+			/*arr.add([\enforceNoteDuplicate, false]);
+			arr.add([\enforceRootDuplicate, false]);*/
+			arr.add([\enforceChordPosition, false]);
+			arr.add([\enforceRootPosition, false])
+		};
+
+		if ((chordDict[i][\distance] == 6) && (test == false)) {
+			arr.add([\enforceMelodicIntervals, false]);
+			arr.add([\enforceParallelOctaves, false]);
+			arr.add([\enforceParallelFifths, false]);
+		};
+
+		dict[i] = arr;
+	};
+	progState[\ruleEnforcement] = dict.postln;
 };
 )
