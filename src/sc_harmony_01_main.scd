@@ -24,7 +24,7 @@ Synth(\tone);
 ~prog = ['Cm', 'FM', 'BbM', 'Bbm', 'EbM', 'AbM', 'G#m', 'C#M', 'F#M', 'F#m', 'BM', 'EM'];
 ~dur = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4];
 
-~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: true, logger: false, dump: false);
+~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: false, logger: false, dump: false);
 )
 ~result;
 /*************************************************************************************/

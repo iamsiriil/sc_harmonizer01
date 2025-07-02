@@ -46,13 +46,16 @@
 /*************************************************************************************/
 
 ~dumpData = { |midiRange, triads, progState, rules, ruleKeys|
-	var path = PathName.new("./dump.txt".resolveRelative);
-	var file = File.new(path.fullPath, "w");
+	var path_txt = PathName.new("python/dump.txt".resolveRelative);
+	var path_py = PathName.new("python/dt_harmony_01_parse.py".resolveRelative);
+	var file = File.new(path_txt.fullPath, "w");
 
 	~dumpChords.(~midiRange, ~triads, ~progState, file);
 	~dumpRules.(~progState, ~rules, ~ruleKeys, file);
 
 	file.close;
+
+	"python3 %".format(path_py.fullPath).unixCmd;
 };
 )
 

@@ -18,16 +18,14 @@ def parseSCDump():
 
             rules.append(rule)
 
+    for i in range(0, progSize):
+        if "b" in ciphers[i]:
+            ciphers[i] = ciphers[i].replace("b", "-")
+
     return progSize, ciphers, chords, rules
 
 
-size, ciphers, chords, rules = parseSCDump()
 
-#for i in range(0, size):
-    #print(ciphers[i])
-   # print(chords[i])
-   # for r in rules[i]:
-   #     print(r)
 def getScore(size, ciphers, chords, rules):
     score = stream.Score()
 
@@ -43,6 +41,11 @@ def getScore(size, ciphers, chords, rules):
 
     for v, i in zip(voices, range(0, 4)):
         for c, j in zip(ciphers, range(0, size)):
+
+            if i == 3:
+                cipher = harmony.ChordSymbol(ciphers[j])
+                v.append(cipher)
+
             stm = 'down' if i % 2 == 0 else 'up'
             dur = duration.Duration(type='whole')
             nt = note.Note(chords[j][i])
@@ -51,17 +54,20 @@ def getScore(size, ciphers, chords, rules):
             nt.stemDirection = stm
             v.append(nt)
 
-            if i == 0:
-                for k in rules[j]:
-                    rule = expressions.TextExpression(k)
-                    rule.style.fontSize = 5
-                    v.append(rule)
-
-
-
+           # if i == 0:
+           #     for k in rules[j]:
+           #         rule = expressions.TextExpression(k)
+           #         rule.style.fontSize = 5
+           #         v.append(rule)
 
     bass.append([bas, ten])
     treble.append([alt, spn])
+    
+    for part in [treble, bass]:
+        for m in part.getElementsByClass("Measure"):
+            m.rightBarline = bar.Barline("regular")
+            m.layoutWidth = 800
+            m.insert(0, layout.SystemLayout(isNew=True))
 
     score.insert(0, treble)
     score.insert(0, bass)
@@ -69,4 +75,5 @@ def getScore(size, ciphers, chords, rules):
     score.show()
     
 
+size, ciphers, chords, rules = parseSCDump()
 getScore(size, ciphers, chords, rules)
