@@ -21,8 +21,8 @@ Synth(\tone);
 /*************************************************************************************/
 // Get harmonized progression
 (
-~prog = ['Cm', 'FM', 'BbM', 'Bbm', 'EbM', 'AbM', 'G#m', 'C#M', 'F#M', 'F#m', 'BM', 'EM'];
-~dur = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4];
+~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
+~dur = [1, 1, 1, 1, 1, 4];
 
 ~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: false, logger: false, dump: false);
 )
@@ -69,26 +69,5 @@ Ppar([
 	),
 ]).play;
 )
-~resetProgState.(~progState)
-(
 
-~prog.do { |k, i|
-	var names = ~triads[k][\names].wrapExtend(~triads[k][\notes].size).postln;
-	names.collect { |n| ~result[i]}
-};
-)
-
-(
-~progState[\progression].do { |c, i|
-	"Chord: %".format(c).postln;
-	~ruleKeys.do { |k|
-
-		if (~progState[\ruleEnforcement][i][k] == nil) {
-			[k, ~rules[k]].postln;
-		} {
-			[k, ~progState[\ruleEnforcement][i][k]].postln;
-		}
-	};
-};
-)
-
+~dumpData.(~midiRange, ~triads, ~progState, ~rules, ~ruleKeys);

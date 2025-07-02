@@ -59,8 +59,6 @@
 	\enforceSecondInversion       -> false,
 ];
 
-~dictionaries = [~triads, ~data, ~progState, ~rules];
-
 ~ruleKeys = [
 	\enforceVoiceCrossProhibition,
 	\enforceMelodicIntervals,
@@ -77,6 +75,8 @@
 	\enforceFirstInversion,
 	\enforceSecondInversion
 ];
+
+~dictionaries = [~midiRange, ~triads, ~data, ~progState, ~rules, ~ruleKeys];
 
 /*************************************************************************************/
 

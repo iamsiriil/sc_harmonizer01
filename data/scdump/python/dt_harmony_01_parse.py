@@ -1,4 +1,5 @@
 from music21 import *
+import os
 
 def parseSCDump():
     with open("/home/siriil/Music/projects/harmony01/data/scdump/python/dump.txt", "r") as file:
@@ -60,9 +61,16 @@ def getScore(size, ciphers, chords, rules):
            #         rule.style.fontSize = 5
            #         v.append(rule)
 
-    bass.append([bas, ten])
+    tclef = clef.TrebleClef()
+    bclef = clef.BassClef()
+
+    treble.append(tclef)
+    bass.append(bclef)
+
     treble.append([alt, spn])
+    bass.append([bas, ten])
     
+
     for part in [treble, bass]:
         for m in part.getElementsByClass("Measure"):
             m.rightBarline = bar.Barline("regular")

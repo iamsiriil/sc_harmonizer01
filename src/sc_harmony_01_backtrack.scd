@@ -148,8 +148,8 @@
 /*************************************************************************************/
 
 ~harmonizeProg = #{ |progression, durations, direction = "up", sustain = true, logger = false, dump = false|
+	var midiRange, triads, data, progState, rules, ruleKeys;
 	var parsedChords = Dictionary.new();
-	var triads, data, progState, rules;
 	var return = Array.fill(2, {Array.new(4)});
 
 	~logger = logger;
@@ -157,7 +157,7 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~harmonizeProg: Function Call".format(~loggerCount).postln; };
 
-	#triads, data, progState, rules = ~dictionaries;
+	#midiRange, triads, data, progState, rules, ruleKeys = ~dictionaries;
 
 	if (progression.size != durations.size) {
 		"Progression and Durations arrays are NOT of same size.".throw;
@@ -184,7 +184,7 @@
 	};
 
 	if (dump) {
-		progState[\dump];
+		//~dumpData.(midiRange, triads, progState, rules, ruleKeys);
 	};
 
 	if (sustain) {
