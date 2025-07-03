@@ -30,55 +30,82 @@ def parseSCDump():
 def getScore(size, ciphers, chords, rules):
     score = stream.Score()
 
-    treble = stream.Part()
-    bass = stream.Part()
 
-    bas = stream.Voice()
-    ten = stream.Voice()
-    alt = stream.Voice()
-    spn = stream.Voice()
+    #tclef = clef.TrebleClef()
+    #bclef = clef.BassClef()
 
-    voices = [bas, ten, alt, spn]
+    #treble.append(tclef)
+    #bass.append(bclef)
 
-    for v, i in zip(voices, range(0, 4)):
-        for c, j in zip(ciphers, range(0, size)):
+    for cipher, chord in zip(ciphers, chords):
+        measure = stream.Measure()
 
-            if i == 3:
-                cipher = harmony.ChordSymbol(ciphers[j])
-                v.append(cipher)
+        treble = stream.Part()
+        bass = stream.Part()
+        
+        bas = stream.Voice()
+        ten = stream.Voice()
+        alt = stream.Voice()
+        spn = stream.Voice()
 
-            stm = 'down' if i % 2 == 0 else 'up'
-            dur = duration.Duration(type='whole')
-            nt = note.Note(chords[j][i])
+        voices = [bas, ten, alt, spn]
 
-            nt.duration = dur
-            nt.stemDirection = stm
+        symbol = harmony.ChordSymbol(cipher)
+
+        measure.insert(0, symbol)
+
+        for v, i in zip(voices, range(0, 4)):
+            dur = duration.Duration(type = 'whole')
+            nt = note.Note(chord[i])
+            nt.duration = dur;
             v.append(nt)
+        
+        treble.append([spn, alt])
+        bass.append([ten, bas])
 
-           # if i == 0:
-           #     for k in rules[j]:
-           #         rule = expressions.TextExpression(k)
-           #         rule.style.fontSize = 5
-           #         v.append(rule)
+        measure.insert(0, treble)
+        measure.insert(0, bass)
 
-    tclef = clef.TrebleClef()
-    bclef = clef.BassClef()
+        score.insert(0, measure)
+   # for v, i in zip(voices, range(0, 4)):
+   #     for c, j in zip(ciphers, range(0, size)):
 
-    treble.append(tclef)
-    bass.append(bclef)
+   #         if i == 3:
+   #             cipher = harmony.ChordSymbol(ciphers[j])
+   #             v.append(cipher)
 
-    treble.append([alt, spn])
-    bass.append([bas, ten])
-    
+   #         stm = 'down' if i % 2 == 0 else 'up'
+   #         dur = duration.Duration(type='whole')
+   #         nt = note.Note(chords[j][i])
 
-    for part in [treble, bass]:
-        for m in part.getElementsByClass("Measure"):
-            m.rightBarline = bar.Barline("regular")
-            m.layoutWidth = 800
-            m.insert(0, layout.SystemLayout(isNew=True))
+   #         nt.duration = dur
+   #         nt.stemDirection = stm
+   #         v.append(nt)
 
-    score.insert(0, treble)
-    score.insert(0, bass)
+   #        # if i == 0:
+   #        #     for k in rules[j]:
+   #        #         rule = expressions.TextExpression(k)
+   #        #         rule.style.fontSize = 5
+   #        #         v.append(rule)
+
+   # tclef = clef.TrebleClef()
+   # bclef = clef.BassClef()
+
+   # treble.append(tclef)
+   # bass.append(bclef)
+
+   # treble.append([alt, spn])
+   # bass.append([bas, ten])
+   # 
+
+   # for part in [treble, bass]:
+   #     for m in part.getElementsByClass("Measure"):
+   #         m.rightBarline = bar.Barline("regular")
+   #         m.layoutWidth = 800
+   #         m.insert(0, layout.SystemLayout(isNew=True))
+
+   # score.insert(0, treble)
+   # score.insert(0, bass)
 
     score.show()
     
