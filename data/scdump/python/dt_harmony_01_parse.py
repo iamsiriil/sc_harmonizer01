@@ -82,19 +82,6 @@ def getScore(size, ciphers, chords, rules):
     lastTrebleMeasure.rightBarline = finalBar
     lastBassMeasure.rightBarline = finalBar
 
-    headerText = expressions.TextExpression(
-            "ECT: Enforce Common Tone"
-            "EPF: Enforce Parallel Fifths"
-            )
-    infoMeasure = stream.Measure()
-    infoMeasure.insert(0, headerText)
-    infoMeasure.rightBarline = None
-
-    infoPart = stream.Part()
-    infoPart.append(infoMeasure)
-
-    score.insert(0, infoPart)
-
     score.show()
     
 

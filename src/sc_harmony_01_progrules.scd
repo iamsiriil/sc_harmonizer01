@@ -28,8 +28,8 @@
 	};
 
 	if ((progression.size >= 3) && (i > 1)) {
-		var a = (progResult[i - 2][0] - progResult[i - 1][0]).postln;
-		var b = (progResult[i - 1][0] - progResult[i][0]).postln;
+		var a = (progResult[i - 2][0] - progResult[i - 1][0]);
+		var b = (progResult[i - 1][0] - progResult[i][0]);
 		result = result && (((a + b).abs != 10) && ((a + b).abs != 11));
 	};
 
@@ -72,6 +72,6 @@
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~progIsValid: Function Call".format(~loggerCount).postln; };
 
-	~checkDirection.(progState).postln;
+	~checkDirection.(progState);
 };
 )

@@ -104,6 +104,6 @@
 
 		dict[i] = arr;
 	};
-	progState[\ruleEnforcement] = dict.postln;
+	progState[\ruleEnforcement] = dict;
 };
 )
