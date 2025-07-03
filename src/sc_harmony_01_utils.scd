@@ -11,7 +11,7 @@
 	var notes = chords[cipher][\notes].asArray;
 	var degree = chords[cipher][\degree];
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getNoteDegree: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~getNoteDegree");
 
 	degree[notes.indexOf(note)];
 };
@@ -22,7 +22,7 @@
 ~getChordNotesDegree = #{ |currChord, cipher, chords|
 	var degreeArray = Array.new(4);
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordNotesDegree: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~getChordNotesDegree");
 
 	currChord.do { |n|
 		degreeArray.add(~getNoteDegree.(n, cipher, chords));
@@ -35,7 +35,7 @@
 
 ~getNoteName = #{ |note|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getNoteName: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~getNoteName");
 
 	note.collect { |n| ~midiRange[\name][n] };
 };
@@ -45,7 +45,7 @@
 
 ~getNoteNameOct = #{ |note|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getNoteNameOct: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~getNoteNameOct");
 
 	note.collect { |n| ~midiRange[\octave][n] };
 };
@@ -54,6 +54,8 @@
 
 ~getChordNoteNameOct = #{ |chord, midiRange|
 
+	~runLogger.("~getChordNoteNameOct");
+
 	chord.collect { |n| midiRange[\octave][n] };
 };
 
@@ -61,6 +63,8 @@
 
 ~mergeNotes = { |prog, dur, nprog, ndur, new, i|
 	var result;
+
+	//~runLogger.("~mergeNotes");
 
 	block { |return|
 
@@ -100,6 +104,8 @@
 	var temp = Array.new(4);
 	var return = Array.fill(2, {Array.new(4)});
 
+	~runLogger.("~sustainCommonTones");
+
 	progState[\result].do { |v|
 		var nprog = Array.new(v.size);
 		var ndur = Array.new(v.size);
@@ -119,6 +125,8 @@
 	var path = PathName.new("../data/scdump/dump%.txt".format(name).resolveRelative);
 	var file = File(path.fullPath, "a");
 
+	~runLogger.("~dumpProg");
+
 	file.write("%\n".format(data[\voice][\number]));
 
 	progState[\result].flop.do { |v|
@@ -135,5 +143,14 @@
 
 	file.close;
 };
-//~dumpProg.(~data, ~progState, "01");
+
+~runLogger = { |name|
+
+	if (~logger) {
+		~loggerCount = ~loggerCount + 1;
+		"#%".format(~loggerCount).padRight(8).post;
+		"| %".format(name).padRight(25).post;
+		"| Function Call".postln;
+	}
+}
 )

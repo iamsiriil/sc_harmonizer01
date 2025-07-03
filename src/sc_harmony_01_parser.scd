@@ -5,7 +5,7 @@
 ~midiRoot = #{ |note|
 	var midi = 0;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~midiRoot: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~midiRoot");
 
 	~noteNames.do { |n, i|
 
@@ -24,7 +24,7 @@
 ~rootDistance = #{ |prog, chords|
 	var arr = Array.new(prog.size);
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~rootDistance: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~rootDistance");
 
 	arr.add(0);
 
@@ -53,7 +53,7 @@
 ~progParser = #{ |prog, chords|
 	var arr;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~progParser: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~progParser");
 
 	prog.do { |c, i|
 		var dict = Dictionary.new;
@@ -79,7 +79,7 @@
 ~setRules = { |progState, chordDict, test = false|
 	var dict = Dictionary.new();
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~setRules: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~setRules");
 
 	progState[\progression].size.do { |i|
 		var arr = Array.new(10);

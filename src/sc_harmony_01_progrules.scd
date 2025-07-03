@@ -7,7 +7,7 @@
 	var progResult = progState[\result];
 	var result = true;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~checkChord: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~checkChord");
 
 	if (i == 0) {
 		result = result && (progResult[i][0] != progResult[i][1]);
@@ -46,7 +46,7 @@
 ~checkDirection = { |progState|
 	var result = true;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkDirection: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~checkDirection");
 
 	case
 	{ progState[\direction] == "up" } {
@@ -70,7 +70,7 @@
 
 ~progIsValid = { |progState|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~progIsValid: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~progIsValid");
 
 	~checkDirection.(progState);
 };

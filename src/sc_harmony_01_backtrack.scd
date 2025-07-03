@@ -9,7 +9,7 @@
 ~backtrackChords = #{ |data, rules, i|
 	var voice = data[\voice][\names][i];
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~backtrackChords: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~backtrackChords");
 
 	if (i == data[\voice][\number]) {
 		if (~chordIsValid.(data, rules)) {
@@ -39,7 +39,7 @@
 
 ~getFirstChords = #{ |data, progState, rules, i|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getFirstChords: Function Call".format(~loggerCount).postln; };
+	~runLogger.(~getFirstChords);
 
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\state][\validNextChords] = Array.new(20);
@@ -60,7 +60,7 @@
 
 ~getNextChords = #{ |data, progState, rules, i|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~getNextChords: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~getNextChords");
 
 	data[\state][\currChord] = progState[\result][i - 1];
 	data[\state][\nextChord] = Array.fill(4, {0});
@@ -83,7 +83,7 @@
 ~backtrackProg = #{ |data, progState, rules, i|
 	var result;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~backtrackProg: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~backtrackProg");
 
 	block { |return|
 

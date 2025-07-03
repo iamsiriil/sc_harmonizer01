@@ -10,7 +10,7 @@
 ~checkChordPosition = #{ |nextChord, cipher, chords, rules|
 	var bassNote = ~getNoteDegree.(nextChord[0], cipher, chords);
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkChordPosition: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~checkChordPosition");
 
 	if (rules[\enforceChordPosition]) {
 
@@ -36,7 +36,7 @@
 ~checkNoteDuplicate = #{ |nextChord, cipher, chords, rules|
 	var degrees, chordAsSet, degreesAsSet;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkNoteDuplicate: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~checkNoteDuplicate");
 
 	degrees = ~getChordNotesDegree.(nextChord, cipher, chords);
 
@@ -74,7 +74,7 @@
 	var octaves = [12, 24, 36];
 	var i = 0, j;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelOctaves: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~checkParallelOctaves");
 
 	while {i < (numVoices - 1)} {
 
@@ -107,7 +107,7 @@
 	var fifths = [7, 19, 31, 43];
 	var i = 0, j;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkParallelFifths: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~checkParallelFifths");
 
 	while {i < (numVoices - 1)} {
 
@@ -136,7 +136,7 @@
 ~checkVoiceSpacing = #{ |nextChord, i, rules|
 	var cross, n;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~checkVoiceSpacing: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~checkVoiceSpacing");
 
 	if (i > 0) {
 		n = (nextChord[i] - nextChord[i - 1]);
@@ -167,7 +167,7 @@
 	var chords = data[\chords];
 	var result = true;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~chordIsValid: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~chordIsValid");
 
 	if (rules[\enforceChordPosition]) {
 		result = result && ~checkChordPosition.(nextChord, nextCipher, chords, rules);
@@ -191,7 +191,7 @@
 
 ~toggleRules = { |toggle, rules|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~toggleRules: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~toggleRules");
 
 	toggle.do { |r|
 		rules[r[0]] = r[1];

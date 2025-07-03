@@ -82,7 +82,7 @@
 
 ~resetDataDict = #{ |data|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetDataDict: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~resetDataDict");
 
 	data[\state][\currChord]       = nil;
 	data[\state][\nextChord]       = nil;
@@ -97,7 +97,7 @@
 
 ~resetProgState = #{ |progState|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetProgState: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~resetProgState");
 
 	progState[\progression]     = nil;
 	progState[\durations]       = nil;
@@ -114,7 +114,7 @@
 // Reset ~rules dictionary to default setting
 ~resetRules = #{ |rules|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resetRules: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~resetRules");
 
 	rules[\enforceVoiceCrossProhibition] = true;
 	rules[\enforceMelodicIntervals]      = true;

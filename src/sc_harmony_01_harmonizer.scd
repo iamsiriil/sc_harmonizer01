@@ -10,7 +10,7 @@
 	~logger = logger;
 	~loggerCount = 0;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #% : ~harmonizeProg: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~harmonizeProg");
 
 	#midiRange, triads, data, progState, rules, ruleKeys = ~dictionaries;
 
