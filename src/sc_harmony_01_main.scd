@@ -26,6 +26,7 @@ Synth(\tone);
 ~dur = [1, 1, 1, 1, 4];
 
 ~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: true, dump: false, logger: true);
+~file.close;
 )
 ~result;
 /*************************************************************************************/

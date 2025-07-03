@@ -10,7 +10,7 @@
 ~getChordDegreeArrays = #{ |triads, chordProg|
 	var ciphers, dictChords, dict;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordDegreeArrays: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~getChordDegreeArrays");
 
 	ciphers = chordProg.asSet;
 	dictChords = Dictionary.new();
@@ -31,7 +31,7 @@
 ~getChordVocalRange = #{ |voiceData, midiChord|
 	var voiceRange, dict, notes;
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getChordVocalRange: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~getChordVocalRange");
 
 	dict = Dictionary.new();
 
@@ -47,7 +47,7 @@
 
 ~resolveMelodicIntervals = #{ |voiceData, currChord, validNotes|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resolveMelodicIntervals: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~resolveMelodicIntervals");
 
 	voiceData[\names].do { |v, i|
 		validNotes[v] = validNotes[v].reject { |n|
@@ -62,7 +62,7 @@
 
 ~resolveCommonTones = #{ |voiceData, currChord, validNotes|
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~resolveCommonTones: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~resolveCommonTones");
 
 	voiceData[\names].do { |v, i|
 		var set = [currChord[i]];
@@ -82,7 +82,7 @@
 	var chords = data[\chords];
 	var validNotes = Dictionary.new();
 
-	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~getValidNotes: Function Call".format(~loggerCount).postln; };
+	~runLogger.("~getValidNotes");
 
 	validNotes = ~getChordVocalRange.(data[\voice], chords[nextCipher][\notes]);
 
