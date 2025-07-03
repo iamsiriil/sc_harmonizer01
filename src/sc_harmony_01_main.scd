@@ -25,7 +25,7 @@ Synth(\tone);
 ~prog = ['CM', 'DM', 'F#M', 'GM', 'CM'];
 ~dur = [1, 1, 1, 1, 4];
 
-~result = ~harmonizeProg.(~prog, ~dur, direction: "up", sustain: true, logger: false, dump: false);
+~result = ~harmonizeProg.(~prog, ~dur, direction: "down", sustain: true, logger: false, dump: true);
 )
 ~result;
 /*************************************************************************************/
@@ -70,5 +70,3 @@ Ppar([
 	),
 ]).play;
 )
-
-~dumpData.(~midiRange, ~triads, ~progState, ~rules, ~ruleKeys);

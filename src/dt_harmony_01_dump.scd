@@ -59,6 +59,3 @@
 	"% %".format(path_py3.fullPath, path_py.fullPath).unixCmd;
 };
 )
-~path = PathName.new("../data/python/dump.txt".resolveRelative);
-~path.fullPath
-~dumpData.(~midiRange, ~triads, ~progState, ~rules, ~ruleKeys);

@@ -160,24 +160,27 @@
 // Final check before chord gets added to validNextChord array
 
 ~chordIsValid = #{ |chords, chordState, numVoices, rules|
+	var currChord = chordState[\currChord];
+	var nextChord = chordState[\nextChord];
+	var nextCipher = chordState[\nextCipher];
 	var result = true;
 
 	if (~logger == true) { ~loggerCount = (~loggerCount + 1); "\nSTEP #%: ~chordIsValid: Function Call".format(~loggerCount).postln; };
 
 	if (rules[\enforceChordPosition]) {
-		result = result && ~checkChordPosition.(chordState[\nextChord], chordState[\nextCipher], chords, rules);
+		result = result && ~checkChordPosition.(nextChord, nextCipher, chords, rules);
 	};
 	if (rules[\enforceNoteDuplicate]) {
-		result = result && ~checkNoteDuplicate.(chordState[\nextChord], chordState[\nextCipher], chords, rules);
+		result = result && ~checkNoteDuplicate.(nextChord, nextCipher, chords, rules);
 	};
 	if (rules[\enforceParallelOctaves]) {
-		result = result && ~checkParallelOctaves.(chordState[\nextChord], chordState[\currChord], numVoices);
+		result = result && ~checkParallelOctaves.(nextChord, nextChord, numVoices);
 	};
 	if (rules[\enforceParallelFifths]) {
-		result = result && ~checkParallelFifths.(chordState[\nextChord], chordState[\currChord], numVoices);
+		result = result && ~checkParallelFifths.(nextChord, nextChord, numVoices);
 	};
 	for (1, 3) { |i|
-		result = result && ~checkVoiceSpacing.(chordState[\nextChord], i, rules);
+		result = result && ~checkVoiceSpacing.(nextChord, i, rules);
 	};
 	result;
 };

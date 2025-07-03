@@ -2,10 +2,10 @@
 - HARMONY 01 / Harmonizer
 **************************************************************************************/
 (
-~harmonizeProg = #{ |progression, durations, direction = "up", sustain = true, logger = false, dump = false|
+~harmonizeProg = #{ |progression, durations, direction = "line", sustain = true, logger = false, dump = false|
 	var midiRange, triads, data, progState, rules, ruleKeys;
-	var parsedChords = Dictionary.new();
 	var return = Array.fill(2, {Array.new(4)});
+	var parsedChords = Dictionary.new();
 
 	~logger = logger;
 	~loggerCount = 0;
@@ -39,7 +39,7 @@
 	};
 
 	if (dump) {
-		//~dumpData.(midiRange, triads, progState, rules, ruleKeys);
+		~dumpData.(midiRange, triads, progState, rules, ruleKeys);
 	};
 
 	if (sustain) {
