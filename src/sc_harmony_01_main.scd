@@ -25,10 +25,9 @@ Synth(\tone);
 ~prog = ['CM', 'DM', 'F#M', 'GM', 'CM'];
 ~dur = [1, 1, 1, 1, 4];
 
-~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: true, dump: false, logger: true);
-~file.close;
+~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: true, dump: true, logger: false);
 )
-~result;
+
 /*************************************************************************************/
 // Play progression
 (

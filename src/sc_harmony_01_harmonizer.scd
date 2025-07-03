@@ -9,13 +9,11 @@
 
 	~logger = logger;
 	~loggerCount = 0;
-
 	~runLogger.("~harmonizeProg");
 
 	#midiRange, triads, data, progState, rules, ruleKeys = ~dictionaries;
 
-	// If progression and durations are of the same size, copy data into progState
-	// else throw error.
+
 	if (progression.size == durations.size) {
 		progState[\direction] = direction;
 		progState[\durations] = durations;
@@ -24,16 +22,18 @@
 		"Progression and Durations arrays are NOT of same size.".throw;
 	};
 
+
 	progState[\validChords] = Dictionary.new();
 	progState[\result] = Array.fill(progression.size, {[]});
 
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\chords] = ~getChordDegreeArrays.(triads, progression);
 
+
 	~progParser.(progression, parsedChords);
 	~setRules.(progState, parsedChords);
 
-	// Run backtrackProg. If function fails to harmonize progression, throw error
+
 	if (~backtrackProg.(data, progState, rules, 0)) {
 		progState[\dump] = progState[\result];
 		progState[\result] = progState[\result].flop;
@@ -41,13 +41,12 @@
 		"HarmonizeProg was NOT able to harmonize the progression".throw;
 	};
 
-	// If dump == true, parse data and open MuseScore
+
 	if (dump) {
 		~dumpData.(midiRange, triads, progState, rules, ruleKeys);
 	};
 
-	// If sustain == true, sustain common tones and return result,
-	// else return result
+
 	if (sustain) {
 		~sustainCommonTones.(progState);
 	} {
@@ -55,11 +54,7 @@
 			return[0].add(v);
 			return[1].add(progState[\durations]);
 		};
-		return;
+		return.postln;
 	};
 };
 )
-~a = ["line", "up", "down" ];
-
-r = { |arr, str| var result = false; arr.do { |i| result = result || (if (i == str) { true } { false }) }; result }
-r.(~a, "flop")

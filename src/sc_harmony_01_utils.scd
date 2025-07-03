@@ -143,23 +143,4 @@
 
 	file.close;
 };
-
-~runLogger = { |name|
-
-	if (~logger) {
-		~loggerCount = ~loggerCount + 1;
-		~file.write("#%".format(~loggerCount).padRight(8));
-		"#%".format(~loggerCount).padRight(8).post;
-
-		~file.write("| %".format(name).padRight(25));
-		"| %".format(name).padRight(25).post;
-
-		~file.write("| Function Call\n");
-		"| Function Call".postln;
-	}
-}
-)
-(
-~path = PathName.new("../log.txt".resolveRelative);
-~file = File(~path.fullPath, "w")
 )
