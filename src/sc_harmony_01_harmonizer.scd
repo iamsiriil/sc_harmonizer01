@@ -2,7 +2,7 @@
 - HARMONY 01 / Harmonizer
 **************************************************************************************/
 (
-~harmonizeProg = #{ |progression, durations, direction = "line", sustain = true, logger = false, dump = false|
+~harmonizeProg = #{ |progression, durations, direction = "line", sustain = true, dump = false, logger = false|
 	var midiRange, triads, data, progState, rules, ruleKeys;
 	var return = Array.fill(2, {Array.new(4)});
 	var parsedChords = Dictionary.new();
@@ -14,12 +14,14 @@
 
 	#midiRange, triads, data, progState, rules, ruleKeys = ~dictionaries;
 
-	if (progression.size != durations.size) {
-		"Progression and Durations arrays are NOT of same size.".throw;
-	} {
+	// If progression and durations are of the same size, copy data into progState
+	// else throw error.
+	if (progression.size == durations.size) {
 		progState[\direction] = direction;
 		progState[\durations] = durations;
 		progState[\progression] = progression;
+	} {
+		"Progression and Durations arrays are NOT of same size.".throw;
 	};
 
 	progState[\validChords] = Dictionary.new();
@@ -31,6 +33,7 @@
 	~progParser.(progression, parsedChords);
 	~setRules.(progState, parsedChords);
 
+	// Run backtrackProg. If function fails to harmonize progression, throw error
 	if (~backtrackProg.(data, progState, rules, 0)) {
 		progState[\dump] = progState[\result];
 		progState[\result] = progState[\result].flop;
@@ -38,10 +41,13 @@
 		"HarmonizeProg was NOT able to harmonize the progression".throw;
 	};
 
+	// If dump == true, parse data and open MuseScore
 	if (dump) {
 		~dumpData.(midiRange, triads, progState, rules, ruleKeys);
 	};
 
+	// If sustain == true, sustain common tones and return result,
+	// else return result
 	if (sustain) {
 		~sustainCommonTones.(progState);
 	} {
@@ -53,3 +59,7 @@
 	};
 };
 )
+~a = ["line", "up", "down" ];
+
+r = { |arr, str| var result = false; arr.do { |i| result = result || (if (i == str) { true } { false }) }; result }
+r.(~a, "flop")
