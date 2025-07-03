@@ -30,85 +30,72 @@ def parseSCDump():
 def getScore(size, ciphers, chords, rules):
     score = stream.Score()
 
+    treble = stream.Part()
+    bass = stream.Part()
 
-    #tclef = clef.TrebleClef()
-    #bclef = clef.BassClef()
+    treble.append(clef.TrebleClef())
+    bass.append(clef.BassClef())
 
-    #treble.append(tclef)
-    #bass.append(bclef)
+    treble.append(meter.TimeSignature('4/4'))
+    bass.append(meter.TimeSignature('4/4'))
 
     for cipher, chord in zip(ciphers, chords):
-        measure = stream.Measure()
+        tmeasure = stream.Measure()
+        bmeasure = stream.Measure()
+        tmeasure.layoutWidth = 1600
+        bmeasure.layoutWidth = 1600
 
-        treble = stream.Part()
-        bass = stream.Part()
-        
+        symbol = harmony.ChordSymbol(cipher)
+        tmeasure.insert(0, symbol)
+
         bas = stream.Voice()
         ten = stream.Voice()
         alt = stream.Voice()
         spn = stream.Voice()
 
-        voices = [bas, ten, alt, spn]
+        dur = duration.Duration(type='whole')
+        snote = note.Note(chord[3], duration=dur)
+        anote = note.Note(chord[2], duration=dur)
+        tnote = note.Note(chord[1], duration=dur)
+        bnote = note.Note(chord[0], duration=dur)
 
-        symbol = harmony.ChordSymbol(cipher)
+        spn.append(snote)
+        alt.append(anote)
+        ten.append(tnote)
+        bas.append(bnote)
 
-        measure.insert(0, symbol)
+        tmeasure.insert(0, spn)
+        tmeasure.insert(0, alt)
+        bmeasure.insert(0, ten)
+        bmeasure.insert(0, bas)
 
-        for v, i in zip(voices, range(0, 4)):
-            dur = duration.Duration(type = 'whole')
-            nt = note.Note(chord[i])
-            nt.duration = dur;
-            v.append(nt)
-        
-        treble.append([spn, alt])
-        bass.append([ten, bas])
+        treble.append(tmeasure)
+        bass.append(bmeasure)
 
-        measure.insert(0, treble)
-        measure.insert(0, bass)
+    score.insert(0, treble)
+    score.insert(0, bass)
 
-        score.insert(0, measure)
-   # for v, i in zip(voices, range(0, 4)):
-   #     for c, j in zip(ciphers, range(0, size)):
+    lastTrebleMeasure = treble.getElementsByClass('Measure')[-1]
+    lastBassMeasure = bass.getElementsByClass('Measure')[-1]
 
-   #         if i == 3:
-   #             cipher = harmony.ChordSymbol(ciphers[j])
-   #             v.append(cipher)
+    finalBar = bar.Barline('light-heavy')
+    lastTrebleMeasure.rightBarline = finalBar
+    lastBassMeasure.rightBarline = finalBar
 
-   #         stm = 'down' if i % 2 == 0 else 'up'
-   #         dur = duration.Duration(type='whole')
-   #         nt = note.Note(chords[j][i])
+    headerText = expressions.TextExpression(
+            "ECT: Enforce Common Tone"
+            "EPF: Enforce Parallel Fifths"
+            )
+    infoMeasure = stream.Measure()
+    infoMeasure.insert(0, headerText)
+    infoMeasure.rightBarline = None
 
-   #         nt.duration = dur
-   #         nt.stemDirection = stm
-   #         v.append(nt)
+    infoPart = stream.Part()
+    infoPart.append(infoMeasure)
 
-   #        # if i == 0:
-   #        #     for k in rules[j]:
-   #        #         rule = expressions.TextExpression(k)
-   #        #         rule.style.fontSize = 5
-   #        #         v.append(rule)
-
-   # tclef = clef.TrebleClef()
-   # bclef = clef.BassClef()
-
-   # treble.append(tclef)
-   # bass.append(bclef)
-
-   # treble.append([alt, spn])
-   # bass.append([bas, ten])
-   # 
-
-   # for part in [treble, bass]:
-   #     for m in part.getElementsByClass("Measure"):
-   #         m.rightBarline = bar.Barline("regular")
-   #         m.layoutWidth = 800
-   #         m.insert(0, layout.SystemLayout(isNew=True))
-
-   # score.insert(0, treble)
-   # score.insert(0, bass)
+    score.insert(0, infoPart)
 
     score.show()
     
 
-size, ciphers, chords, rules = parseSCDump()
-getScore(size, ciphers, chords, rules)
+getScore(*parseSCDump())
