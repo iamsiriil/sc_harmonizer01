@@ -3,6 +3,7 @@
 **************************************************************************************/
 (
 "./sc_harmony_01_lib.scd".loadRelative;
+"./sc_harmony_01_dump.scd".loadRelative;
 "./sc_harmony_01_dicts.scd".loadRelative;
 "./sc_harmony_01_utils.scd".loadRelative;
 "./sc_harmony_01_range.scd".loadRelative;
