@@ -13,4 +13,5 @@
 "./progrules.scd".loadRelative;
 "./backtrack.scd".loadRelative;
 "./harmonizer.scd".loadRelative;
+"../tests/test_runtests.scd".loadRelative;
 )

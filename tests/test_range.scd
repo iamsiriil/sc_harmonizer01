@@ -1,16 +1,6 @@
 /**************************************************************************************
 - HARMONY 01 / Utility Functions and Data Structures / Tests
 **************************************************************************************/
-(
-"../src/sc_harmony_01_lib.scd".loadRelative;
-"../src/sc_harmony_01_dicts.scd".loadRelative;
-"../src/sc_harmony_01_utils.scd".loadRelative;
-"../src/sc_harmony_01_range.scd".loadRelative;
-"../src/sc_harmony_01_rules.scd".loadRelative;
-"./test_harmony_01_fixtures.scd".loadRelative;
-"./test_harmony_01_message.scd".loadRelative;
-)
-/*************************************************************************************/
 // TEST: ~getChordDegreeArrays
 (
 ~test_getChordDegreeArray = { |fixtures, triads, data|
@@ -154,11 +144,4 @@
 	};
 	nil;
 };
-)
-
-(
-~test_getChordDegreeArray.(~test_GCDFixture, ~triads, ~data);
-~test_getChordVocalRange.(~test_GCVRFixtures, ~triads, ~data);
-~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~data);
-~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~data, false);
 )

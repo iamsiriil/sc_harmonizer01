@@ -3,9 +3,9 @@
 **************************************************************************************/
 (
 "./utils.scd".loadRelative;
+"./message.scd".loadRelative;
 "./fixtures.scd".loadRelative;
-"./messages.scd".loadRelative;
+"../test_range.scd".loadRelative;
 "../test_backtrack.scd".loadRelative;
 "../test_chordrules.scd".loadRelative;
-"../test_range.scd".loadRealative;
 )

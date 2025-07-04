@@ -37,4 +37,22 @@
 
 	data[\state][\validNextChords];
 };
+
+/*************************************************************************************/
+// Check chord fixtures for test_getNextChords are correct
+
+~checkFistChord = { |fixtures, triads|
+
+	fixtures[\ciphers].do { |c|
+
+		if (fixtures[\firstChords][c].notNil) {
+
+			fixtures[\firstChords][c].do { |i|
+
+				"%: ".format(c).padRight(5).post;
+				i.asSet.isSubsetOf(triads[c][\notes]).postln;
+			};
+		};
+	};
+};
 )

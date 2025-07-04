@@ -1,18 +1,7 @@
 /**************************************************************************************
 - HARMONY 01 / Test rules
 **************************************************************************************/
-(
-"../src/sc_harmony_01_rules.scd".loadRelative;
-"../src/sc_harmony_01_utils.scd".loadRelative;
-"../src/sc_harmony_01_range.scd".loadRelative;
-"../src/sc_harmony_01_dicts.scd".loadRelative;
-"../src/sc_harmony_01_lib.scd".loadRelative;
-"./test_harmony_01_message.scd".loadRelative;
-"./test_harmony_01_fixtures.scd".loadRelative;
-)
-/*************************************************************************************/
 // TEST ~checkChordPosition
-
 (
 ~test_CCPSubroutine = { |flags, chords, expect, dict, rules, i|
 	var flagRP, flagFI, flagSI, flagCP;
@@ -192,22 +181,3 @@
 	nil;
 };
 )
-
-(
-~test_checkChordPosition.(~test_CCPFixtures, ~triads, ~rules);
-~test_checkVoiceRange.(~test_CVRFixtures, ~rules);
-~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~data[\voice]);
-~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~data[\voice]);
-~test_checkNoteDuplicate.(~test_CNDFixtures, ~triads, ~rules);
-)
-
-
-
-
-
-
-
-
-
-
-

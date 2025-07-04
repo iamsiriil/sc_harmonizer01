@@ -327,18 +327,4 @@
 		'BA' :[[59, 63, 67, 71], [47, 63, 71, 79]]
 	)
 );
-~checkFistChord = { |fixtures, triads|
-
-	fixtures[\ciphers].do { |c|
-
-		if (fixtures[\firstChords][c].notNil) {
-
-			fixtures[\firstChords][c].do { |i|
-
-				"%: ".format(c).padRight(5).post;
-				i.asSet.isSubsetOf(triads[c][\notes]).postln;
-			};
-		};
-	};
-};
 )
