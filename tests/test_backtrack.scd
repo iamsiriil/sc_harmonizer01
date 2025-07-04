@@ -84,6 +84,7 @@
 };
 
 /*************************************************************************************/
+// Test ~getFirstChords
 
 ~test_getFirstChords = { |triads, data, progState, rules, firstCipher|
 
@@ -101,6 +102,7 @@
 };
 
 /*************************************************************************************/
+// Test ~getNextChords
 
 ~test_getNextChords = { |triads, data, progState, rules, fixtures, firstCipher, nextCipher|
 

@@ -1,7 +1,7 @@
 /**************************************************************************************
 - HARMONY 01 / Utility Functions and Data Structures / Tests
 **************************************************************************************/
-// TEST: ~getChordDegreeArrays
+// Test ~getChordDegreeArrays
 (
 ~test_getChordDegreeArray = { |fixtures, triads, data|
 	var result = true;
@@ -25,7 +25,7 @@
 };
 
 /*************************************************************************************/
-// TEST: ~getChordVocalRange
+// Test ~getChordVocalRange
 
 ~test_GCVRSubroutine = { |voice, chords, state, i|
 	var cipher = state[\nextCipher];
@@ -65,7 +65,7 @@
 };
 
 /*************************************************************************************/
-// TEST: ~resolveMelodicIntervals
+// Test ~resolveMelodicIntervals
 
 ~test_RMISubroutine = { |voice, state, exclude, i|
 	var refRange = state[\validNotes].copy;
@@ -104,7 +104,7 @@
 };
 
 /*************************************************************************************/
-// TEST: ~resolveCommonTones
+// Test ~resolveCommonTones
 
 ~test_RCTSubroutine = { |voice, state, functions, message, i, verbose|
 	var refRange = state[\validNotes].copy;

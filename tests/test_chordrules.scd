@@ -1,7 +1,7 @@
 /**************************************************************************************
 - HARMONY 01 / Test rules
 **************************************************************************************/
-// TEST ~checkChordPosition
+// Test ~checkChordPosition
 (
 ~test_CCPSubroutine = { |flags, chords, expect, dict, rules, i|
 	var flagRP, flagFI, flagSI, flagCP;
@@ -45,7 +45,7 @@
 };
 
 /*************************************************************************************/
-// TEST ~checkVoiceSpacing
+// Test ~checkVoiceSpacing
 
 ~test_CVRSubroutine = { |fixture, rules, i|
 	var flag = fixture[1][0];
@@ -138,7 +138,7 @@
 };
 
 /*************************************************************************************/
-// Test Note Duplicates
+// Test ~checkNoteDuplicates
 
 ~test_CNDSubroutine = { |dict, chords, cipher, rules|
 	var flagRD, flagTD, flagFD, flagND;
