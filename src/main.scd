@@ -3,7 +3,7 @@
 **************************************************************************************/
 s.boot;
 
-"./sc_harmony_01_loadall.scd".loadRelative;
+"./loadall.scd".loadRelative;
 
 /*************************************************************************************/
 // Create a synth
@@ -25,7 +25,7 @@ Synth(\tone);
 ~prog = ['CM', 'DM', 'F#M', 'GM', 'CM'];
 ~dur = [1, 1, 1, 1, 4];
 
-~result = ~harmonizeProg.(~prog, ~dur, direction: "line", sustain: true, dump: true, logger: false);
+~result = ~harmonizeProg.(~prog, ~dur, direction: "up", sustain: true, dump: true, logger: false);
 )
 
 /*************************************************************************************/
