@@ -317,7 +317,9 @@
 ];
 
 ~midiRange = (
+	// midi range
 	\num: (0..127),
+	// Note Names
 	\name: [
 		"C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B",
 		"C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B",
@@ -331,6 +333,7 @@
 		"C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B",
 		"C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G"
 	],
+	// Note names with octaves
 	\octave: [
 		"C-1", "C#/Db-1", "D-1", "D#/Eb-1", "E-1", "F-1", "F#/Gb-1", "G-1", "G#/Ab-1", "A-1", "A#/Bb-1", "B-1",
 		"C0", "C#/Db0", "D0", "D#/Eb0", "E0", "F0", "F#/Gb0", "G0", "G#/Ab0", "A0", "A#/Bb0", "B0",

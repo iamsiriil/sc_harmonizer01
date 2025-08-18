@@ -2,43 +2,51 @@
 - HARMONY 01 / Dictionaries and reset functions
 **************************************************************************************/
 (
+/*
+- Data dictionary stores information about each voice, as well as
+chord metadata used for backtracking when building each new chord in the progression.
+
+- Keys shown as 'nil' are placeholders for documentation only. In SuperCollider, dictionaries
+cannot be assigned nil values.
+*/
 ~data = Dictionary[
 	\voice -> Dictionary[
-		\range -> Dictionary[
+		\range -> Dictionary[                      // Vocal range per voice
 			\bas -> [40, 60],
 			\ten -> [48, 67],
 			\alt -> [55, 74],
 			\spn -> [60, 81]
 		],
-		\invalidIntervals -> Dictionary[
+		\invalidIntervals -> Dictionary[          // Invalid melodic intervals per voice (within range)
 			\bas -> [6, 10, 11, 18],
 			\ten -> [6, 10, 11],
 			\alt -> [6, 10, 11],
 			\spn -> [6, 10, 11]
 		],
-		\number -> 4,
-		\names  -> ['bas', 'ten', 'alt', 'spn']
+		\number -> 4,                            // Number of voices
+		\names  -> ['bas', 'ten', 'alt', 'spn']  // Voice names
 	],
 
 	\state -> Dictionary[
-		\currChord       -> nil,
-		\nextChord       -> nil,
-		\validNotes      -> nil,
-		\nextValidChords -> nil,
-		\nextCipher      -> nil
+		\currChord       -> nil,  // Previously built chord
+		\nextChord       -> nil,  // Chord to be built
+		\validNotes      -> nil,  // Valid candidate notes for each of the voices
+		\nextValidChords -> nil,  // List of valid candidate chords
+		\nextCipher      -> nil   // Cipher for the next chord to be build
 	],
 
-	\chords -> nil
+	\chords -> nil  // Dictionary of chord data for each of the chords present in the progression
 ];
 
+// ProgState dictionary contains data used to backtrack accross the progression
 ~progState = Dictionary[
-	\progression     -> nil,
-	\durations       -> nil,
-	\ruleEnforcement -> nil,
-	\validChords     -> nil,
-	\direction       -> nil,
-	\result          -> nil,
-	\dump            -> nil
+	\progression     -> nil,  // Array for the progression passed as argument
+	\durations       -> nil,  // Array with the durations
+	\ruleEnforcement -> nil,  // Dictionary with the rule setup for each chord across the progression
+	\validChords     -> nil,  // Multidimentional arrays with the valid candidate chords for each chords successfully backtracked
+	\direction       -> nil,  // String indicating melodic direction of the upper voice
+	\result          -> nil,  // Multidimentional array with final harmonized progression
+	\dump            -> nil   // Boolean indicating whether score should be generated
 ];
 
 // Dictionary containing default rule settings
@@ -59,6 +67,7 @@
 	\enforceSecondInversion       -> false,
 ];
 
+// Array with seqeunce of rule sysbols, for convinience
 ~ruleKeys = [
 	\enforceVoiceCrossProhibition,
 	\enforceMelodicIntervals,
@@ -76,9 +85,12 @@
 	\enforceSecondInversion
 ];
 
+// Convinience array containing all dictionaries
 ~dictionaries = [~midiRange, ~triads, ~data, ~progState, ~rules, ~ruleKeys];
 
 /*************************************************************************************/
+// ~resetDataDict resets the ~data dictionary to default values to prevent
+// contamination across recursive calls
 
 ~resetDataDict = #{ |data|
 
@@ -94,6 +106,8 @@
 };
 
 /*************************************************************************************/
+// ~resetProgState resets the ~progState dictionary to prevent contamination
+// across recursive calls
 
 ~resetProgState = #{ |progState|
 
@@ -110,8 +124,8 @@
 };
 
 /*************************************************************************************/
+// ~resetRules resets the ~rules dictionary to its default settings
 
-// Reset ~rules dictionary to default setting
 ~resetRules = #{ |rules|
 
 	~runLogger.("~resetRules");
