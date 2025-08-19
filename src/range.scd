@@ -5,7 +5,16 @@
 /*
 ~getChordDegreeArrays gathers all chord note sequences and respective degrees,
 across the MIDI range, as two separate arrays
+
+ARGS:
+    triads:   Static library of chords
+    chorProg: Chord progression passed to the program
+
+RETURN:
+    dictChord: Dictionary of chords needed for any specific progression,
+               coupled to an array of corresponding degree names of the same size
 */
+
 ~getChordDegreeArrays = #{ |triads, chordProg|
 	var ciphers, dictChords, dict;
 
@@ -16,8 +25,8 @@ across the MIDI range, as two separate arrays
 
 	ciphers.do { |c|
 		dict = Dictionary.new();
-		dict[\notes] = triads[c][\notes].as(OrderedIdentitySet);
-		dict[\degree] = (triads[c][\degree].wrapExtend(triads[c][\notes].size));
+		dict[\notes] = triads[c][\notes].as(OrderedIdentitySet);                 // Converts to set to facilitate operations over note range
+		dict[\degree] = (triads[c][\degree].wrapExtend(triads[c][\notes].size)); // Extends degree name over the length of 'notes'
 
 		dictChords[c] = dict;
 	};

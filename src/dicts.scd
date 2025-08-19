@@ -2,13 +2,14 @@
 - HARMONY 01 / Dictionaries and reset functions
 **************************************************************************************/
 (
-/*
-- Data dictionary stores information about each voice, as well as
+
+/**************************************************************************************
+~data dictionary stores information about each voice, as well as
 chord metadata used for backtracking when building each new chord in the progression.
 
-- Keys shown as 'nil' are placeholders for documentation only. In SuperCollider, dictionaries
-cannot be assigned nil values.
-*/
+Keys shown as 'nil' are placeholders for documentation only. In SuperCollider,
+dictionaries cannot be assigned nil values.
+**************************************************************************************/
 ~data = Dictionary[
 	\voice -> Dictionary[
 		\range -> Dictionary[                      // Vocal range per voice
