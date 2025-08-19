@@ -90,7 +90,6 @@ dictionaries cannot be assigned nil values.
 ~dictionaries = [~midiRange, ~triads, ~data, ~progState, ~rules, ~ruleKeys];
 
 /*************************************************************************************/
-
 /*
 ~resetDataDict resets the ~data dictionary to default values to prevent
 contamination across recursive calls
