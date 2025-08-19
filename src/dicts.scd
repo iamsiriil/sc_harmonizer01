@@ -94,6 +94,7 @@ dictionaries cannot be assigned nil values.
 ~resetDataDict resets the ~data dictionary to default values to prevent
 contamination across recursive calls
 */
+
 ~resetDataDict = #{ |data|
 
 	~runLogger.("~resetDataDict");
@@ -108,11 +109,11 @@ contamination across recursive calls
 };
 
 /*************************************************************************************/
-
 /*
 ~resetProgState resets the ~progState dictionary to prevent contamination
 across recursive calls
 */
+
 ~resetProgState = #{ |progState|
 
 	~runLogger.("~resetProgState");
@@ -128,7 +129,6 @@ across recursive calls
 };
 
 /*************************************************************************************/
-
 // ~resetRules resets the ~rules dictionary to its default settings
 
 ~resetRules = #{ |rules|

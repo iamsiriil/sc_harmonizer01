@@ -5,14 +5,6 @@
 /*
 ~getChordDegreeArrays gathers all chord note sequences and respective degrees,
 across the MIDI range, as two separate arrays
-
-ARGS:
-    triads:   Static library of chords
-    chorProg: Chord progression passed to the program
-
-RETURN:
-    dictChord: Dictionary of chords needed for any specific progression,
-               coupled to an array of corresponding degree names of the same size
 */
 
 ~getChordDegreeArrays = #{ |triads, chordProg|
@@ -36,13 +28,6 @@ RETURN:
 /*************************************************************************************/
 /*
 ~getChordVocalRange gathers all chord notes within each vocal range
-
-ARGS:
-    voiceData:  Dictionary containing voice data
-    midiChords: Dictionary containing midi notes and degree names
-
-RETURN:
-    dict: Dictionary containing chord notes within each of the voice's range
 */
 
 ~getChordVocalRange = #{ |voiceData, midiChord|
