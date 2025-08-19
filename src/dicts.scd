@@ -2,14 +2,14 @@
 - HARMONY 01 / Dictionaries and reset functions
 **************************************************************************************/
 (
-
-/**************************************************************************************
+/*
 ~data dictionary stores information about each voice, as well as
 chord metadata used for backtracking when building each new chord in the progression.
 
 Keys shown as 'nil' are placeholders for documentation only. In SuperCollider,
 dictionaries cannot be assigned nil values.
-**************************************************************************************/
+*/
+
 ~data = Dictionary[
 	\voice -> Dictionary[
 		\range -> Dictionary[                      // Vocal range per voice
@@ -90,6 +90,7 @@ dictionaries cannot be assigned nil values.
 ~dictionaries = [~midiRange, ~triads, ~data, ~progState, ~rules, ~ruleKeys];
 
 /*************************************************************************************/
+
 /*
 ~resetDataDict resets the ~data dictionary to default values to prevent
 contamination across recursive calls
@@ -108,6 +109,7 @@ contamination across recursive calls
 };
 
 /*************************************************************************************/
+
 /*
 ~resetProgState resets the ~progState dictionary to prevent contamination
 across recursive calls
@@ -127,6 +129,7 @@ across recursive calls
 };
 
 /*************************************************************************************/
+
 // ~resetRules resets the ~rules dictionary to its default settings
 
 ~resetRules = #{ |rules|

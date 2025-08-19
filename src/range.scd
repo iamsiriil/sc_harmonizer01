@@ -36,7 +36,15 @@ RETURN:
 /*************************************************************************************/
 /*
 ~getChordVocalRange gathers all chord notes within each vocal range
+
+ARGS:
+    voiceData:  Dictionary containing voice data
+    midiChords: Dictionary containing midi notes and degree names
+
+RETURN:
+    dict: Dictionary containing chord notes within each of the voice's range
 */
+
 ~getChordVocalRange = #{ |voiceData, midiChord|
 	var voiceRange, dict, notes;
 
