@@ -2,11 +2,10 @@
 - HARMONY 01 / Range Functions
 **************************************************************************************/
 (
-~logger = true;
-
-/*************************************************************************************/
-// Get all chord notes, within MIDI range, and respective degrees as two separate arrays
-
+/*
+~getChordDegreeArrays gathers all chord note sequences and respective degrees,
+across the MIDI range, as two separate arrays
+*/
 ~getChordDegreeArrays = #{ |triads, chordProg|
 	var ciphers, dictChords, dict;
 
@@ -26,8 +25,9 @@
 };
 
 /*************************************************************************************/
-// Get all chord notes for each vocal range
-
+/*
+~getChordVocalRange gathers all chord notes within each vocal range
+*/
 ~getChordVocalRange = #{ |voiceData, midiChord|
 	var voiceRange, dict, notes;
 
@@ -43,8 +43,9 @@
 };
 
 /*************************************************************************************/
-// Ensure only valid melodic intervals are played between chords
-
+/*
+~resolveMelodicInterval ensure only valid melodic intervals are played between chords
+*/
 ~resolveMelodicIntervals = #{ |voiceData, currChord, validNotes|
 
 	~runLogger.("~resolveMelodicIntervals");
@@ -58,8 +59,10 @@
 };
 
 /*************************************************************************************/
-// Remove valid notes other than common tones from respective voices
-
+/*
+~resolveCommonTones ensures only common tones are present as valid candidate,
+for each of the voices, depending on note present in previous chord
+*/
 ~resolveCommonTones = #{ |voiceData, currChord, validNotes|
 
 	~runLogger.("~resolveCommonTones");
@@ -75,8 +78,9 @@
 };
 
 /*************************************************************************************/
-// Get valid notes
-
+/*
+~getValidNotes manages valid candidate notes depending on rule settings
+*/
 ~getValidNotes = #{ |data, rules|
 	var nextCipher = data[\state][\nextCipher];
 	var chords = data[\chords];
