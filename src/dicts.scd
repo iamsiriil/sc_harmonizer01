@@ -35,18 +35,18 @@ cannot be assigned nil values.
 		\nextCipher      -> nil   // Cipher for the next chord to be build
 	],
 
-	\chords -> nil  // Dictionary of chord data for each of the chords present in the progression
+	\chords -> nil  // Chord data for each of the chords present in the progression
 ];
 
-// ProgState dictionary contains data used to backtrack accross the progression
+// Dictionary Containing data to be used while backtracking across the progression
 ~progState = Dictionary[
 	\progression     -> nil,  // Array for the progression passed as argument
 	\durations       -> nil,  // Array with the durations
 	\ruleEnforcement -> nil,  // Dictionary with the rule setup for each chord across the progression
-	\validChords     -> nil,  // Multidimentional arrays with the valid candidate chords for each chords successfully backtracked
-	\direction       -> nil,  // String indicating melodic direction of the upper voice
-	\result          -> nil,  // Multidimentional array with final harmonized progression
-	\dump            -> nil   // Boolean indicating whether score should be generated
+	\validChords     -> nil,  // Multidimensional arrays with the valid candidate chords for each chord successfully backtracked
+	\direction       -> nil,  // String indicating the melodic direction of the upper voice
+	\result          -> nil,  // Multidimensional array with the final harmonized progression
+	\dump            -> nil   // Boolean indicating whether score output should be generated
 ];
 
 // Dictionary containing default rule settings
@@ -67,7 +67,7 @@ cannot be assigned nil values.
 	\enforceSecondInversion       -> false,
 ];
 
-// Array with seqeunce of rule sysbols, for convinience
+// Convinience array with the sequence of rule symbols
 ~ruleKeys = [
 	\enforceVoiceCrossProhibition,
 	\enforceMelodicIntervals,
@@ -85,13 +85,14 @@ cannot be assigned nil values.
 	\enforceSecondInversion
 ];
 
-// Convinience array containing all dictionaries
+// Convenience array containing all dictionaries
 ~dictionaries = [~midiRange, ~triads, ~data, ~progState, ~rules, ~ruleKeys];
 
 /*************************************************************************************/
-// ~resetDataDict resets the ~data dictionary to default values to prevent
-// contamination across recursive calls
-
+/*
+~resetDataDict resets the ~data dictionary to default values to prevent
+contamination across recursive calls
+*/
 ~resetDataDict = #{ |data|
 
 	~runLogger.("~resetDataDict");
@@ -106,9 +107,10 @@ cannot be assigned nil values.
 };
 
 /*************************************************************************************/
-// ~resetProgState resets the ~progState dictionary to prevent contamination
-// across recursive calls
-
+/*
+~resetProgState resets the ~progState dictionary to prevent contamination
+across recursive calls
+*/
 ~resetProgState = #{ |progState|
 
 	~runLogger.("~resetProgState");
@@ -143,7 +145,7 @@ cannot be assigned nil values.
 	rules[\enforceRootPosition]          = true;
 	rules[\enforceFirstInversion]        = false;
 	rules[\enforceSecondInversion]       = false;
-	rules[\enforceCommonTone]            = true;
+	rules[\enforceCommonTones]            = true;
 	nil;
 };
 )
