@@ -13,7 +13,6 @@
 
 	#midiRange, triads, data, progState, rules, ruleKeys = ~dictionaries;
 
-
 	if (progression.size == durations.size) {
 		progState[\direction] = direction;
 		progState[\durations] = durations;
@@ -22,17 +21,14 @@
 		"Progression and Durations arrays are NOT of same size.".throw;
 	};
 
-
 	progState[\validChords] = Dictionary.new();
 	progState[\result] = Array.fill(progression.size, {[]});
 
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\chords] = ~getChordDegreeArrays.(triads, progression);
 
-
 	~progParser.(progression, parsedChords);
 	~setRules.(progState, parsedChords);
-
 
 	if (~backtrackProg.(data, progState, rules, 0)) {
 		progState[\dump] = progState[\result];
@@ -41,11 +37,9 @@
 		"HarmonizeProg was NOT able to harmonize the progression".throw;
 	};
 
-
 	if (score) {
 		~dumpData.(midiRange, triads, progState, rules, ruleKeys);
 	};
-
 
 	if (sustain) {
 		~sustainCommonTones.(progState);
