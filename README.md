@@ -109,7 +109,7 @@ Although the current version is functional, several areas require refinement bef
 
 * **Score export** – make the system OS-agnostic for easier use beyond the current Debian+Python setup.
 
-Further documentation – extend documentation (possibly via a repository wiki) to explain subsystems and implementation choices in detail.
+* **Further documentation** – extend documentation (possibly via a repository wiki) to explain subsystems and implementation choices in detail.
 
 ## Contributing & Support
 
