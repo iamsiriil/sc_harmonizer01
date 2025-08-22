@@ -36,7 +36,7 @@ dictionaries cannot be assigned nil values.
 		\nextCipher      -> nil
 	],
 
-	\chords -> nil
+	\chords -> nil  // Chord data for each of the chords present in the progression
 ];
 
 // Dictionary Containing data to be used while backtracking across the progression
