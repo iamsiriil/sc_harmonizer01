@@ -2,7 +2,7 @@
 
 Harmonizer 01 is a rule-based system that generates harmonized chord progressions according to classical harmony rules. It is implemented in SuperCollider and is the first iteration in a series exploring music-generation algorithms aimed at live performance tools.
 
-Although still under development, the current version is fully usable: load the project source files and call harmonizeProg (see Usage below). It takes two mandatory arguments—a chord progression and a corresponding array of durations—and returns a harmonized progression that you can assign to a Routine, Task, or Pbind, to be played by any user-defined synth that accepts frequency and duration parameters.
+Although still under development, the current version is fully usable: load the project source files and call `harmonizeProg` (see Usage below). It takes two mandatory arguments—a chord progression and a corresponding array of durations—and returns a harmonized progression that you can assign to a Routine, Task, or Pbind, to be played by any user-defined synth that accepts frequency and duration parameters.
 
 The function also offers two optional flags: sustain (when true, holds common tones instead of repeating them) and direction (selects ascending, descending, or ranged chord motion).
 
@@ -42,7 +42,7 @@ Clone the repository and load the entry file:
 Then call the main function:
 
 ```SuperCollider
-harmonizeProg.(progression, durations, sustain: false, direction: "line", logger: false, score: false)
+harmonizeProg.(progression, durations, direction: "line", sustain: true, score: false, logger: false)
 ```
 
 #### Arguments
@@ -51,13 +51,13 @@ harmonizeProg.(progression, durations, sustain: false, direction: "line", logger
 
 + **durations** (Array of Integers) – one duration per chord. Must match the length of progression.
 
-+ **sustain** (Boolean, default false) – sustains common tones by extending the first note’s duration.
-
 + **direction** (String, default "line") – upper-voice motion: "up", "down", or "line" (ranged, centered on first chord’s top note).
 
-+ **logger** (Boolean, default false) – prints function call traces (debugging).
++ **sustain** (Boolean, default true) – sustains common tones by extending the first note’s duration.
 
 + **score** (Boolean, default false) – exports score via Python 3 + music21 + Finale/Sibelius/MuseScore.
+
++ **logger** (Boolean, default false) – prints function call traces (debugging).
 
 #### Example
 ```SuperCollider
