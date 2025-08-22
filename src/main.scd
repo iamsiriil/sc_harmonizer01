@@ -22,16 +22,16 @@ Synth(\tone);
 /*************************************************************************************/
 // Get harmonized progression
 (
-~prog = ['CM', 'DM', 'F#M', 'GM', 'CM'];
-~dur = [1, 1, 1, 1, 4];
+~prog = ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM'];
+~dur = [1, 1, 1, 1, 1, 4];
 
-~result = ~harmonizeProg.(~prog, ~dur, direction: "up", sustain: true, dump: true, logger: false);
+~result = ~harmonizeProg.(~prog, ~dur, direction: "down", sustain: true, score: true, logger: false);
 )
 
 /*************************************************************************************/
 // Play progression
 (
-~octave = (_ + 12);
+~octave = (_ + 12); // Change octave
 Ppar([
 	// Bass
 	Pbind(
