@@ -80,8 +80,9 @@ Voices are ordered as: Bass → Tenor → Alto → Soprano.
 
 You can then map each voice into a Pbind (see `main.scd` for a full example).
 
-Valid chord symbols
-Root	Diminished	Minor	Major	Augmented
+#### Valid chord symbols
+|Root	|Diminished	|Minor	|Major	|Augmented|
+|_______|___________|_______|_______|_________|
 C	Cd	Cm	CM	CA
 C#	C#d	C#m	C#M	C#A
 D	Dd	Dm	DM	DA
