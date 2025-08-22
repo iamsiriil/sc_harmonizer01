@@ -32,7 +32,7 @@ dictionaries cannot be assigned nil values.
 		\currChord       -> nil,
 		\nextChord       -> nil,
 		\validNotes      -> nil,
-		\nextValidChords -> nil,
+		\nextValidChords -> nil,  // List of valid candidate chords
 		\nextCipher      -> nil   // Cipher for the next chord to be build
 	],
 
