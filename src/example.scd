@@ -5,7 +5,7 @@ s.boot;
 
 // Load all project files
 (
-"./src/loadall.scd".loadRelative;
+"./loadall.scd".loadRelative;
 )
 
 
