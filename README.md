@@ -83,7 +83,6 @@ You can then map each voice into a Pbind (see `main.scd` for a full example).
 #### Valid chord symbols
 
 | Root	| Diminished	| Minor	| Major	| Augmented |
-|_______|_______________|_______|_______|___________|
 | C  	| Cd        	| Cm	| CM	| CA        |
 
 C#	C#d	C#m	C#M	C#A
