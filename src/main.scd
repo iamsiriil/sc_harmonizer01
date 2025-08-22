@@ -18,6 +18,14 @@ SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2, pan = 0|
 }).add;
 )
 
+(
+SynthDef(\tone, { |freq = 440, dur = 1, amp = 0.2, pan = 0|
+	var env = EnvGen.ar(Env.linen(0.1, dur * 0.7, 0.1), doneAction: 2);
+	var sig = SinOsc.ar(freq) * amp * env;
+	Out.ar(0, Pan2.ar(sig, pan));
+}).add;
+)
+
 //  Test synth
 Synth(\tone);
 
