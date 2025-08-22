@@ -5,11 +5,7 @@ s.boot;
 
 // Load all project files
 (
-Platform.case(
-	\osx, { "./loadall.scd".loadRelative },
-	\linux, { "./loadall.scd".loadRelative },
-	\windows, { ".\loadall.scd".loadRelative }
-);
+"./src/loadall.scd".loadRelative;
 )
 
 
