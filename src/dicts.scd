@@ -18,7 +18,7 @@ dictionaries cannot be assigned nil values.
 			\alt -> [55, 74],
 			\spn -> [60, 81]
 		],
-		\invalidIntervals -> Dictionary[
+		\invalidIntervals -> Dictionary[          // Invalid melodic intervals per voice (within range)
 			\bas -> [6, 10, 11, 18],
 			\ten -> [6, 10, 11],
 			\alt -> [6, 10, 11],
