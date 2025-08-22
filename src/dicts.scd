@@ -35,7 +35,7 @@
 ~progState = Dictionary[
 	\progression     -> nil,
 	\durations       -> nil,
-	\ruleEnforcement -> nil,  // Dictionary with the rule setup for each chord across the progression
+	\ruleEnforcement -> nil,
 	\validChords     -> nil,  // Multidimensional arrays with the valid candidate chords for each chord successfully backtracked
 	\direction       -> nil,  // String indicating the melodic direction of the upper voice
 	\result          -> nil,  // Multidimensional array with the final harmonized progression
