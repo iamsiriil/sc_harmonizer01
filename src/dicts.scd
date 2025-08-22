@@ -12,42 +12,42 @@ dictionaries cannot be assigned nil values.
 
 ~data = Dictionary[
 	\voice -> Dictionary[
-		\range -> Dictionary[                      // Vocal range per voice
+		\range -> Dictionary[
 			\bas -> [40, 60],
 			\ten -> [48, 67],
 			\alt -> [55, 74],
 			\spn -> [60, 81]
 		],
-		\invalidIntervals -> Dictionary[          // Invalid melodic intervals per voice (within range)
+		\invalidIntervals -> Dictionary[
 			\bas -> [6, 10, 11, 18],
 			\ten -> [6, 10, 11],
 			\alt -> [6, 10, 11],
 			\spn -> [6, 10, 11]
 		],
-		\number -> 4,                            // Number of voices
-		\names  -> ['bas', 'ten', 'alt', 'spn']  // Voice names
+		\number -> 4,
+		\names  -> ['bas', 'ten', 'alt', 'spn']
 	],
 
 	\state -> Dictionary[
-		\currChord       -> nil,  // Previously built chord
-		\nextChord       -> nil,  // Chord to be built
-		\validNotes      -> nil,  // Valid candidate notes for each of the voices
-		\nextValidChords -> nil,  // List of valid candidate chords
-		\nextCipher      -> nil   // Cipher for the next chord to be build
+		\currChord       -> nil,
+		\nextChord       -> nil,
+		\validNotes      -> nil,
+		\nextValidChords -> nil,
+		\nextCipher      -> nil
 	],
 
-	\chords -> nil  // Chord data for each of the chords present in the progression
+	\chords -> nil
 ];
 
 // Dictionary Containing data to be used while backtracking across the progression
 ~progState = Dictionary[
-	\progression     -> nil,  // Array for the progression passed as argument
-	\durations       -> nil,  // Array with the durations
+	\progression     -> nil,
+	\durations       -> nil,
 	\ruleEnforcement -> nil,
-	\validChords     -> nil,  // Multidimensional arrays with the valid candidate chords for each chord successfully backtracked
-	\direction       -> nil,  // String indicating the melodic direction of the upper voice
-	\result          -> nil,  // Multidimensional array with the final harmonized progression
-	\dump            -> nil   // Boolean indicating whether score output should be generated
+	\validChords     -> nil,
+	\direction       -> nil,
+	\result          -> nil,
+	\dump            -> nil
 ];
 
 // Dictionary containing default rule settings
