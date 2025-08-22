@@ -87,6 +87,15 @@ You can then map each voice into a Pbind (see `main.scd` for a full example).
 | **C**  	| Cd        	| Cm	| CM	| CA        |
 | **C#/Db**	| C#d        	| C#m	| DbM	| DbA       |
 | **D**  	| Dd        	| Dm	| DM	| DA        |
+| **Eb**	| Ebd        	| Ebm	| EbM	| EbA       |
+| **E**  	| Ed        	| Em	| EM	| EA        |
+| **F**  	| Fd        	| Fm	| FM	| FA        |
+| **F#**	| F#d        	| F#m	| F#M	| F#A       |
+| **G**  	| Gd        	| Gm	| GM	| GA        |
+| **G#/Ab**	| G#d        	| G#m	| AbM	| AbA       |
+| **A**  	| Ad        	| Am	| AM	| AA        |
+| **Bb**	| Bbd        	| Bbm	| BbM	| BbA       |
+| **B**  	| Bd        	| Bm	| BM	| BA        |
 
 C#	C#d	C#m	C#M	C#A
 D	Dd	Dm	DM	DA
