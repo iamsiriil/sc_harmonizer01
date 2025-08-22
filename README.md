@@ -69,7 +69,7 @@ harmonizeProg.(progression, durations, direction: "line", sustain: true, score: 
 
 ```SuperCollider
 [
-    // midi notes per voice
+    // MIDI notes per voice
     [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ],
     // durations per voice
     [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ]
