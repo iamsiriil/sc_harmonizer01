@@ -34,10 +34,18 @@ result[1] = arrays of durations per voice [Bass, Tenor, Alto, Soprano]
 ## Usage
 
 Clone the repository and load the entry file:
+
+```SuperCollider
 "/local/path/to/harmonizer01/src/loadall.scd".loadRelative;
+```
+
 Then call the main function:
+
+```SuperCollider
 harmonizeProg.(progression, durations, sustain: false, direction: "line", logger: false, score: false)
-Arguments
+```
+
+#### Arguments
 
 + **progression** (Array of Symbols) – chord progression to harmonize. Symbols must match the static library (see Valid chord symbols).
 
