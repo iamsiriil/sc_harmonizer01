@@ -33,7 +33,7 @@
 ];
 
 ~progState = Dictionary[
-	\progression     -> nil,  // Array for the progression passed as argument
+	\progression     -> nil,
 	\durations       -> nil,  // Array with the durations
 	\ruleEnforcement -> nil,  // Dictionary with the rule setup for each chord across the progression
 	\validChords     -> nil,  // Multidimensional arrays with the valid candidate chords for each chord successfully backtracked
