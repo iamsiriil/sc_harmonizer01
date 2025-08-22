@@ -29,16 +29,17 @@
 		\nextCipher      -> nil
 	],
 
-	\chords -> nil
+	\chords -> nil  // Chord data for each of the chords present in the progression
 ];
 
 ~progState = Dictionary[
-	\progression     -> nil,
-	\durations       -> nil,
-	\ruleEnforcement -> nil,
-	\validChords     -> nil,
-	\direction       -> nil,
-	\dump            -> nil
+	\progression     -> nil,  // Array for the progression passed as argument
+	\durations       -> nil,  // Array with the durations
+	\ruleEnforcement -> nil,  // Dictionary with the rule setup for each chord across the progression
+	\validChords     -> nil,  // Multidimensional arrays with the valid candidate chords for each chord successfully backtracked
+	\direction       -> nil,  // String indicating the melodic direction of the upper voice
+	\result          -> nil,  // Multidimensional array with the final harmonized progression
+	\dump            -> nil   // Boolean indicating whether score output should be generated
 ];
 
 ~rules = Dictionary[
