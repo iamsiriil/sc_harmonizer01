@@ -30,7 +30,7 @@ dictionaries cannot be assigned nil values.
 
 	\state -> Dictionary[
 		\currChord       -> nil,
-		\nextChord       -> nil,
+		\nextChord       -> nil,  // Chord to be built
 		\validNotes      -> nil,  // Valid candidate notes for each of the voices
 		\nextValidChords -> nil,  // List of valid candidate chords
 		\nextCipher      -> nil   // Cipher for the next chord to be build
