@@ -29,25 +29,25 @@ dictionaries cannot be assigned nil values.
 	],
 
 	\state -> Dictionary[
-		\currChord       -> nil,  // Previously built chord
-		\nextChord       -> nil,  // Chord to be built
-		\validNotes      -> nil,  // Valid candidate notes for each of the voices
-		\nextValidChords -> nil,  // Valid next chords
-		\nextCipher      -> nil   // Cipher for the next chord to be built
+		\currChord       -> nil,
+		\nextChord       -> nil,
+		\validNotes      -> nil,
+		\nextValidChords -> nil,
+		\nextCipher      -> nil
 	],
 
-	\chords -> nil  // Chord data for each of the chords present in the progression
+	\chords -> nil
 ];
 
 // Dictionary Containing data to be used while backtracking across the progression
 ~progState = Dictionary[
-	\progression     -> nil,  // Array for the progression passed as argument
-	\durations       -> nil,  // Array with the durations
-	\ruleEnforcement -> nil,  // Dictionary with the rule setup for each chord across the progression
-	\validChords     -> nil,  // Valid candidate chords
-	\direction       -> nil,  // Melodic direction of the upper voice
-	\result          -> nil,  // Multidimensional array with the final harmonized progression
-	\dump            -> nil   // Boolean indicating whether score output should be generated
+	\progression     -> nil,
+	\durations       -> nil,
+	\ruleEnforcement -> nil,
+	\validChords     -> nil,
+	\direction       -> nil,
+	\result          -> nil,
+	\dump            -> nil
 ];
 
 // Dictionary containing default rule settings
