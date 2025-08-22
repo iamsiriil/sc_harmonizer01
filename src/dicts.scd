@@ -29,7 +29,7 @@
 		\nextCipher      -> nil
 	],
 
-	\chords -> nil  // Chord data for each of the chords present in the progression
+	\chords -> nil
 ];
 
 ~progState = Dictionary[
