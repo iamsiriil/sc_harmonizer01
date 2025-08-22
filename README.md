@@ -69,14 +69,12 @@ harmonizeProg.(progression, durations, direction: "line", sustain: true, score: 
 
 ```SuperCollider
 [
-    // notes per voice
+    // midi notes per voice
     [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ],
     // durations per voice
     [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ]
 ]
 ```
-
-Voices are ordered as: Bass → Tenor → Alto → Soprano.
 
 You can then map each voice into a Pbind (see `main.scd` for a full example).
 
@@ -97,7 +95,7 @@ You can then map each voice into a Pbind (see `main.scd` for a full example).
 | **Bb**	| Bbd        	| Bbm	| BbM	| BbA       |
 | **B**  	| Bd        	| Bm	| BM	| BA        |
 
-A more complete example is available in main.scd.
+A more complete example is available in `main.scd`.
 
 ## Next Steps
 
