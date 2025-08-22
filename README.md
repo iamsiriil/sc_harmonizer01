@@ -27,9 +27,9 @@ Generation uses two nested backtracking loops. The inner loop builds all valid c
 
 On success, the function returns an array with two elements:
 
-result[0] = arrays of MIDI notes per voice [Bass, Tenor, Alto, Soprano]
+* `result[0]` = arrays of MIDI notes per voice [Bass, Tenor, Alto, Soprano]
 
-result[1] = arrays of durations per voice [Bass, Tenor, Alto, Soprano]
+* `result[1]` = arrays of durations per voice [Bass, Tenor, Alto, Soprano]
 
 ## Usage
 
