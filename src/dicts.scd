@@ -25,7 +25,7 @@ dictionaries cannot be assigned nil values.
 			\spn -> [6, 10, 11]
 		],
 		\number -> 4,
-		\names  -> ['bas', 'ten', 'alt', 'spn']
+		\names  -> ['bas', 'ten', 'alt', 'spn']  // Voice names
 	],
 
 	\state -> Dictionary[
