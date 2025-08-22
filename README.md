@@ -117,7 +117,7 @@ This project is shared freely with the community, and feedback, testing, or idea
 
 If you find Harmonizer 01 useful and would like to support further development, you can also consider a small donation:
 
-👉 Buy me a coffee
+👉 [Buy me a coffee](http://paypal.me/iamsiriil)
 
 ## License
 
