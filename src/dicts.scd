@@ -32,7 +32,6 @@
 	\chords -> nil  // Chord data for each of the chords present in the progression
 ];
 
-// Dictionary Containing data to be used while backtracking across the progression
 ~progState = Dictionary[
 	\progression     -> nil,  // Array for the progression passed as argument
 	\durations       -> nil,  // Array with the durations
@@ -43,7 +42,6 @@
 	\dump            -> nil   // Boolean indicating whether score output should be generated
 ];
 
-// Dictionary containing default rule settings
 ~rules = Dictionary[
 	\enforceVoiceCrossProhibition -> true,
 	\enforceMelodicIntervals      -> true,
@@ -61,7 +59,6 @@
 	\enforceSecondInversion       -> false,
 ];
 
-// Convinience array with the sequence of rule symbols
 ~ruleKeys = [
 	\enforceVoiceCrossProhibition,
 	\enforceMelodicIntervals,
@@ -79,7 +76,6 @@
 	\enforceSecondInversion
 ];
 
-// Convenience array containing all dictionaries
 ~dictionaries = [~midiRange, ~triads, ~data, ~progState, ~rules, ~ruleKeys];
 
 /*************************************************************************************/
