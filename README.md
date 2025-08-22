@@ -85,7 +85,7 @@ You can then map each voice into a Pbind (see `main.scd` for a full example).
 | Root	| Diminished	| Minor	| Major	| Augmented |
 | ----- | ------------- | ----- | ----- | --------- | 
 | **C**  	| Cd        	| Cm	| CM	| CA        |
-| **C#**  	| C#d        	| C#m	| C#M	| C#A       |
+| **C#/Db**	| C#d        	| C#m	| DbM	| DbA       |
 | **D**  	| Dd        	| Dm	| DM	| DA        |
 
 C#	C#d	C#m	C#M	C#A
