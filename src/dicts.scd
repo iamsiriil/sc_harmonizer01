@@ -24,7 +24,7 @@ dictionaries cannot be assigned nil values.
 			\alt -> [6, 10, 11],
 			\spn -> [6, 10, 11]
 		],
-		\number -> 4,
+		\number -> 4,                            // Number of voices
 		\names  -> ['bas', 'ten', 'alt', 'spn']  // Voice names
 	],
 
