@@ -12,7 +12,7 @@ dictionaries cannot be assigned nil values.
 
 ~data = Dictionary[
 	\voice -> Dictionary[
-		\range -> Dictionary[
+		\range -> Dictionary[                      // Vocal range per voice
 			\bas -> [40, 60],
 			\ten -> [48, 67],
 			\alt -> [55, 74],
