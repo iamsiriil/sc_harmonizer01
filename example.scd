@@ -4,7 +4,14 @@
 s.boot;
 
 // Load all project files
-"./loadall.scd".loadRelative;
+(
+Platform.case(
+	\osx, { "./loadall.scd".loadRelative },
+	\linux, { "./loadall.scd".loadRelative },
+	\windows, { ".\loadall.scd".loadRelative }
+);
+)
+
 
 /*************************************************************************************/
 // Create a synth
