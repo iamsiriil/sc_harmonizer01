@@ -65,16 +65,20 @@ harmonizeProg.(progression, durations, sustain: false, direction: "line", logger
 ~durations  = [2, 1, 1, 2];
 ~result = harmonizeProg.(~progression, ~durations);
 ```
-Return format
+#### Return format
+
+```SuperCollider
 [
-// notes per voice
-  [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ],
-// durations per voice
-  [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ]
+    // notes per voice
+    [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ],
+    // durations per voice
+    [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ]
 ]
+```
+
 Voices are ordered as: Bass → Tenor → Alto → Soprano.
 
-You can then map each voice into a Pbind (see main.scd for a full example).
+You can then map each voice into a Pbind (see `main.scd` for a full example).
 
 Valid chord symbols
 Root	Diminished	Minor	Major	Augmented
