@@ -48,6 +48,7 @@ across the MIDI range, as two separate arrays
 /*
 ~resolveMelodicInterval ensure only valid melodic intervals are played between chords
 */
+
 ~resolveMelodicIntervals = #{ |voiceData, currChord, validNotes|
 
 	~runLogger.("~resolveMelodicIntervals");
@@ -65,6 +66,7 @@ across the MIDI range, as two separate arrays
 ~resolveCommonTones ensures only common tones are present as valid candidate,
 for each of the voices, depending on note present in previous chord
 */
+
 ~resolveCommonTones = #{ |voiceData, currChord, validNotes|
 
 	~runLogger.("~resolveCommonTones");
@@ -83,6 +85,7 @@ for each of the voices, depending on note present in previous chord
 /*
 ~getValidNotes manages valid candidate notes depending on rule settings
 */
+
 ~getValidNotes = #{ |data, rules|
 	var nextCipher = data[\state][\nextCipher];
 	var chords = data[\chords];
