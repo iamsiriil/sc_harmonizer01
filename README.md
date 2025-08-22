@@ -97,22 +97,19 @@ You can then map each voice into a Pbind (see `main.scd` for a full example).
 | **Bb**	| Bbd        	| Bbm	| BbM	| BbA       |
 | **B**  	| Bd        	| Bm	| BM	| BA        |
 
-C#	C#d	C#m	C#M	C#A
-D	Dd	Dm	DM	DA
-…	…	…	…	…
 A more complete example is available in main.scd.
 
 ## Next Steps
 
 Although the current version is functional, several areas require refinement before moving on to the next iteration:
 
-Algorithmic efficiency – optimize backtracking and refine rule assignment to reduce unnecessary recursion.
+* **Algorithmic efficiency** – optimize backtracking and refine rule assignment to reduce unnecessary recursion.
 
-Quality of progression – fine-tune rule profiles for higher musical quality.
+* **Quality of progression** – fine-tune rule profiles for higher musical quality.
 
-Testing – expand unit testing for stability.
+* **Testing** – expand unit testing for stability.
 
-Score export – make the system OS-agnostic for easier use beyond the current Debian+Python setup.
+* **Score export** – make the system OS-agnostic for easier use beyond the current Debian+Python setup.
 
 Further documentation – extend documentation (possibly via a repository wiki) to explain subsystems and implementation choices in detail.
 
