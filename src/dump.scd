@@ -23,12 +23,10 @@
 }.value;
 
 ~dumpTxt = ~pyDir +/+ "dump.txt";
-~getScorePy = ~pyDir +/+ "getscore.py"
+~getScorePy = ~pyDir +/+ "getscore.py";
 
 ~q = { |s| s.asString.quote };
-)
 
-(
 /*************************************************************************************/
 
 ~dumpChords = { |midiRange, triads, progState, file|
@@ -75,16 +73,17 @@
 /*************************************************************************************/
 
 ~dumpData = { |midiRange, triads, progState, rules, ruleKeys|
-	var path_txt = PathName.new("../data/python/dump.txt".resolveRelative);
-	var path_py3 = PathName.new("../data/python/venv/bin/python3".resolveRelative);
-	var path_py = PathName.new("../data/python/dt_harmony_01_parse.py".resolveRelative);
-	var file = File.new(path_txt.fullPath, "w");
+	/*var path_txt = PathName.new("../score/python/dump.txt".resolveRelative);
+	var path_py3 = PathName.new("../score/python/venv/bin/python3".resolveRelative);
+	var path_py = PathName.new("../score/python/getscore.py".resolveRelative);*/
+	var file = File.new(~dumpTxt, "w");
 
 	~dumpChords.(midiRange, triads, progState, file);
 	~dumpRules.(progState, rules, ruleKeys, file);
 
 	file.close;
 
-	"% %".format(path_py3.fullPath, path_py.fullPath).unixCmd;
+	//"% %".format(path_py3.fullPath, path_py.fullPath).unixCmd;
+	"% %".format(~q.(~pythonExe), ~q.(~getScorePy)).unixCmd;
 };
 )

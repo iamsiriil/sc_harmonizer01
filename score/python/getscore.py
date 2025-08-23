@@ -2,7 +2,7 @@ from music21 import *
 import os
 
 def parseSCDump():
-    with open("/home/siriil/Music/projects/harmony01/data/python/dump.txt", "r") as file:
+    with open("/home/siriil/Music/projects/harmony01/score/python/dump.txt", "r") as file:
         chords = []
         progSize = int(file.readline()) 
 
