@@ -4,14 +4,21 @@
 (
 ~srcDir = PathName(thisProcess.nowExecutingPath).parentPath;
 ~rootDir = PathName(~srcDir).parentPath;
-~pyDir = ~repoDir +/+ "score/python";
 
+~pyDir = ~rootDir +/+ "score/python";
 ~pyDir = ~pyDir.standardizePath;
+
+~dumpTxt = (~pyDir +/+ "dump.txt").standardizePath;
+~getScorePy = (~pyDir +/+ "getscore.py").standardizePath;
+
+~q = { |s| s.asString };
+
+/*************************************************************************************/
 
 ~pythonExe = {
 	var venvLinux = ~pyDir +/+ "venv/bin/python3";
 	var venvMac   = ~pyDir +/+ "venv/bin/python3";
-	var venvWin   = ~pyDir +/+ "venv\bin\python.exe";
+	var venvWin   = ~pyDir +/+ "venv/bin/python.exe";
 
 	case
 	{ (thisProcess.platform.name == \windows) && File.exists(venvWin) } { venvWin }
@@ -22,15 +29,12 @@
 
 }.value;
 
-~dumpTxt = ~pyDir +/+ "dump.txt";
-~getScorePy = ~pyDir +/+ "getscore.py";
-
-~q = { |s| s.asString.quote };
-
 /*************************************************************************************/
 
 ~dumpChords = { |midiRange, triads, progState, file|
 	var names, notes;
+
+	"dumpChords".postln;
 
 	file.write("%\n".format(progState[\progression].size));
 
@@ -55,7 +59,13 @@
 
 	progState[\progression].do { |c, i|
 
-		file.write("%\n".format(c));
+		if (c.asString.last == $A) {
+			c = c.asString[0..c.asString.size - 2] ++ "+";
+			file.write("%\n".format(c));
+		} {
+			file.write("%\n".format(c));
+		};
+
 		ruleKeys.do { |k|
 			temp[k] = rules[k];
 		};
@@ -73,9 +83,6 @@
 /*************************************************************************************/
 
 ~dumpData = { |midiRange, triads, progState, rules, ruleKeys|
-	/*var path_txt = PathName.new("../score/python/dump.txt".resolveRelative);
-	var path_py3 = PathName.new("../score/python/venv/bin/python3".resolveRelative);
-	var path_py = PathName.new("../score/python/getscore.py".resolveRelative);*/
 	var file = File.new(~dumpTxt, "w");
 
 	~dumpChords.(midiRange, triads, progState, file);
@@ -83,7 +90,6 @@
 
 	file.close;
 
-	//"% %".format(path_py3.fullPath, path_py.fullPath).unixCmd;
 	"% %".format(~q.(~pythonExe), ~q.(~getScorePy)).unixCmd;
 };
 )

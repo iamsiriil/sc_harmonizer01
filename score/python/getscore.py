@@ -1,10 +1,12 @@
 from music21 import *
+from pathlib import Path
+import sys
 import os
 
-def parseSCDump():
-    with open("/home/siriil/Music/projects/harmony01/score/python/dump.txt", "r") as file:
+def parseSCDump(path: Path):
+    with path.open("r", encoding= "utf-8") as file:
         chords = []
-        progSize = int(file.readline()) 
+        progSize = int(file.readline())
 
         for _ in range(0, progSize):
             chords.append(str(file.readline()).strip(" \n").split(" "))
@@ -83,6 +85,12 @@ def getScore(size, ciphers, chords, rules):
     lastBassMeasure.rightBarline = finalBar
 
     score.show()
-    
 
-getScore(*parseSCDump())
+if __name__ == "__main__":
+    scriptDir = Path(__file__).resolve().parent
+    dumpPath = scriptDir / "dump.txt"
+
+    if not dumpPath.exists():
+        sys.exit(f"[error] dump.txt not found in {scriptDir}")
+
+    getScore(*parseSCDump(dumpPath))
