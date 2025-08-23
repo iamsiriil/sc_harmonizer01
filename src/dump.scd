@@ -2,6 +2,35 @@
 - HARMONY 01 / Data dump
 **************************************************************************************/
 (
+~srcDir = PathName(thisProcess.nowExecutingPath).parentPath;
+~rootDir = PathName(~srcDir).parentPath;
+~pyDir = ~repoDir +/+ "score/python";
+
+~pyDir = ~pyDir.standardizePath;
+
+~pythonExe = {
+	var venvLinux = ~pyDir +/+ "venv/bin/python3";
+	var venvMac   = ~pyDir +/+ "venv/bin/python3";
+	var venvWin   = ~pyDir +/+ "venv\bin\python.exe";
+
+	case
+	{ (thisProcess.platform.name == \windows) && File.exists(venvWin) } { venvWin }
+	{ thisProcess.platform.name == \windows }                           { "py -3" }
+	{ File.exists(venvLinux) }                                          { venvLinux }
+	{ File.exists(venvMac) }                                            { venvMac }
+	{ "python3" }
+
+}.value;
+
+~dumpTxt = ~pyDir +/+ "dump.txt";
+~getScorePy = ~pyDir +/+ "getscore.py"
+
+~q = { |s| s.asString.quote };
+)
+
+(
+/*************************************************************************************/
+
 ~dumpChords = { |midiRange, triads, progState, file|
 	var names, notes;
 
