@@ -11,8 +11,6 @@
 ~dumpTxt = (~pyDir +/+ "dump.txt").standardizePath;
 ~getScorePy = (~pyDir +/+ "getscore.py").standardizePath;
 
-~q = { |s| s.asString };
-
 /*************************************************************************************/
 
 ~pythonExe = {
@@ -90,6 +88,6 @@
 
 	file.close;
 
-	"% %".format(~q.(~pythonExe), ~q.(~getScorePy)).unixCmd;
+	"% %".format(~pythonExe.asString, ~getScorePy.asString).unixCmd;
 };
 )
