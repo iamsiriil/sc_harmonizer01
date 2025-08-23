@@ -126,19 +126,22 @@ The configuration process is important, as it tells music21 which notation softw
 
 **Note**: If you prefer to use a Python virtual environment, it is advisable to place it in `sc_harmony01/score/python/` as `venv/`. The program will automatically detect and use it when available.
 
+
 ## Next Steps
 
-Although the current version is functional, several areas require refinement before moving on to the next iteration:
+Even though the current version of the program is functional, some aspects need fine-tuning before progressing to the next iteration of the project:
 
-* **Algorithmic efficiency** – optimize backtracking and refine rule assignment to reduce unnecessary recursion.
+* **Algorithmic efficiency** – Backtracking is computationally demanding, and SuperCollider isn’t ideal for heavy logic. Depending on progression length and rule complexity, a call to harmonizeProg can take from a few milliseconds to, in rare cases, a few seconds, leading to inconsistent performance. The backtracking process should be optimized and rule setup refined to prevent unnecessary recursion.
 
-* **Quality of progression** – fine-tune rule profiles for higher musical quality.
+* **Quality of progression** – The rule assignment during parsing needs refinement to ensure higher musical quality and stylistic consistency.
 
-* **Testing** – expand unit testing for stability.
+* **Logger** – Currently limited to console output. Add the ability to log to a file to make debugging and long-run tracing more practical (especially for larger test suites).
 
-* **Score export** – make the system OS-agnostic for easier use beyond the current Debian+Python setup.
+* **Testing** – More systematic unit testing is required to ensure robustness across progressions, rule sets, and edge cases. Some subsystems—such as progression rules, the parser, and sustain functions—still require unit tests.
 
-* **Further documentation** – extend documentation (possibly via a repository wiki) to explain subsystems and implementation choices in detail.
+* **Score export** – This functionality was primarily developed as an additional testing tool to assess the quality of the generated progression in score form. As such, it does not currently reflect user-assigned durations or the suspension of common tones. Over time, it should be made more robust and expanded into a true composition aid, capable of reflecting user-assigned durations and suspensions.
+
+* **Further documentation** – Additional documentation (e.g., a repository wiki) to explain subsystems and design choices in greater detail.
 
 ## Contributing & Support
 
