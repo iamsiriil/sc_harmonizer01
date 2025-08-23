@@ -99,6 +99,33 @@ You can then map each voice into a Pbind (see `main.scd` for a full example).
 
 A more complete example is available in `main.scd`.
 
+#### Score export
+
+The score export functionality requires Python 3 and the music21 library.
+
+To install `music21`, run:
+
+```bash
+    # Linux / macOS
+    pip3 install music21
+
+    # Windows
+    py -3 -m pip install music21
+```
+
+Once installed, you need to configure music21 by running the following in your terminal or Python REPL:
+
+```Python
+    import music21
+    music21.configure.run()
+```
+
+The configuration process is important, as it tells music21 which notation software to use for opening exported scores (Finale, Sibelius, MuseScore, etc.).
+
+👉 For more details and installation instructions, see the [official music21 documentation](https://www.music21.org/music21docs/usersGuide/usersGuide_01_installing.html)
+
+**Note**: If you prefer to use a Python virtual environment, it is advisable to place it in `sc_harmony01/score/python/` as `venv/`. The program will automatically detect and use it when available.
+
 ## Next Steps
 
 Although the current version is functional, several areas require refinement before moving on to the next iteration:
