@@ -4,10 +4,7 @@
 s.boot;
 
 // Load all project files
-(
 "./src/loadall.scd".loadRelative;
-)
-
 
 /*************************************************************************************/
 // Create a synth
