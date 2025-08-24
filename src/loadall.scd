@@ -2,6 +2,18 @@
 - HARMONY 01 / Load all files
 **************************************************************************************/
 (
+// Paths needed to export score
+
+~srcDir = PathName(thisProcess.nowExecutingPath).pathOnly;
+~rootDir = PathName(~srcDir).parentPath;
+~pyDir = (~rootDir +/+ "score/python").standardizePath;
+
+~dumpTxt = (~pyDir +/+ "dump.txt").standardizePath;
+~getScorePy = (~pyDir +/+ "getscore.py").standardizePath;
+
+/*************************************************************************************/
+// Project files
+
 "./lib.scd".loadRelative;
 "./dump.scd".loadRelative;
 "./dicts.scd".loadRelative;
