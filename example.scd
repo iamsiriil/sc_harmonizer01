@@ -29,7 +29,7 @@ Synth(\tone);
 	~prog, ~dur,
 	direction: "line",
 	sustain: true,
-	score: false,
+	score: true,
 	logger: false
 );
 )

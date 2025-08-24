@@ -2,16 +2,6 @@
 - HARMONY 01 / Data dump
 **************************************************************************************/
 (
-/*~srcDir = PathName(thisProcess.nowExecutingPath).parentPath;
-~rootDir = PathName(~srcDir).parentPath;
-
-~pyDir = ~rootDir +/+ "score/python";
-~pyDir = ~pyDir.standardizePath;
-
-~dumpTxt = (~pyDir +/+ "dump.txt").standardizePath;
-~getScorePy = (~pyDir +/+ "getscore.py").standardizePath;*/
-
-/*************************************************************************************/
 
 ~pythonExe = {
 	var venvLinux = ~pyDir +/+ "venv/bin/python3";
