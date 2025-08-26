@@ -2,9 +2,6 @@
 - HARMONY 01 / Rule Enforcement and Tests
 **************************************************************************************/
 (
-~logger = true;
-
-/*************************************************************************************/
 // Check chord position: Root, first inversion, second inversion
 
 ~checkChordPosition = #{ |nextChord, cipher, chords, rules|

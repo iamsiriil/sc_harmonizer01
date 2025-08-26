@@ -2,9 +2,6 @@
 - HARMONY 01 / Utility Functions
 **************************************************************************************/
 (
-~logger = true;
-
-/*************************************************************************************/
 // Get the corresponding degree of a note, given a cipher
 
 ~getNoteDegree = #{ |note, cipher, chords|

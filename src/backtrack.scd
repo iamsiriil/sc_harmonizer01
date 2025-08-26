@@ -2,9 +2,6 @@
 - HARMONY 01 / Backtracking
 **************************************************************************************/
 (
-//~logger = true;
-
-/*************************************************************************************/
 /*
 ~backtrackChords takes, for each voice, a set of valid candidate notes
 and returns the collection of all valid chords.
