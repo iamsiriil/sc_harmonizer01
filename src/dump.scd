@@ -47,12 +47,16 @@
 
 	progState[\progression].do { |c, i|
 
-		if (c.asString.last == $A) {
+		case
+		{ c.asString.last == $A } {
 			c = c.asString[0..c.asString.size - 2] ++ "+";
 			file.write("%\n".format(c));
-		} {
+		}
+		{ c.asString.last == $d } {
+			c = c.asString[0..c.asString.size - 2] ++ "o";
 			file.write("%\n".format(c));
-		};
+		}
+		{ file.write("%\n".format(c)) };
 
 		ruleKeys.do { |k|
 			temp[k] = rules[k];
