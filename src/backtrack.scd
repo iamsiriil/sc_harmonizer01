@@ -2,9 +2,21 @@
 - HARMONY 01 / Backtracking
 **************************************************************************************/
 (
-~logger = true;
+//~logger = true;
 
 /*************************************************************************************/
+/*
+~backtrackChords takes, for each voice, a set of valid candidate notes
+and returns the collection of all valid chords.
+
+Parameters:
+- data: structure holding state and voice/note data
+- rules: validation rule set
+- i: index of the voice being processed
+
+Returns:
+- Array of valid next chords in data[\state][\validNextChords]
+*/
 
 ~backtrackChords = #{ |data, rules, i|
 	var voice = data[\voice][\names][i];
@@ -16,8 +28,11 @@
 			data[\state][\validNextChords].add(data[\state][\nextChord].copy);
 		}
 	} {
-		if ((i > 0) && (data[\state][\validNotes][v].size == 1)) {
-			data[\state][\nextChord].put(i, data[\state][\validNotes][v].asArray.at(0));
+		// A single candidate note means a common tone is repeated.
+		// In this case, we assign the note and skip directly to the next voice.
+
+		if ((i > 0) && (data[\state][\validNotes][voice].size == 1)) {
+			data[\state][\nextChord].put(i, data[\state][\validNotes][voice].asArray.at(0));
 			~backtrackChords.(data, rules, (i + 1));
 		};
 
@@ -36,10 +51,17 @@
 };
 
 /*************************************************************************************/
+/*
+~getFirstChords is a wrapper around ~backtrackChords and prepares
+the data needed for the backtracking process.
+
+First chords have a special rule profile because they are not tested
+against a previous chord.
+*/
 
 ~getFirstChords = #{ |data, progState, rules, i|
 
-	~runLogger.(~getFirstChords);
+	~runLogger.("~getFirstChords");
 
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\state][\validNextChords] = Array.new(20);
@@ -57,6 +79,20 @@
 };
 
 /*************************************************************************************/
+/*
+~getNextChords is a wrapper around ~backtrackChords and prepares
+the data needed for the backtracking process.
+
+Identical to ~getFirstChords, except that \currChord is set to the
+previous chord stored in progState[\result].
+
+OBSERVATIONS:
+-> ~getFirstChords and ~getNextChords could be merged by conditionally
+   setting \currChord when i > 0.
+
+-> \currChord might be redundant if you always read the last assigned
+   chord from progState[\result].
+*/
 
 ~getNextChords = #{ |data, progState, rules, i|
 
@@ -79,6 +115,12 @@
 };
 
 /*************************************************************************************/
+/*
+~backtrackProg walks the progression provided to ~harmonizeProg and, via the
+wrappers (~getFirstChords / ~getNextChords), invokes ~backtrackChords to
+produce, for each chord cipher in the progression, the list of valid candidate
+chords. Returns true if the completed progression satisfies all rules.
+*/
 
 ~backtrackProg = #{ |data, progState, rules, i|
 	var result;
@@ -88,7 +130,8 @@
 	block { |return|
 
 		if ((i == progState[\progression].size)) {
-			result = if (~progIsValid.(progState)) { true } { false };
+			//result = if (~progIsValid.(progState)) { true } { false };
+			result = ~progIsValid.(progState);
 			return.value(result);
 		};
 
