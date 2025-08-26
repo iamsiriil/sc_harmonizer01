@@ -1,10 +1,11 @@
-5
-C3 Eb3 G3 C4 
-Bb2 Eb3 G3 Eb4 
-F#2 C3 A3 F#4 
-G2 G3 D4 B4 
-C3 G3 Eb4 C5 
-Cm
+6
+D3 F3 A3 D4 
+G2 C#3 C#4 E4 
+C3 Eb3 C4 G4 
+Bb2 Eb3 Eb4 G4 
+A2 E3 C#4 A4 
+F2 D3 D4 A4 
+Dm
 enforceVoiceCrossProhibition: true
 enforceMelodicIntervals: false
 enforceCommonTones: false
@@ -17,6 +18,36 @@ enforceThirdDuplicate: false
 enforceFifthDuplicate: false
 enforceChordPosition: true
 enforceRootPosition: true
+enforceFirstInversion: false
+enforceSecondInversion: false
+C#o
+enforceVoiceCrossProhibition: true
+enforceMelodicIntervals: true
+enforceCommonTones: true
+enforceVocalRange: true
+enforceParallelOctaves: true
+enforceParallelFifths: true
+enforceNoteDuplicate: true
+enforceRootDuplicate: true
+enforceThirdDuplicate: false
+enforceFifthDuplicate: false
+enforceChordPosition: false
+enforceRootPosition: false
+enforceFirstInversion: false
+enforceSecondInversion: false
+Cm
+enforceVoiceCrossProhibition: true
+enforceMelodicIntervals: true
+enforceCommonTones: true
+enforceVocalRange: true
+enforceParallelOctaves: true
+enforceParallelFifths: true
+enforceNoteDuplicate: true
+enforceRootDuplicate: true
+enforceThirdDuplicate: false
+enforceFifthDuplicate: false
+enforceChordPosition: false
+enforceRootPosition: false
 enforceFirstInversion: false
 enforceSecondInversion: false
 EbM
@@ -34,13 +65,13 @@ enforceChordPosition: false
 enforceRootPosition: false
 enforceFirstInversion: false
 enforceSecondInversion: false
-F#o
+AM
 enforceVoiceCrossProhibition: true
-enforceMelodicIntervals: true
+enforceMelodicIntervals: false
 enforceCommonTones: true
 enforceVocalRange: true
-enforceParallelOctaves: true
-enforceParallelFifths: true
+enforceParallelOctaves: false
+enforceParallelFifths: false
 enforceNoteDuplicate: true
 enforceRootDuplicate: true
 enforceThirdDuplicate: false
@@ -49,22 +80,7 @@ enforceChordPosition: false
 enforceRootPosition: false
 enforceFirstInversion: false
 enforceSecondInversion: false
-GM
-enforceVoiceCrossProhibition: true
-enforceMelodicIntervals: true
-enforceCommonTones: true
-enforceVocalRange: true
-enforceParallelOctaves: true
-enforceParallelFifths: true
-enforceNoteDuplicate: true
-enforceRootDuplicate: true
-enforceThirdDuplicate: false
-enforceFifthDuplicate: false
-enforceChordPosition: false
-enforceRootPosition: false
-enforceFirstInversion: false
-enforceSecondInversion: false
-Cm
+Dm
 enforceVoiceCrossProhibition: true
 enforceMelodicIntervals: true
 enforceCommonTones: true
