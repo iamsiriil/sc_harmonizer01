@@ -6,7 +6,7 @@
 ~pythonExe = {
 	var venvLinux = ~pyDir +/+ "venv/bin/python3";
 	var venvMac   = ~pyDir +/+ "venv/bin/python3";
-	var venvWin   = ~pyDir +/+ "venv/bin/python.exe";
+	var venvWin   = ~pyDir +/+ "venv/Scripts/python.exe";
 
 	case
 	{ (thisProcess.platform.name == \windows) && File.exists(venvWin) } { venvWin }
