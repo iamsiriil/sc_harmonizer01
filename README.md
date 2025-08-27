@@ -35,10 +35,10 @@ On occasion, the program might fail to generate a progression, in which case an 
 
 ## Usage
 
-Clone the repository and load the entry file:
+Clone the repository and load the entry file into a project file of your own:
 
 ```SuperCollider
-"/local/path/to/harmonizer01/src/loadall.scd".loadRelative;
+"/local/path/to/sc_harmonizer01/src/loadall.scd".load;
 ```
 
 Then call the main function:
