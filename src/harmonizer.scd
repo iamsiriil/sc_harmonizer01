@@ -1,17 +1,56 @@
 /**************************************************************************************
 - HARMONY 01 / Harmonizer
+
+-> TEST ARGUMENTS
+
+PROGRESSION:
+- array of symbols
+- symbols must be member of set ~triads.keys
+
+DURATIONS:
+- array of numbers (int, float)
+- both progression and durations must be of same length
+
+DIRECTION:
+- string
+- value must be member of set { "up", "down", "line" }
+
+SUSTAIN, SCORE and LOGGER:
+- boolean
+
 **************************************************************************************/
 (
+~testProgression = #{ |progression| };
+
+~testDurations = #{ |durations| };
+
+~testDirection = #{ |direction| };
+
+~testArguments = #{ |progression, durations, direction, sustain, score, logger|
+
+	// test sustain, score and logger
+};
+
+
+/*************************************************************************************/
+
 ~harmonizeProg = #{ |progression, durations, direction = "line", sustain = true, score = false, logger = false|
 	var midiRange, triads, data, progState, rules, ruleKeys;
 	var return = Array.fill(2, {Array.new(4)});
 	var parsedChords = Dictionary.new();
+
+	// ~testArguments.(...);
+
+	// if (logger) {~logger = logger; ~loggerCount = 0};
 
 	~logger = logger;
 	~loggerCount = 0;
 	~runLogger.("~harmonizeProg");
 
 	#midiRange, triads, data, progState, rules, ruleKeys = ~dictionaries;
+
+	// Program should only run if all arguments are valid
+	// initData.(...);
 
 	if (progression.size == durations.size) {
 		progState[\direction] = direction;
