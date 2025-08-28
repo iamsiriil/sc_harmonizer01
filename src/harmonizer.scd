@@ -9,6 +9,7 @@ PROGRESSION:
 
 DURATIONS:
 - array of numbers (int, float)
+- numbers must be greater that 0
 - both progression and durations must be of same length
 
 DIRECTION:
@@ -20,11 +21,60 @@ SUSTAIN, SCORE and LOGGER:
 
 **************************************************************************************/
 (
-~testProgression = #{ |progression| };
+~testDataType = { |parameter, data, class|
 
-~testDurations = #{ |durations| };
+	if ((data.class == class).not) {
+		Error("% is not an instance of %.\n".format(parameter, class)).throw;
+	} {
+		true;
+	}
+};
 
-~testDirection = #{ |direction| };
+~testProgression = #{ |progression|
+
+	if (~testDataType.("progression", progression, Array)) {
+
+		progression.do { |c|
+
+			~testDataType.("%".format(c), c, Symbol);
+
+			if (Set[c].isSubsetOf(~triads.keys).not) {
+				Error("% is not a valid cipher.\n".format(c)).throw;
+			}
+		};
+	};
+	nil;
+};
+
+~testDurations = #{ |durations|
+
+	if (~testDataType.("durations", durations, Array)) {
+
+		durations.do { |n|
+
+			if ((n.isInteger || n.isFloat).not) {
+				Error("The durations array must contain either floats or integers.\n").throw;
+			};
+
+			if (n <= 0) {
+				Error("The values provided must be greater than 0.\n").throw;
+			};
+		};
+	};
+	nil;
+};
+
+~testDirection = #{ |direction|
+	var validDirections = Set["up", "down", "line"];
+
+	if (~testDataType.("direction", direction, String)) {
+
+		if (Set[direction].isSubsetOf(validDirections).not) {
+
+			Error("% is not a valid direction. Try \"up\", \"down\" or \"line\".\n".format(direction)).throw;
+		}
+	}
+};
 
 ~testArguments = #{ |progression, durations, direction, sustain, score, logger|
 
