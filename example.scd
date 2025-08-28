@@ -28,9 +28,9 @@ Synth(\tone);
 
 ~result = ~harmonizeProg.(
 	~prog, ~dur,
-	direction: "up",
+	direction: "down",
 	sustain: true,
-	score: true,
+	score: false,
 	logger: false
 );
 )

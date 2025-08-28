@@ -32,7 +32,11 @@
 		notes = triads[p][\notes];
 
 		progState[\dump][i].do { |n|
-			file.write("%% ".format(names[notes.indexOf(n)], midiRange[\octave][n].last ));
+			var note = names[notes.indexOf(n)];
+
+			if (note.contains($b)) { note = note.replace($b, $-) } { note }; // Prevents issues with music21, by replacing "b" with "-"
+
+			file.write("%% ".format(note, midiRange[\octave][n].last ));
 		};
 		file.write("\n");
 	};
