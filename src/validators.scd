@@ -93,6 +93,7 @@ SUSTAIN, SCORE and LOGGER:
 
 	if (progression.size != durations.size) {
 		Error("Progression and durations arrays must be of same length.\n").throw;
-	}
+	};
+	nil;
 };
 )
