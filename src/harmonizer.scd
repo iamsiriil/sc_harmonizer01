@@ -79,16 +79,13 @@ SUSTAIN, SCORE and LOGGER:
 	// test sustain, score and logger
 	~testDataType.("Sustain", sustain, Boolean);
 	~testDataType.("Score", score, Boolean);
-	~testDataType.("Logger", Logger, Boolean);
+	~testDataType.("Logger", logger, Boolean);
 
 	if (progression.size != durations.size) {
 		Error("Progression and durations arrays must be of same length.\n").throw;
 	}
 };
 
-)
-
-(
 /*************************************************************************************/
 
 ~harmonizeProg = #{ |progression, durations, direction = "line", sustain = true, score = false, logger = false|
@@ -96,7 +93,7 @@ SUSTAIN, SCORE and LOGGER:
 	var return = Array.fill(2, {Array.new(4)});
 	var parsedChords = Dictionary.new();
 
-	// ~testArguments.(...);
+	~testArguments.(progression, durations, direction, sustain, score, logger);
 
 	// if (logger) {~logger = logger; ~loggerCount = 0};
 
