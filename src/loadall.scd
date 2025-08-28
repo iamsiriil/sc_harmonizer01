@@ -25,6 +25,7 @@
 "./chordrules.scd".loadRelative;
 "./progrules.scd".loadRelative;
 "./backtrack.scd".loadRelative;
+"./validators.scd".loadRelative;
 "./harmonizer.scd".loadRelative;
 "../tests/test_runtests.scd".loadRelative;
 )

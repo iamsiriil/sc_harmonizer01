@@ -30,7 +30,7 @@ Synth(\tone);
 	~prog, ~dur,
 	direction: "down",
 	sustain: true,
-	score: false,
+	score: true,
 	logger: false
 );
 )
