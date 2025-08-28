@@ -23,42 +23,37 @@ SUSTAIN, SCORE and LOGGER:
 (
 ~testDataType = { |parameter, data, class|
 
-	if ((data.class == class).not) {
+	if ((data.isKindOf(class)).not) {
 		Error("% is not an instance of %.\n".format(parameter, class)).throw;
-	} {
-		true;
-	}
+	};
+	nil;
 };
 
 ~testProgression = #{ |progression|
 
-	if (~testDataType.("progression", progression, Array)) {
+	~testDataType.("Progression", progression, Array);
 
-		progression.do { |c|
+	progression.do { |c|
 
-			~testDataType.("%".format(c), c, Symbol);
+		~testDataType.("%".format(c), c, Symbol);
 
-			if (Set[c].isSubsetOf(~triads.keys).not) {
-				Error("% is not a valid cipher.\n".format(c)).throw;
-			}
-		};
+		if (Set[c].isSubsetOf(~triads.keys).not) {
+			Error("% is not a valid cipher.\n".format(c)).throw;
+		}
 	};
 	nil;
 };
 
 ~testDurations = #{ |durations|
 
-	if (~testDataType.("durations", durations, Array)) {
+	~testDataType.("Durations", durations, Array);
 
-		durations.do { |n|
+	durations.do { |n|
 
-			if ((n.isInteger || n.isFloat).not) {
-				Error("The durations array must contain either floats or integers.\n").throw;
-			};
+		~testDataType.("Duration", n, Number);
 
-			if (n <= 0) {
-				Error("The values provided must be greater than 0.\n").throw;
-			};
+		if (n <= 0) {
+			Error("The values provided must be greater than 0.\n").throw;
 		};
 	};
 	nil;
@@ -67,21 +62,33 @@ SUSTAIN, SCORE and LOGGER:
 ~testDirection = #{ |direction|
 	var validDirections = Set["up", "down", "line"];
 
-	if (~testDataType.("direction", direction, String)) {
+	~testDataType.("Direction", direction, String);
 
-		if (Set[direction].isSubsetOf(validDirections).not) {
-
-			Error("% is not a valid direction. Try \"up\", \"down\" or \"line\".\n".format(direction)).throw;
-		}
-	}
+	if (Set[direction].isSubsetOf(validDirections).not) {
+		Error("% is not a valid direction. Try \"up\", \"down\" or \"line\".\n".format(direction)).throw;
+	};
+	nil;
 };
 
 ~testArguments = #{ |progression, durations, direction, sustain, score, logger|
 
+	~testProgression.(progression);
+	~testDurations.(durations);
+	~testDirection.(direction);
+
 	// test sustain, score and logger
+	~testDataType.("Sustain", sustain, Boolean);
+	~testDataType.("Score", score, Boolean);
+	~testDataType.("Logger", Logger, Boolean);
+
+	if (progression.size != durations.size) {
+		Error("Progression and durations arrays must be of same length.\n").throw;
+	}
 };
 
+)
 
+(
 /*************************************************************************************/
 
 ~harmonizeProg = #{ |progression, durations, direction = "line", sustain = true, score = false, logger = false|
