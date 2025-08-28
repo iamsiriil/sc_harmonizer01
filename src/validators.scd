@@ -11,15 +11,15 @@ PROGRESSION:
 DURATIONS:
 - Array of numbers (int, float)
 - Array cannot be empy
-- numbers must be greater than 0
-- both progression and durations must be of same length
+- Numbers must be greater than 0
+- Both progression and durations must be of same length
 
 DIRECTION:
-- string
-- value must be member of set { "up", "down", "line" }
+- String
+- Value must be member of set { "up", "down", "line" }
 
 SUSTAIN, SCORE and LOGGER:
-- boolean
+- Boolean
 
 **************************************************************************************/
 (
