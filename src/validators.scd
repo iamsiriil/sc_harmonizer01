@@ -37,14 +37,22 @@ SUSTAIN, SCORE and LOGGER:
 
 	~testDataType.("Progression", progression, Array);
 
-	progression.do { |c|
+	if (progression.any({ |c| c.isKindOf(Symbol).not })) {
+		Error("Chord ciphers must be Symbols.\n").throw;
+	};
+
+	if (progression.any({ |c| ~triads.includes(c) })) {
+		Error("Progression contains invalid ciphers.\n").throw;
+	};
+
+	/*progression.do { |c|
 
 		~testDataType.("%".format(c), c, Symbol);
 
 		if (Set[c].isSubsetOf(~triads.keys).not) {
 			Error("% is not a valid cipher.\n".format(c)).throw;
 		}
-	};
+	};*/
 	nil;
 };
 
@@ -54,14 +62,22 @@ SUSTAIN, SCORE and LOGGER:
 
 	~testDataType.("Durations", durations, Array);
 
-	durations.do { |n|
+	if (durations.any({ |c| c.isKindOf(Number).not })) {
+		Error("Duration values must be of type Integer or Float.\n").throw;
+	};
+
+	if (durations.any({ |c| c <= 0 })) {
+		Error("The values provided must be greater than 0.\n").throw;
+	};
+
+	/*durations.do { |n|
 
 		~testDataType.("Duration", n, Number);
 
 		if (n <= 0) {
 			Error("The values provided must be greater than 0.\n").throw;
 		};
-	};
+	};*/
 	nil;
 };
 
@@ -82,18 +98,25 @@ SUSTAIN, SCORE and LOGGER:
 
 ~testArguments = #{ |progression, durations, direction, sustain, score, logger|
 
+	if (progression.isEmpty || durations.isEmpty) {
+		Error("progression and durations Arrays must not be empty.\n").throw;
+	};
+
+	if (progression.size != durations.size) {
+		Error("progression and durations arrays must be of same length.\n").throw;
+	};
 	~testProgression.(progression);
 	~testDurations.(durations);
 	~testDirection.(direction);
 
 	// test sustain, score and logger
-	~testDataType.("Sustain", sustain, Boolean);
-	~testDataType.("Score", score, Boolean);
-	~testDataType.("Logger", logger, Boolean);
-
-	if (progression.size != durations.size) {
-		Error("Progression and durations arrays must be of same length.\n").throw;
+	if (sustain.isKindOf(Boolean).not || score.isKindOf(Boolean).not || logger.isKindOf(Boolean).not) {
+		Error("sustain, score and logger must be of type Boolean.\n").throw;
 	};
+
+	/*~testDataType.("Sustain", sustain, Boolean);
+	~testDataType.("Score", score, Boolean);
+	~testDataType.("Logger", logger, Boolean);*/
 	nil;
 };
 )
