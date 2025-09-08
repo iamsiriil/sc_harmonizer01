@@ -27,45 +27,67 @@
 
 /*************************************************************************************/
 
+~handleResult = #{ |progState|
+	var temp = Array.fill(2, {Array.new(4)});
+
+	progState[\dump] = progState[\result];
+	progState[\result] = progState[\result].flop.postln;
+
+	progState[\result].do { |v|
+		temp[0].add(v);
+		temp[1].add(progState[\durations]);
+	};
+
+	progState[\return] = Array.fill(2, {Array.new(4)});
+	progState[\return] = temp;
+	nil;
+};
+
+/*************************************************************************************/
+
+~handleSustain = { |progState|
+	progState[\return] = ~sustainCommonTones.(progState);
+};
+
+/*************************************************************************************/
+
 ~harmonizeProg = #{ |progression, durations, direction = "line", sustain = true, score = false, logger = false|
 	var midiRange, triads, data, progState, rules, ruleKeys;
 	var return = Array.fill(2, {Array.new(4)});
 
-	// Test input arguments
-	~testArguments.(progression, durations, direction, sustain, score, logger);
+	~testArguments.(progression, durations, direction, sustain, score, logger); // Test input arguments
 
-	// Set logger
-	~logger = logger; ~loggerCount = 0;
+	~logger = logger; ~loggerCount = 0;                                         // Set logger
 	~runLogger.("~harmonizeProg");
 
-	// Get necessary dictionaries for data storage
-	#midiRange, triads, data, progState, rules, ruleKeys = ~dictionaries;
+	#midiRange, triads, data, progState, rules, ruleKeys = ~dictionaries;       // Get necessary dictionaries for data storage
 
-	// Initialize data
-	~initData.(progression, durations, direction, data, progState);
+	~initData.(progression, durations, direction, data, progState);             // Initialize data
+
 
 	// This secction needs revision
 	if (~backtrackProg.(data, progState, rules, 0)) {
-		progState[\dump] = progState[\result];
-		progState[\result] = progState[\result].flop;
+		~handleResult.(progState);
+		//progState[\dump] = progState[\result];
+		//progState[\result] = progState[\result].flop;
 	} {
-		Error("HarmonizeProg was NOT able to harmonize %.\n").format(progression).throw;
+		Error("HarmonizeProg was not able to harmonize %.\n").format(progression).throw;
 	};
-
 
 	if (score) {
 		~dumpData.(midiRange, triads, progState, rules, ruleKeys);
 	};
 
-
 	if (sustain) {
-		~sustainCommonTones.(progState);
-	} {
+		~handleSustain.(progState);
+		//~sustainCommonTones.(progState);
+	}; /*{
 		progState[\result].do { |v|
 			return[0].add(v);
 			return[1].add(progState[\durations]);
 		};
 		return.postln;
-	};
+	};*/
+	progState[\return];
 };
 )
