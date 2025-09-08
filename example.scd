@@ -28,13 +28,13 @@ Synth(\tone);
 
 ~result = ~harmonizeProg.(
 	~prog, ~dur,
-	direction: "down",
-	sustain: true,
-	score: true,
-	logger: false
+	dir: "down",
+	sus: true,
+	scr: false,
+	log: false
 );
 )
-
+~result[2]
 /*************************************************************************************/
 // Play progression
 (
@@ -81,3 +81,6 @@ Ppar([
 	),
 ]).play;
 )
+~triads.keys.includes('EbM');
+
+~prog.any({ |c| ~triads.keys.includes(c).not })

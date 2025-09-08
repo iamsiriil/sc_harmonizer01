@@ -31,7 +31,7 @@ LOGGER:
 
 (
 var prog = ['CM', 'FS', 'GM', 'CM'];
-var durs = [1, 1, 3, 2];
+var durs = [1, 1, 3, 2, 1];
 var dir  = "up";
 
 ~result = ~harmonizeProg.(

@@ -1,26 +1,5 @@
 /**************************************************************************************
 - HARMONY 01 / Validators
-
--> TEST ARGUMENTS
-
-PROGRESSION:
-- Array of symbols
-- Array cannot be empty
-- Symbols must be member of set ~triads.keys
-
-DURATIONS:
-- Array of numbers (int, float)
-- Array cannot be empy
-- Numbers must be greater than 0
-- Both progression and durations must be of same length
-
-DIRECTION:
-- String
-- Value must be member of set { "up", "down", "line" }
-
-SUSTAIN, SCORE and LOGGER:
-- Boolean
-
 **************************************************************************************/
 (
 ~testProgression = #{ |progression|

@@ -47,7 +47,7 @@ dictionaries cannot be assigned nil values.
 	\validChords     -> nil,
 	\direction       -> nil,
 	\result          -> nil, // Stores result from backtrack
-	\return..........-> nil, // Stores version of progression to be returned
+	\return          -> nil, // Stores version of progression to be returned
 	\dump            -> nil
 ];
 

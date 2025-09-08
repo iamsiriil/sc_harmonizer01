@@ -45,6 +45,7 @@
 
 ~handleSustain = #{ |progState|
 	progState[\return] = ~sustainCommonTones.(progState);
+	nil;
 };
 
 /*************************************************************************************/
