@@ -31,7 +31,7 @@ SUSTAIN, SCORE and LOGGER:
 	if (progression.any({ |c| c.isKindOf(Symbol).not })) {
 		Error("Chord ciphers must be of type Symbol.\n").throw;
 	};
-	if (progression.any({ |c| ~triads.keys.includes(c) })) {
+	if (progression.any({ |c| ~triads.keys.includes(c).not })) {
 		Error("Progression contains invalid ciphers. See ~triads.keys for reference.\n").throw;
 	};
 	nil;
