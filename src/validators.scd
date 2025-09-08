@@ -23,36 +23,17 @@ SUSTAIN, SCORE and LOGGER:
 
 **************************************************************************************/
 (
-~testDataType = #{ |parameter, data, class|
-
-	if ((data.isKindOf(class)).not) {
-		Error("% is not an instance of %.\n".format(parameter, class)).throw;
-	};
-	nil;
-};
-
-/*************************************************************************************/
-
 ~testProgression = #{ |progression|
 
-	~testDataType.("Progression", progression, Array);
-
-	if (progression.any({ |c| c.isKindOf(Symbol).not })) {
-		Error("Chord ciphers must be Symbols.\n").throw;
+	if (progression.isKindOf(Array).not) {
+		Error("Progression must be of type Array.\n").throw;
 	};
-
+	if (progression.any({ |c| c.isKindOf(Symbol).not })) {
+		Error("Chord ciphers must be of type Symbol.\n").throw;
+	};
 	if (progression.any({ |c| ~triads.includes(c) })) {
 		Error("Progression contains invalid ciphers.\n").throw;
 	};
-
-	/*progression.do { |c|
-
-		~testDataType.("%".format(c), c, Symbol);
-
-		if (Set[c].isSubsetOf(~triads.keys).not) {
-			Error("% is not a valid cipher.\n".format(c)).throw;
-		}
-	};*/
 	nil;
 };
 
@@ -60,24 +41,15 @@ SUSTAIN, SCORE and LOGGER:
 
 ~testDurations = #{ |durations|
 
-	~testDataType.("Durations", durations, Array);
-
+	if (durations.isKindOf(Array).not) {
+		Error("Durations must be of type Array.\n").throw;
+	};
 	if (durations.any({ |c| c.isKindOf(Number).not })) {
-		Error("Duration values must be of type Integer or Float.\n").throw;
+		Error("duration values must be of type Number.\n").throw;
 	};
-
 	if (durations.any({ |c| c <= 0 })) {
-		Error("The values provided must be greater than 0.\n").throw;
+		Error("duration values must be greater than 0.\n").throw;
 	};
-
-	/*durations.do { |n|
-
-		~testDataType.("Duration", n, Number);
-
-		if (n <= 0) {
-			Error("The values provided must be greater than 0.\n").throw;
-		};
-	};*/
 	nil;
 };
 
@@ -86,9 +58,10 @@ SUSTAIN, SCORE and LOGGER:
 ~testDirection = #{ |direction|
 	var validDirections = Set["up", "down", "line"];
 
-	~testDataType.("Direction", direction, String);
-
-	if (Set[direction].isSubsetOf(validDirections).not) {
+	if (direction.isKindOf(String).not) {
+		Error("Direction must be of type String.\n").throw;
+	};
+	if (validDirections.includes(direction).not) {
 		Error("% is not a valid direction. Try \"up\", \"down\" or \"line\".\n".format(direction)).throw;
 	};
 	nil;
@@ -98,25 +71,23 @@ SUSTAIN, SCORE and LOGGER:
 
 ~testArguments = #{ |progression, durations, direction, sustain, score, logger|
 
+	// Test progression and durations for length and empty arrays
 	if (progression.isEmpty || durations.isEmpty) {
-		Error("progression and durations Arrays must not be empty.\n").throw;
+		Error("progression and durations arrays must not be empty.\n").throw;
 	};
-
 	if (progression.size != durations.size) {
 		Error("progression and durations arrays must be of same length.\n").throw;
 	};
+
+	// Further tests on progresison, durations and direction
 	~testProgression.(progression);
 	~testDurations.(durations);
 	~testDirection.(direction);
 
-	// test sustain, score and logger
+	// Test sustain, score and logger
 	if (sustain.isKindOf(Boolean).not || score.isKindOf(Boolean).not || logger.isKindOf(Boolean).not) {
-		Error("sustain, score and logger must be of type Boolean.\n").throw;
+		Error("parameters sustain, score and logger must be of type Boolean.\n").throw;
 	};
-
-	/*~testDataType.("Sustain", sustain, Boolean);
-	~testDataType.("Score", score, Boolean);
-	~testDataType.("Logger", logger, Boolean);*/
 	nil;
 };
 )

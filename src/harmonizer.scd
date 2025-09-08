@@ -25,7 +25,7 @@
 	var midiRange, triads, data, progState, rules, ruleKeys;
 	var return = Array.fill(2, {Array.new(4)});
 
-	//~testArguments.(progression, durations, direction, sustain, score, logger);
+	~testArguments.(progression, durations, direction, sustain, score, logger);
 
 	~logger = logger; ~loggerCount = 0;
 	~runLogger.("~harmonizeProg");
