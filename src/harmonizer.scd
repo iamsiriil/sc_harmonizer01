@@ -3,20 +3,26 @@
 **************************************************************************************/
 (
 ~initData = #{ |progression, durations, direction, data, progState|
-	var parsedChords = Dictionary.new();
-	var progSize = progression.size;
+	var parsedChords, progSize = progression.size;
 
-	progState[\progression] = progression;
-	progState[\durations] = durations;
-	progState[\direction] = direction;
+	// Copy progression, durations and direction to progState
+	progState[\progression]  = progression;
+	progState[\durations]    = durations;
+	progState[\direction]    = direction;
 
-	progState[\validChords] = Dictionary.new();
-	progState[\result] = Array.fill(progSize, {[]});
+	// Initialize data structures for \validChords, \result and \nextChord
+	progState[\validChords]  = Dictionary.new();
+	progState[\result]       = Array.fill(progSize, {[]});
 	data[\state][\nextChord] = Array.fill(4, {0});
+
+	// Collect necessary chord data from static library
 	data[\chords] = ~getChordDegreeArrays.(~triads, progression);
 
+	// Parse progression and collect data into progState
+	parsedChords = Dictionary.new();
 	~progParser.(progression, parsedChords);
 	~setRules.(progState, parsedChords);
+	nil;
 };
 
 /*************************************************************************************/
@@ -25,23 +31,25 @@
 	var midiRange, triads, data, progState, rules, ruleKeys;
 	var return = Array.fill(2, {Array.new(4)});
 
+	// Test input arguments
 	~testArguments.(progression, durations, direction, sustain, score, logger);
 
+	// Set logger
 	~logger = logger; ~loggerCount = 0;
 	~runLogger.("~harmonizeProg");
 
-
+	// Get necessary dictionaries for data storage
 	#midiRange, triads, data, progState, rules, ruleKeys = ~dictionaries;
 
-
+	// Initialize data
 	~initData.(progression, durations, direction, data, progState);
 
-
+	// This secction needs revision
 	if (~backtrackProg.(data, progState, rules, 0)) {
 		progState[\dump] = progState[\result];
 		progState[\result] = progState[\result].flop;
 	} {
-		"HarmonizeProg was NOT able to harmonize the progression".throw;
+		Error("HarmonizeProg was NOT able to harmonize %.\n").format(progression).throw;
 	};
 
 
