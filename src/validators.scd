@@ -31,8 +31,8 @@ SUSTAIN, SCORE and LOGGER:
 	if (progression.any({ |c| c.isKindOf(Symbol).not })) {
 		Error("Chord ciphers must be of type Symbol.\n").throw;
 	};
-	if (progression.any({ |c| ~triads.includes(c) })) {
-		Error("Progression contains invalid ciphers.\n").throw;
+	if (progression.any({ |c| ~triads.keys.includes(c) })) {
+		Error("Progression contains invalid ciphers. See ~triads.keys for reference.\n").throw;
 	};
 	nil;
 };
@@ -45,10 +45,10 @@ SUSTAIN, SCORE and LOGGER:
 		Error("Durations must be of type Array.\n").throw;
 	};
 	if (durations.any({ |c| c.isKindOf(Number).not })) {
-		Error("duration values must be of type Number.\n").throw;
+		Error("Duration values must be of type Number.\n").throw;
 	};
 	if (durations.any({ |c| c <= 0 })) {
-		Error("duration values must be greater than 0.\n").throw;
+		Error("Duration values must be greater than 0.\n").throw;
 	};
 	nil;
 };
@@ -73,10 +73,10 @@ SUSTAIN, SCORE and LOGGER:
 
 	// Test progression and durations for length and empty arrays
 	if (progression.isEmpty || durations.isEmpty) {
-		Error("progression and durations arrays must not be empty.\n").throw;
+		Error("Progression and durations arrays must not be empty.\n").throw;
 	};
 	if (progression.size != durations.size) {
-		Error("progression and durations arrays must be of same length.\n").throw;
+		Error("Progression and durations arrays must be of same length.\n").throw;
 	};
 
 	// Further tests on progresison, durations and direction
@@ -86,7 +86,7 @@ SUSTAIN, SCORE and LOGGER:
 
 	// Test sustain, score and logger
 	if (sustain.isKindOf(Boolean).not || score.isKindOf(Boolean).not || logger.isKindOf(Boolean).not) {
-		Error("parameters sustain, score and logger must be of type Boolean.\n").throw;
+		Error("Parameters sustain, score and logger must be of type Boolean.\n").throw;
 	};
 	nil;
 };
