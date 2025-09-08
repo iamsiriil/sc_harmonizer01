@@ -46,7 +46,8 @@ dictionaries cannot be assigned nil values.
 	\ruleEnforcement -> nil,
 	\validChords     -> nil,
 	\direction       -> nil,
-	\result          -> nil,
+	\result          -> nil, // Stores result from backtrack
+	\return..........-> nil, // Stores version of progression to be returned
 	\dump            -> nil
 ];
 
