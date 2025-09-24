@@ -34,7 +34,7 @@ Synth(\tone);
 	log: false
 );
 )
-~result[2]
+
 /*************************************************************************************/
 // Play progression
 (
@@ -81,6 +81,3 @@ Ppar([
 	),
 ]).play;
 )
-~triads.keys.includes('EbM');
-
-~prog.any({ |c| ~triads.keys.includes(c).not })

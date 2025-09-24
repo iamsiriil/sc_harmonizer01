@@ -56,12 +56,12 @@
 	var rules     = ~rules;
 	var data      = ~data;
 
-	~testArguments.(prog, dur, dir, sus, scr, log); // Test input arguments
+	~testArguments.(prog, dur, dir, sus, scr, log);           // Test input arguments
 
-	~logger = log; ~loggerCount = 0;                // Set logger
+	~logger = log.if({ ~loggerCount = 0; true }, { false });  // Set logger
 	~runLogger.("~harmonizeProg");
 
-	~initData.(prog, dur, dir, data, progState);    // Initialize data
+	~initData.(prog, dur, dir, data, progState);              // Initialize data
 
 	if (~backtrackProg.(data, progState, rules, 0)) {
 		~handleResult.(progState);

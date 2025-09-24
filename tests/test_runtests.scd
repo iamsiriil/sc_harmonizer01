@@ -4,7 +4,6 @@
 (
 "./utils/loadall.scd".loadRelative;
 
-
 ~test = Dictionary[
 
 	\range -> Dictionary[
@@ -25,6 +24,10 @@
 	\backtrack -> Dictionary[
 		\GFC -> { |firstChord = 'CM'|~test_getFirstChords.(~triads, ~data, ~progState, ~rules, firstChord) },
 		\GNC -> { |firstChord = 'Em', nextChord = 'CM'| ~test_getNextChords.(~triads, ~data, ~progState, ~rules, ~test_GNCFixtures, firstChord, nextChord) }
+	],
+
+	\validators -> Dictionary[
+		\TA -> { ~test_testArguments.(~test_TAFixtures) }
 	]
 ];
 )

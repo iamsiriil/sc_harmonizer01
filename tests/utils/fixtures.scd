@@ -327,4 +327,42 @@
 		'BA' :[[59, 63, 67, 71], [47, 63, 71, 79]]
 	)
 );
+
+/**************************************************************************************
+- HARMONY 01 / Test fixtures: Validators
+**************************************************************************************/
+
+~test_TAFixtures = Dictionary[
+	\prog -> [
+		[List['CM', 'FM', 'GM', 'CM'], [1, 1, 1, 1], "line", true, false, false], // Must be of type Array
+		[[], [1, 1, 1, 1], "line", true, false, false],                           // Must not be empty
+		[['CM', "FM", 'GM', 'CM'], [1, 1, 1, 1], "line", true, false, false],     // Must contain Symbols
+		[['CX', 'FM', 'GM', 'CM'], [1, 1, 1, 1], "line", true, false, false]      // Symbols must be valid
+	],
+	\dur -> [
+		[['CM', 'FM', 'GM', 'CM'], List[1, 1, 1, 1], "line", true, false, false], // Must be of type Array
+		[['CM', 'FM', 'GM', 'CM'], [], "line", true, false, false],               // Must not be empty
+		[['CM', 'FM', 'GM', 'CM'], [1, "1", 1, 1], "line", true, false, false],   // Must contain numbers
+		[['CM', 'FM', 'GM', 'CM'], [0, 1, 1, 1], "line", true, false, false]      // Numbers must be greater than 0
+	],
+	\dir -> [
+		[['CM', 'FM', 'GM', 'CM'], [1, 1, 1, 1], ["line"], true, false, false],   // Must be of type String
+		[['CM', 'FM', 'GM', 'CM'], [1, 1, 1, 1], "curve", true, false, false]     // String must be valid
+	],
+	\sus -> [
+		[['CM', 'FM', 'GM', 'CM'], [1, 1, 1, 1], "line", "true", false, false]    // Must be of type Boolean
+	],
+	\scr -> [
+		[['CM', 'FM', 'GM', 'CM'], [1, 1, 1, 1], "line", true, "false", false]    // Must be of type Boolean
+	],
+	\log -> [
+		[['CM', 'FM', 'GM', 'CM'], [1, 1, 1, 1], "line", true, false, "false"]    // Must be of type Boolean
+	],
+	\progdur -> [
+		[['CM', 'FM', 'GM', 'CM'], [1, 1, 1], "line", true, false, false]         // Progression and durations must be of same size
+	],
+	\pass -> [
+		[['CM', 'FM', 'GM', 'CM'], [1, 1, 1, 1], "line", true, false, false]      // Valid arguments
+	]
+];
 )

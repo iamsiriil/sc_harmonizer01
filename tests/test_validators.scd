@@ -1,45 +1,44 @@
 /**************************************************************************************
 - HARMONY 01 / Test validators
-
-PROGRESSION:
-- Must be of type Array
-- Must not be empty
-- Values must of type Symbol
-- Symbols must be valid
-
-DURATIONS:
-- Must be of type Array
-- Must not be empty
-- Values must be of type Number (Integer/Float)
-- Values should be greater than 0
-
-DIRECTION:
-- Must be of type String
-- Must be valid, only "up", "down" or "line" are allowed
-
-SUSTAIN:
-- Must be of type Boolean
-
-SCORE:
-- Must be of type Boolean
-
-LOGGER:
-- Must be of type Boolean
 **************************************************************************************/
-
-"../src/loadall.scd".loadRelative;
-
 (
-var prog = ['CM', 'FS', 'GM', 'CM'];
-var durs = [1, 1, 3, 2, 1];
-var dir  = "up";
+~test_TASubroutine = { |fixtures, args, i|
+	var error = nil, result = true;
 
-~result = ~harmonizeProg.(
-	progression: prog,
-	durations: durs,
-	direction: dir,
-	sustain: true,
-	score: false,
-	logger: false
-);
+	fixtures[args].do { |f|
+		{
+			~testArguments.(f[0], f[1], f[2], f[3], f[4], f[5]);
+		}.try { |err|
+			error = err;
+			nil;
+		};
+
+		if (args != \pass){
+			if (error.notNil) {
+				result = result && true;
+			} {
+				result = result && false;
+			};
+		} {
+			if (error.isNil) {
+				result = result && true;
+			} {
+				result = result && false;
+			}
+		};
+
+	};
+	~test_resultMessage.(result, "~testArguments", nil, i);
+	nil;
+};
+
+~test_testArguments = #{ |fixtures|
+	var args = [\prog, \dur, \dir, \sus, \scr, \log, \progdur, \pass];
+
+	args.do { |a, i|
+
+		~test_TASubroutine.(fixtures, a, i)
+	};
+	nil;
+};
 )
