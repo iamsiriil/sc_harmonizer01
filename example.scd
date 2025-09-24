@@ -30,7 +30,7 @@ Synth(\tone);
 	~prog, ~dur,
 	dir: "down",
 	sus: true,
-	scr: false,
+	scr: true,
 	log: false
 );
 )
