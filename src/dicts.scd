@@ -18,11 +18,11 @@ dictionaries cannot be assigned nil values.
 			\alt -> [55, 74],
 			\spn -> [60, 81]
 		],
-		\invalidIntervals -> Dictionary[          // Invalid melodic intervals per voice (within range)
-			\bas -> [6, 10, 11, 18],
-			\ten -> [6, 10, 11],
-			\alt -> [6, 10, 11],
-			\spn -> [6, 10, 11]
+		\validIntervals -> Dictionary[          // Invalid melodic intervals per voice (within range)
+			\bas -> [0, 1, 2, 3, 4, 5, 7, 12], //[6, 10, 11, 18],
+			\ten -> [0, 1, 2, 3, 4, 5, 7], //[6, 10, 11],
+			\alt -> [0, 1, 2, 3, 4, 5, 7], //[6, 10, 11],
+			\spn -> [0, 1, 2, 3, 4, 5, 7]  //[6, 10, 11]
 		],
 		\number -> 4,                            // Number of voices
 		\names  -> ['bas', 'ten', 'alt', 'spn']  // Voice names

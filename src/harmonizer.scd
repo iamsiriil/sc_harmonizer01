@@ -66,7 +66,7 @@
 	if (~backtrackProg.(data, progState, rules, 0)) {
 		~handleResult.(progState);
 	} {
-		Error("HarmonizeProg was not able to harmonize %.\n").format(prog).throw;
+		Error("HarmonizeProg was not able to harmonize %.\n".format(prog)).throw;
 	};
 
 	if (scr) { ~dumpData.(~midiRange, ~triads, progState, rules, ~ruleKeys) };

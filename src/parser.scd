@@ -97,9 +97,9 @@
 		};
 
 		if ((chordDict[i][\distance] == 6) && (test == false)) {
-			arr.add([\enforceMelodicIntervals, false]);
 			arr.add([\enforceParallelOctaves, false]);
 			arr.add([\enforceParallelFifths, false]);
+			arr.add([\enforceMelodicIntervals, false]);
 		};
 
 		dict[i] = arr;

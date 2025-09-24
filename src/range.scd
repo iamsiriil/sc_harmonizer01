@@ -54,8 +54,8 @@ across the MIDI range, as two separate arrays
 	~runLogger.("~resolveMelodicIntervals");
 
 	voiceData[\names].do { |v, i|
-		validNotes[v] = validNotes[v].reject { |n|
-			voiceData[\invalidIntervals][v].includes((n - currChord[i]).abs);
+		validNotes[v] = validNotes[v].select { |n|
+			voiceData[\validIntervals][v].includes((n - currChord[i]).abs);
 		};
 	};
 	nil;

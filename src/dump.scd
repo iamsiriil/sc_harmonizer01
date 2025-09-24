@@ -22,8 +22,6 @@
 ~dumpChords = { |midiRange, triads, progState, file|
 	var names, notes;
 
-	"dumpChords".postln;
-
 	file.write("%\n".format(progState[\progression].size));
 
 	progState[\progression].do { |p, i|
