@@ -28,7 +28,7 @@ Synth(\tone);
 
 ~result = ~harmonizeProg.(
 	~prog, ~dur,
-	dir: "down",
+	dir: "up",
 	sus: true,
 	scr: true,
 	log: false
