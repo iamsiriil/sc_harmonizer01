@@ -44,22 +44,22 @@ Clone the repository and load the entry file into a project file of your own:
 Then call the main function:
 
 ```SuperCollider
-harmonizeProg.(progression, durations, direction: "line", sustain: true, score: false, logger: false)
+harmonizeProg.(prog, dur, dir: "line", sus: true, scr: false, log: false)
 ```
 
 #### Arguments
 
-+ **progression** (Array of Symbols) – chord progression to harmonize. Symbols must match the static library (see Valid chord symbols).
++ **prog** (Array of Symbols) – chord progression to harmonize. Symbols must match the static library (see Valid chord symbols).
 
-+ **durations** (Array of Integers) – one duration per chord. Must match the length of progression.
++ **dur** (Array of Integers) – one duration per chord. Must match the length of progression.
 
-+ **direction** (String, default "line") – upper-voice motion: "up", "down", or "line" (ranged, centered on first chord’s top note).
++ **dir** (String, default "line") – upper-voice motion: "up", "down", or "line" (ranged, centered on first chord’s top note).
 
-+ **sustain** (Boolean, default true) – sustains common tones by extending the first note’s duration.
++ **sus** (Boolean, default true) – sustains common tones by extending the first note’s duration.
 
-+ **score** (Boolean, default false) – exports score via Python 3 + music21 + Finale/Sibelius/MuseScore.
++ **scr** (Boolean, default false) – exports score via Python 3 + music21 + Finale/Sibelius/MuseScore.
 
-+ **logger** (Boolean, default false) – prints function call traces (debugging).
++ **log** (Boolean, default false) – prints function call traces (debugging).
 
 #### Example
 ```SuperCollider
