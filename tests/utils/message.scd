@@ -17,6 +17,8 @@
 	};
 };
 
+/*************************************************************************************/
+
 ~test_RCTVerbose = { |voiceNames, validNotes, refRange|
 
 	voiceNames.do { |v|
@@ -25,6 +27,8 @@
 	};
 	"".postln;
 };
+
+/*************************************************************************************/
 
 ~test_GNCPrintResults = { |ciphers, flags, results|
 
@@ -41,9 +45,8 @@
 		"".postln;
 	}
 };
-~sequenceToString = { |sequence|
-	sequence.asArray.asString.replace("[", "").replace("]", "");
-};
+
+/*************************************************************************************/
 
 ~test_RMIVerbose = { |currChord, refRange, valNotes, voiceNames|
 
