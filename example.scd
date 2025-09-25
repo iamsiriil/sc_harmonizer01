@@ -23,12 +23,12 @@ Synth(\tone);
 /*************************************************************************************/
 // Get harmonized progression
 (
-~prog = ['Cm', 'EbM', 'AbM', 'GM', 'DbM', 'Cm', 'GM', 'Cm']; //['Dm', 'C#d', 'Cm', 'EbM', 'AM', 'Dm'];
-~dur =  [2, 2, 2, 2, 2, 2, 2, 4];
+~prog = ['Dm', 'C#d', 'Cm', 'EbM', 'AM', 'Dm'];
+~dur =  [2, 2, 2, 2, 2, 4];
 
 ~result = ~harmonizeProg.(
 	~prog, ~dur,
-	dir: "up",
+	dir: "line",
 	sus: true,
 	scr: false,
 	log: false

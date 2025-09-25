@@ -31,10 +31,17 @@
 
 		progState[\dump][i].do { |n|
 			var note = names[notes.indexOf(n)];
+			var octave;
+
+			case
+			// When using .asInteger, SuperCollider converts char to the ASCII number and String to the respective digit.
+			{ note == "B#" } { octave = midiRange[\octave][n].last.asString.asInteger - 1 }
+			{ note == "Cb" } { octave = midiRange[\octave][n].last.asString.asInteger + 1 }
+			{ octave = midiRange[\octave][n].last };
 
 			if (note.contains($b)) { note = note.replace($b, $-) } { note }; // Prevents issues with music21, by replacing "b" with "-"
 
-			file.write("%% ".format(note, midiRange[\octave][n].last ));
+			file.write("%% ".format(note, octave));
 		};
 		file.write("\n");
 	};
