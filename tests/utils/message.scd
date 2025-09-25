@@ -41,4 +41,19 @@
 		"".postln;
 	}
 };
+~sequenceToString = { |sequence|
+	sequence.asArray.asString.replace("[", "").replace("]", "");
+};
+
+~test_RMIVerbose = { |currChord, refRange, valNotes, voiceNames|
+
+	"\nCurrent Chord: %".format(currChord).postln;
+
+	voiceNames.do { |v, i|
+		"% ".format(v).post;
+		"| ref: %".format(refRange[v].asArray).padRight(32).post;
+		"| val: %".format(valNotes[v].asArray).padRight(26).post;
+		"| exc: %".format((refRange[v] -- valNotes[v]).asArray).postln;
+	};
+};
 )

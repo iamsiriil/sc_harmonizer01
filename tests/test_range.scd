@@ -67,7 +67,7 @@
 /*************************************************************************************/
 // Test ~resolveMelodicIntervals
 
-~test_RMISubroutine = { |voice, state, exclude, i|
+~test_RMISubroutine = { |voice, state, exclude, i, verbose|
 	var refRange = state[\validNotes].copy;
 	var result = true;
 
@@ -77,11 +77,15 @@
 		result = result && ((refRange[v] -- state[\validNotes][v]) == exclude[j]);
 	};
 
+	if (verbose) {
+		~test_RMIVerbose.(state[\currChord], refRange, state[\validNotes], voice[\names]);
+	};
+
 	~test_resultMessage.(result, "~resolveMelodicIntervals", nil, i);
 	nil;
 };
 
-~test_resolveMelodicIntervals = { |fixtures, triads, data|
+~test_resolveMelodicIntervals = { |fixtures, triads, data, verbose|
 	var chords;
 
 	~logger = false;
@@ -96,7 +100,7 @@
 		data[\state][\currChord] = f[\chord];
 		data[\state][\validNotes] = ~getChordVocalRange.(data[\voice], chords[cipher][\notes]);
 
-		~test_RMISubroutine.(data[\voice], data[\state], f[\exclude], i);
+		~test_RMISubroutine.(data[\voice], data[\state], f[\exclude], i, verbose);
 
 		~resetDataDict.(data);
 	};

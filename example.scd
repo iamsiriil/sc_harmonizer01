@@ -10,7 +10,7 @@ s.boot;
 // Create a synth
 (
 SynthDef(\tone, { |freq = 440, amp = 0.2, pan = 0, gate = 1,
-	atk = 0.01, dec = 0.2, sus = 0.7, rel = 0.1|
+	atk = 0.1, dec = 0.2, sus = 0.7, rel = 0.1|
 	var env = EnvGen.kr(Env.adsr(atk, dec, sus, rel), gate, doneAction: 2);
 	var sig = SinOsc.ar(freq) * amp * env;
 	Out.ar(0, Pan2.ar(sig, pan));
@@ -23,14 +23,14 @@ Synth(\tone);
 /*************************************************************************************/
 // Get harmonized progression
 (
-~prog =   ['CM', 'F#M', 'DM', 'AbM', 'EM', 'BbM']; //['Dm', 'C#d', 'Cm', 'EbM', 'AM', 'Dm'];
+~prog =   ['Dm', 'C#d', 'Cm', 'EbM', 'AM', 'Dm'];
 ~dur = [2, 2, 2, 2, 2, 4];
 
 ~result = ~harmonizeProg.(
 	~prog, ~dur,
 	dir: "line",
 	sus: true,
-	scr: true,
+	scr: false,
 	log: false
 );
 )
@@ -81,4 +81,3 @@ Ppar([
 	),
 ]).play;
 )
-

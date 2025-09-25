@@ -39,63 +39,63 @@
 		\chord: [48, 55, 60, 64],
 		\chordProg: ['CM', 'DM'],
 		\exclude: [
-			OrderedIdentitySet[42, 54],
+			OrderedIdentitySet[42, 54, 57],
 			OrderedIdentitySet[66],
-			OrderedIdentitySet[66],
-			OrderedIdentitySet[74]]
+			OrderedIdentitySet[66, 69, 74],
+			OrderedIdentitySet[74, 78, 81]]
 	),
 	\01: (
 		\chord: [50, 57, 62, 66],
 		\chordProg: ['DM', 'Cm'],
 		\exclude: [
 			OrderedIdentitySet[60],
-			OrderedIdentitySet[51, 63, 67],
+			OrderedIdentitySet[48, 51, 63, 67],
 			OrderedIdentitySet[72],
-			OrderedIdentitySet[60, 72]]
+			OrderedIdentitySet[60, 72, 75, 79]]
 	),
 	\02: (
 		\chord: [40, 59, 67, 76],
 		\chordProg: ['Em', 'Ebm'],
 		\exclude: [
-			OrderedIdentitySet[46, 51, 58],
-			OrderedIdentitySet[],
-			OrderedIdentitySet[],
-			OrderedIdentitySet[66, 70]]
+			OrderedIdentitySet[46, 51, 54, 58],
+			OrderedIdentitySet[51],
+			OrderedIdentitySet[58],
+			OrderedIdentitySet[63, 66, 70]]
 	),
 	\03: (
 		\chord: [58, 65, 74, 77],
 		\chordProg: ['BbM', 'Cd'],
 		\exclude: [
-			OrderedIdentitySet[48],
-			OrderedIdentitySet[54],
-			OrderedIdentitySet[63],
-			OrderedIdentitySet[66]]
+			OrderedIdentitySet[42, 48],
+			OrderedIdentitySet[48, 51, 54],
+			OrderedIdentitySet[60, 63, 66],
+			OrderedIdentitySet[60, 63, 66]]
 	),
 	\04: (
 		\chord: [60, 67, 72, 76],
 		\chordProg: ['CM', 'DM'],
 		\exclude: [
-			OrderedIdentitySet[42, 50, 54],
-			OrderedIdentitySet[57],
-			OrderedIdentitySet[62, 66],
-			OrderedIdentitySet[66]]
+			OrderedIdentitySet[42, 45, 50, 54],
+			OrderedIdentitySet[50, 54, 57],
+			OrderedIdentitySet[57, 62, 66],
+			OrderedIdentitySet[62, 66]]
 	),
 	\05: (
 		\chord: [57, 62, 62, 65],
 		\chordProg: ['Dm', 'C#m'],
 		\exclude: [
-			OrderedIdentitySet[],
-			OrderedIdentitySet[52, 56],
+			OrderedIdentitySet[40, 44, 49],
+			OrderedIdentitySet[49, 52, 56],
 			OrderedIdentitySet[56, 68, 73],
-			OrderedIdentitySet[76]]
+			OrderedIdentitySet[73, 76, 80]]
 	),
 	\06: (
 		\chord: [60, 64, 67, 72],
 		\chordProg: ['CM', 'F#M'],
 		\exclude: [
-			OrderedIdentitySet[42, 49,54],
-			OrderedIdentitySet[54, 58],
-			OrderedIdentitySet[61, 73],
+			OrderedIdentitySet[42, 46, 49, 54],
+			OrderedIdentitySet[49, 54, 58],
+			OrderedIdentitySet[58, 61, 73],
 			OrderedIdentitySet[61, 66, 78]]
 	)
 );

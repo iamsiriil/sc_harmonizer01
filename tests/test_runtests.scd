@@ -9,7 +9,7 @@
 	\range -> Dictionary[
 		\GCDA -> { ~test_getChordDegreeArray.(~test_GCDFixture, ~triads, ~data) },
 		\GCVR -> { ~test_getChordVocalRange.(~test_GCVRFixtures, ~triads, ~data) },
-		\RMI -> { ~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~data) },
+		\RMI -> { |verbose = false| ~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~data, verbose) },
 		\RCT -> { |verbose = false| ~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~data, verbose) }
 	],
 
