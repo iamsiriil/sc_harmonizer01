@@ -13,16 +13,16 @@ dictionaries cannot be assigned nil values.
 ~data = Dictionary[
 	\voice -> Dictionary[
 		\range -> Dictionary[                      // Vocal range per voice
-			\bas -> [40, 60],
-			\ten -> [48, 67],
-			\alt -> [55, 74],
+			\bas -> [40, 62],
+			\ten -> [48, 69],
+			\alt -> [55, 76],
 			\spn -> [60, 81]
 		],
 		\validIntervals -> Dictionary[         // Invalid melodic intervals per voice (within range)
-			\bas -> [0, 1, 2, 3, 4, 5, 7, 12], //[6, 10, 11, 18],
-			\ten -> [0, 1, 2, 3, 4, 5, 7],     //[6, 10, 11],
-			\alt -> [0, 1, 2, 3, 4, 5, 7],     //[6, 10, 11],
-			\spn -> [0, 1, 2, 3, 4, 5, 7]      //[6, 10, 11]
+			\bas -> [0, 1, 2, 3, 4, 5, 7, 12],
+			\ten -> [0, 1, 2, 3, 4, 5, 7],
+			\alt -> [0, 1, 2, 3, 4, 5, 7],
+			\spn -> [0, 1, 2, 3, 4, 5, 7]
 		],
 		\number -> 4,                            // Number of voices
 		\names  -> ['bas', 'ten', 'alt', 'spn']  // Voice names
