@@ -33,7 +33,7 @@ On success, the function returns an array with two elements:
 
 On occasion, the program might fail to generate a progression, in which case an error message is prompted. This is rare, and will be addressed over time as the rule profiling process matures. In these instances, the user may want to experiment with the `direction` parameter.
 
-[!NOTE]
+>[!NOTE]
 > For more information checkout the (Wiki Pages)[https://github.com/iamsiriil/sc_harmonizer01/wiki]
 
 ## Usage
