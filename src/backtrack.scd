@@ -5,14 +5,6 @@
 /*
 ~backtrackChords takes, for each voice, a set of valid candidate notes
 and returns the collection of all valid chords.
-
-Parameters:
-- data: structure holding state and voice/note data
-- rules: validation rule set
-- i: index of the voice being processed
-
-Returns:
-- Array of valid next chords in data[\state][\validNextChords]
 */
 
 ~backtrackChords = #{ |data, rules, i|
@@ -48,54 +40,16 @@ Returns:
 };
 
 /*************************************************************************************/
-/*
-~getFirstChords is a wrapper around ~backtrackChords and prepares
-the data needed for the backtracking process.
 
-First chords have a special rule profile because they are not tested
-against a previous chord.
-*/
+~getChords = #{ |data, progState, rules, i|
 
-~getFirstChords = #{ |data, progState, rules, i|
+	~runLogger.("~getChords");
+	"Calling ~getChords".postln;
 
-	~runLogger.("~getFirstChords");
-
-	data[\state][\nextChord] = Array.fill(4, {0});
-	data[\state][\validNextChords] = Array.new(20);
-
-	if (progState[\ruleEnforcement][i].notEmpty) {
-		~toggleRules.(progState[\ruleEnforcement][i], rules);
+	if (i > 0) {
+		data[\state][\currChord] = progState[\result][i - 1];
 	};
 
-	~getValidNotes.(data, rules);
-	~backtrackChords.(data, rules, 0);
-
-	~resetRules.(rules);
-
-	data[\state][\validNextChords];
-};
-
-/*************************************************************************************/
-/*
-~getNextChords is a wrapper around ~backtrackChords and prepares
-the data needed for the backtracking process.
-
-Identical to ~getFirstChords, except that \currChord is set to the
-previous chord stored in progState[\result].
-
-OBSERVATIONS:
--> ~getFirstChords and ~getNextChords could be merged by conditionally
-   setting \currChord when i > 0.
-
--> \currChord might be redundant if you always read the last assigned
-   chord from progState[\result].
-*/
-
-~getNextChords = #{ |data, progState, rules, i|
-
-	~runLogger.("~getNextChords");
-
-	data[\state][\currChord] = progState[\result][i - 1];
 	data[\state][\nextChord] = Array.fill(4, {0});
 	data[\state][\validNextChords] = Array.new(20);
 
@@ -114,9 +68,9 @@ OBSERVATIONS:
 /*************************************************************************************/
 /*
 ~backtrackProg walks the progression provided to ~harmonizeProg and, via the
-wrappers (~getFirstChords / ~getNextChords), invokes ~backtrackChords to
-produce, for each chord cipher in the progression, the list of valid candidate
-chords. Returns true if the completed progression satisfies all rules.
+wrapper ~getChord, invokes ~backtrackChords to produce, for each chord
+cipher in the progression, a list of valid candidate chords. Returns true if
+the completed progression satisfies all rules.
 */
 
 ~backtrackProg = #{ |data, progState, rules, i|
@@ -127,7 +81,6 @@ chords. Returns true if the completed progression satisfies all rules.
 	block { |return|
 
 		if ((i == progState[\progression].size)) {
-			//result = if (~progIsValid.(progState)) { true } { false };
 			result = ~progIsValid.(progState);
 			return.value(result);
 		};
@@ -135,11 +88,8 @@ chords. Returns true if the completed progression satisfies all rules.
 		data[\state][\nextCipher] = progState[\progression][i];
 
 		if (progState[\validChords][i].isNil) {
-			if (i == 0) {
-				progState[\validChords][i] = ~getFirstChords.(data, progState, rules, i);
-			} {
-				progState[\validChords][i] = ~getNextChords.(data, progState, rules, i);
-			};
+
+			progState[\validChords][i] = ~getChords.(data, progState, rules, i);
 
 			if (progState[\validChords][i].isEmpty) {
 				progState[\validChords][i] = nil;
