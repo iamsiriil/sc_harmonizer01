@@ -33,15 +33,17 @@
 
 	~runLogger.("~handleResult");
 
-	progState[\dump] = progState[\result];
-
 	if (progState[\progression].size == 1) {
+
+		progState[\dump]   = [progState[\result]];
 		progState[\return] = Array.fill(2);
 
 		progState[\return][0] = progState[\result];
 		progState[\return][1] = progState[\durations];
 	} {
+		progState[\dump]   = progState[\result];
 		progState[\return] = Array.fill(2, {Array.new(4)});
+
 		progState[\result] = progState[\result].flop;
 
 		progState[\result].do { |v|
