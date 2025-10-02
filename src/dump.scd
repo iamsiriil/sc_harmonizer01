@@ -8,6 +8,8 @@
 	var venvMac   = ~pyDir +/+ "venv/bin/python3";
 	var venvWin   = ~pyDir +/+ "venv/Scripts/python.exe";
 
+	~pythonExe.("~harmonizeProg");
+
 	case
 	{ (thisProcess.platform.name == \windows) && File.exists(venvWin) } { venvWin }
 	{ thisProcess.platform.name == \windows }                           { "py -3" }
@@ -22,6 +24,8 @@
 ~dumpChords = { |midiRange, triads, progState, file|
 	var names, notes;
 
+	~runLogger.("~dumpChords");
+
 	file.write("%\n".format(progState[\progression].size));
 
 	progState[\progression].do { |p, i|
@@ -29,7 +33,7 @@
 		names = triads[p][\names].wrapExtend(triads[p][\notes].size);
 		notes = triads[p][\notes];
 
-		progState[\dump][i].do { |n|
+		progState[\dump][i].do { |n, j|
 			var note = names[notes.indexOf(n)];
 			var octave;
 
@@ -51,6 +55,8 @@
 
 ~dumpRules = { |progState, rules, ruleKeys, file|
 	var temp = Dictionary.new();
+
+	~runLogger.("~dumpRules");
 
 	~resetRules.(rules);
 
@@ -85,6 +91,8 @@
 
 ~dumpData = { |midiRange, triads, progState, rules, ruleKeys|
 	var file = File.new(~dumpTxt, "w");
+
+	~runLogger.("~dumpData");
 
 	~dumpChords.(midiRange, triads, progState, file);
 	~dumpRules.(progState, rules, ruleKeys, file);
