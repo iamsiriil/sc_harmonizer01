@@ -77,7 +77,6 @@ the completed progression satisfies all rules.
 
 	~runLogger.("~backtrackProg");
 
-	"Calling ~backtrackProg".postln;
 	block { |return|
 
 		if ((i == progState[\progression].size)) {
