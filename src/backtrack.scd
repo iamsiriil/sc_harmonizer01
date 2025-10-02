@@ -44,7 +44,6 @@ and returns the collection of all valid chords.
 ~getChords = #{ |data, progState, rules, i|
 
 	~runLogger.("~getChords");
-	"Calling ~getChords".postln;
 
 	if (i > 0) {
 		data[\state][\currChord] = progState[\result][i - 1];
@@ -78,6 +77,7 @@ the completed progression satisfies all rules.
 
 	~runLogger.("~backtrackProg");
 
+	"Calling ~backtrackProg".postln;
 	block { |return|
 
 		if ((i == progState[\progression].size)) {

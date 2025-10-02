@@ -5,6 +5,8 @@
 ~initData = #{ |progression, durations, direction, data, progState|
 	var parsedChords, progSize = progression.size;
 
+	~runLogger.("~initData");
+
 	// Copy progression, durations and direction to progState
 	progState[\progression]  = progression;
 	progState[\durations]    = durations;
@@ -29,22 +31,57 @@
 
 ~handleResult = #{ |progState|
 
+	~runLogger.("~handleResult");
+
 	progState[\dump] = progState[\result];
-	progState[\result] = progState[\result].flop;
 
-	progState[\return] = Array.fill(2, {Array.new(4)});
+	if (progState[\progression].size == 1) {
+		progState[\return] = Array.fill(2);
 
-	progState[\result].do { |v|
-		progState[\return][0].add(v);
-		progState[\return][1].add(progState[\durations]);
+		progState[\return][0] = progState[\result];
+		progState[\return][1] = progState[\durations];
+	} {
+		progState[\return] = Array.fill(2, {Array.new(4)});
+		progState[\result] = progState[\result].flop;
+
+		progState[\result].do { |v|
+			progState[\return][0].add(v);
+			progState[\return][1].add(progState[\durations]);
+		};
 	};
+	progState[\return];
 	nil;
 };
 
 /*************************************************************************************/
 
 ~handleSustain = #{ |progState|
+
+	~runLogger.("~handleSustain");
+
 	progState[\return] = ~sustainCommonTones.(progState);
+	nil;
+};
+
+/*************************************************************************************/
+
+~handleBacktrack = { |data, progState, rules|
+
+	~runLogger.("~handleBacktrack");
+
+	if (progState[\progression].size == 1) {
+
+		data[\state][\nextCipher] = progState[\progression][0];
+		progState[\result] = ~getChords.(data, progState, rules, 0).choose;
+
+	} {
+		if (~backtrackProg.(data, progState, rules, 0) == false) {
+			Error("HarmonizeProg was not able to harmonize %.\n".format(progState[\progression])).throw;
+		};
+	};
+
+	~handleResult.(progState);
+
 	nil;
 };
 
@@ -62,16 +99,11 @@
 	~runLogger.("~harmonizeProg");
 
 	~initData.(prog, dur, dir, data, progState);              // Initialize data
-
-	if (~backtrackProg.(data, progState, rules, 0)) {
-		~handleResult.(progState);
-	} {
-		Error("HarmonizeProg was not able to harmonize %.\n".format(prog)).throw;
-	};
+	~handleBacktrack.(data, progState, rules);
 
 	if (scr) { ~dumpData.(~midiRange, ~triads, progState, rules, ~ruleKeys) };
 
-	if (sus) { ~handleSustain.(progState) };
+	if (sus && (prog.size > 1)) { ~handleSustain.(progState) };
 
 	progState[\return];
 };
