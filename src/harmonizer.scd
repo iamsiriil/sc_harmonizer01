@@ -7,10 +7,17 @@
 
 	~runLogger.("~initData");
 
+	/* if (durations.isNil) {
+           progState[\durations] = Array.fill(progression.size, {1});
+       } {
+           progState[\durations] = durations;
+       }*/
+
 	// Copy progression, durations and direction to progState
 	progState[\progression]  = progression;
-	progState[\durations]    = durations;
+	progState[\durations]    = durations; // Remove attribution
 	progState[\direction]    = direction;
+	//progState[\output]     = out; -> voices/chords
 
 	// Initialize data structures for \validChords, \result and \nextChord
 	progState[\validChords]  = Dictionary.new();
@@ -51,7 +58,7 @@
 			progState[\return][1].add(progState[\durations]);
 		};
 	};
-	progState[\return];
+	//progState[\return];
 	nil;
 };
 
@@ -90,7 +97,14 @@
 /*************************************************************************************/
 
 ~harmonizeProg = #{
-	arg prog, dur, dir = "line", sus = true, scr = false, log = false;
+	arg prog,
+	dur = nil,
+	out = 'voice', // Options voices/chords
+	dir = "line",  // Symbol intead of string
+	sus = true,
+	scr = false,
+	log = false;
+
 	var progState = ~progState;
 	var rules     = ~rules;
 	var data      = ~data;

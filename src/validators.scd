@@ -50,6 +50,22 @@
 
 ~testArguments = #{ |progression, durations, direction, sustain, score, logger|
 
+	/*if (durations.notNil) {
+		if (progression.isEmpty || durations.isEmpty) {
+			Error("Progression and durations arrays must not be empty.\n").throw;
+		};
+		if (progression.size != durations.size) {
+			Error("Progression and durations arrays must be of same length.\n").throw;
+		};
+
+		~testDurations.(durations);
+	} {
+		if (progression.isEmpty) {
+			Error("Progression and durations arrays must not be empty.\n").throw;
+		};
+	}*/
+
+	// Remove the conditions below
 	// Test progression and durations for length and empty arrays
 	if (progression.isEmpty || durations.isEmpty) {
 		Error("Progression and durations arrays must not be empty.\n").throw;
@@ -60,7 +76,7 @@
 
 	// Further tests on progresison, durations and direction
 	~testProgression.(progression);
-	~testDurations.(durations);
+	~testDurations.(durations); // Remove function call
 	~testDirection.(direction);
 
 	// Test sustain, score and logger
