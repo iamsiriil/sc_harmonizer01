@@ -2,22 +2,32 @@
 - HARMONY 01 / Harmonizer
 **************************************************************************************/
 (
-~initData = #{ |progression, durations, direction, data, progState|
+~initData = #{ |progression, durations, direction, data, progState| // prog, dur, dir, out, sus, data, progState
 	var parsedChords, progSize = progression.size;
 
 	~runLogger.("~initData");
 
-	/* if (durations.isNil && (out == 'voices')) {
-           progState[\durations] = Array.fill(progression.size, {1});
-       } {
-           progState[\durations] = durations;
-       }*/
+	/*if (durations.isNil && (out == 'voices')) {
+		progState[\durations] = Array.fill(progression.size, {1});
+
+	} {
+		progState[\durations] = durations;
+
+	};
+	if ((sus == true) && (prog.size == 1)) {
+		"WARNING: Sustain is not applicable to progressions of size 1 and will be set to FALSE.\n".postln;
+		progState[\sustain] == false;
+	} {
+		progState[\sustain] == sus;
+	};*/
+
 
 	// Copy progression, durations and direction to progState
 	progState[\progression]  = progression;
 	progState[\durations]    = durations; // Remove attribution
 	progState[\direction]    = direction;
 	//progState[\output]     = out; -> voices/chords
+	//progState[\sustain]    = sus; -> true/false
 
 	// Initialize data structures for \validChords, \result and \nextChord
 	progState[\validChords]  = Dictionary.new();
@@ -31,6 +41,16 @@
 	parsedChords = Dictionary.new();
 	~progParser.(progression, parsedChords);
 	~setRules.(progState, parsedChords);
+	nil;
+};
+
+/*************************************************************************************/
+
+~handleSustain = #{ |progState|
+
+	~runLogger.("~handleSustain");
+
+	progState[\return] = ~sustainCommonTones.(progState);
 	nil;
 };
 
@@ -79,19 +99,11 @@
 			progState[\return][1].add(progState[\durations]);
 		};
 	};
+	//if (sus && (prog.size > 1)) { ~handleSustain.(progState) };
 	//progState[\return];
 	nil;
 };
 
-/*************************************************************************************/
-
-~handleSustain = #{ |progState|
-
-	~runLogger.("~handleSustain");
-
-	progState[\return] = ~sustainCommonTones.(progState);
-	nil;
-};
 
 /*************************************************************************************/
 /*

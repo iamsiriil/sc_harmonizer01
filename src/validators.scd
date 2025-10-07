@@ -48,7 +48,7 @@
 
 /*************************************************************************************/
 
-~testOutputFormat = #{ |out|
+~testOutputFormat = #{ |out, sus|
 	var validOutput = Set['chord', 'voice'];
 
 	if (out.isKindOf(Symbol).not) {
@@ -57,12 +57,15 @@
 	if (validOutput.includes(out).not) {
 		Error("% is not a valid output format. Try \'chord\' or \'voice\'.\n").throw;
 	};
+	if ((sus == true) && (out == 'chord')) {
+		Error("Sustain is not compatible with 'chord' output setting. Change to 'voice'.\n").throw;
+	};
 	nil;
 };
 
 /*************************************************************************************/
 
-~testArguments = #{ |progression, durations, direction, sustain, score, logger|
+~testArguments = #{ |progression, durations, direction, sustain, score, logger| //prog, dur, dir, out, sus, scr, log
 
 	/*if (durations.notNil) {
 		if (progression.isEmpty || durations.isEmpty) {
@@ -92,7 +95,7 @@
 	~testProgression.(progression);
 	~testDurations.(durations); // Remove function call
 	~testDirection.(direction);
-	~testOutputFormat.(out);
+	//~testOutputFormat.(out);
 
 	// Test sustain, score and logger
 	if (sustain.isKindOf(Boolean).not || score.isKindOf(Boolean).not || logger.isKindOf(Boolean).not) {
