@@ -69,6 +69,7 @@ dictionaries cannot be assigned nil values.
 	\enforceRootPosition          -> true,
 	\enforceFirstInversion        -> false,
 	\enforceSecondInversion       -> false,
+	\enforceUnisonProhibition     -> false
 ];
 
 // Convinience array with the sequence of rule symbols

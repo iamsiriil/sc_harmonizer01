@@ -73,7 +73,7 @@
 
 /*************************************************************************************/
 // Change variable names to shorter version. add out.
-~testArguments = #{ |prog, dur, dir, out, sus, scr, log| //prog, dur, dir, out, sus, scr, log
+~testArguments = #{ |prog, dur, dir, out, uni, sus, scr, log|
 
 	~runLogger.("~testArguments");
 
@@ -98,8 +98,11 @@
 	~testOutputFormat.(out, sus);
 
 	// Test sustain, score and logger
-	if (sus.isKindOf(Boolean).not || scr.isKindOf(Boolean).not || log.isKindOf(Boolean).not) {
-		Error("Parameters sustain, score and logger must be of type Boolean.\n").throw;
+	if (sus.isKindOf(Boolean).not ||
+		scr.isKindOf(Boolean).not ||
+		log.isKindOf(Boolean).not ||
+		uni.isKindOf(Boolean).not) {
+		Error("Parameters uni, sus, scr and log (unison, sustain, score and logger) must be of type Boolean.\n").throw;
 	};
 	nil;
 };

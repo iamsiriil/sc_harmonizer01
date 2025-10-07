@@ -131,15 +131,16 @@
 // Check range between voices
 
 ~checkVoiceSpacing = #{ |nextChord, i, rules|
-	var cross, n;
+	var cross, n, u;
 
 	~runLogger.("~checkVoiceSpacing");
 
 	if (i > 0) {
+		u = if (rules[\enforceUnisonProhibition]) { 1 } { 0 };
 		n = (nextChord[i] - nextChord[i - 1]);
 
 		cross = if (rules[\enforceVoiceCrossProhibition]) {
-			(n > 0); // n >= 0 for unisons
+			(n >= ); // n >= 0 for unisons
 		} {
 			(n >= -4);
 		};

@@ -21,7 +21,7 @@
 		progState[\sustain] = sus;
 	};
 
-	// Copy progression, durations and direction to progState
+	// Copy progression, direction and output format to progState
 	progState[\progression]  = prog;
 	progState[\direction]    = dir;
 	progState[\output]       = out;
@@ -111,25 +111,29 @@ otherwise calls ~backtrackProg.
 	dur = nil,
 	dir = "line",  // Symbol intead of string
 	out = 'voice', // Options voices/chords
+	uni = false,
 	sus = true,
 	scr = false,
-	log = false;
+	log = true;
 
 	var progState = ~progState;
 	var rules     = ~rules;
 	var data      = ~data;
 
-	~testArguments.(prog, dur, dir, out, sus, scr, log);           // Test input arguments
+	~testArguments.(prog, dur, dir, out, uni, sus, scr, log);      // Test input arguments
 
 	~logger = log.if({ ~loggerCount = 0; true }, { false });  // Set logger
 	~runLogger.("~harmonizeProg");
 
-	~initData.(prog, dur, dir, out, sus, data, progState);              // Initialize data
+	~initData.(prog, dur, dir, out, sus, data, progState);    // Initialize data
+
+	if (uni == true) {
+		rules[\enforceUnisonProhibition] = true;
+	};
+
 	~handleBacktrack.(data, progState, rules);
 
 	if (scr) { ~dumpData.(~midiRange, ~triads, progState, rules, ~ruleKeys) };
-
-	//if (sus && (prog.size > 1)) { ~handleSustain.(progState) };
 
 	progState[\return];
 };
