@@ -2,18 +2,17 @@
 - HARMONY 01 / Harmonizer
 **************************************************************************************/
 (
-~initData = #{ |prog, dur, dir, out, sus, data, progState| // prog, dur, dir, out, sus, data, progState
+~initData = #{ |prog, dur, dir, out, sus, data, progState|
 	var parsedChords, progSize = prog.size;
 
 	~runLogger.("~initData");
 
 	if (dur.isNil && (out == 'voice')) {
 		progState[\durations] = Array.fill(prog.size, {1});
-
 	} {
 		progState[\durations] = dur;
-
 	};
+
 	if ((sus == true) && (prog.size == 1)) {
 		"WARNING: Sustain is not applicable to progressions of size 1 and will be set to FALSE.\n".postln;
 		progState[\sustain] = false;
@@ -43,21 +42,10 @@
 
 /*************************************************************************************/
 
-~handleSustain = #{ |progState|
-
-	~runLogger.("~handleSustain");
-
-	progState[\return] = ~sustainCommonTones.(progState);
-	nil;
-};
-
-/*************************************************************************************/
-
 ~handleResult = #{ |progState|
 
 	~runLogger.("~handleResult");
 
-	// Since output format depend on arg out, one chord progressions can be returned as voices or chord
 	case
 	{ progState[\output] == 'chord' } {
 		progState[\dump] = progState[\result];
@@ -75,10 +63,12 @@
 		};
 	};
 
-	if (progState[\sustain] && (progState[\progression].size > 1)) { ~handleSustain.(progState) };
+	// Handle sustain
+	if (progState[\sustain] && (progState[\progression].size > 1)) {
+		progState[\return] = ~sustainCommonTones.(progState);
+	};
 	nil;
 };
-
 
 /*************************************************************************************/
 /*
@@ -107,14 +97,14 @@ otherwise calls ~backtrackProg.
 /*************************************************************************************/
 
 ~harmonizeProg = #{
-	arg prog,
-	dur = nil,
-	dir = "line",  // Symbol intead of string
-	out = 'voice', // Options voices/chords
-	uni = false,
-	sus = true,
-	scr = false,
-	log = true;
+	arg prog,      // Progression
+	dur = nil,     // Duration (not mandatory)
+	dir = "line",  // Direction (options: "up", "down" and "line")
+	out = 'voice', // Output format (arrays per voice or per chord)
+	uni = false,   // Enforce unison prohibition
+	sus = true,    // Sustain common tones
+	scr = false,   // Export score
+	log = true;    // Logger
 
 	var progState = ~progState;
 	var rules     = ~rules;
@@ -123,7 +113,7 @@ otherwise calls ~backtrackProg.
 	~logger = log.if({ ~loggerCount = 0; true }, { false });  // Set logger
 	~runLogger.("~harmonizeProg");
 
-	~testArguments.(prog, dur, dir, out, uni, sus, scr, log); // Test input arguments
+	~testArguments.(prog, dur, dir, out, uni, sus, scr, log); // Test arguments
 	~initData.(prog, dur, dir, out, sus, data, progState);    // Initialize data
 
 	if (uni == true) {

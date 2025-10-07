@@ -24,7 +24,7 @@ Synth(\tone);
 // Get harmonized progression
 (
 ~prog = ['Dm', 'C#d', 'Cm', 'EbM', 'AM', 'Dm'];
-~dur =  nil; //[2, 2, 2, 2, 2, 4];
+~dur =  nil;
 
 ~result = ~harmonizeProg.(
 	~prog,         // Progression
