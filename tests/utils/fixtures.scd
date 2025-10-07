@@ -7,7 +7,7 @@
 ~test_GCDFixture = [
 	['CM'],
 	['CM', 'FM', 'GM', 'CM'],
-	['F#m', 'EM', 'C#A', 'Bm', 'Ed', 'F#m'],
+	['F#m', 'EM', 'DbA', 'Bm', 'Ed', 'F#m'],
 	['Ebm', 'Gm', 'BA', 'BbM', 'Dm', 'Ebm'],
 	['AbM', 'C#m', 'EbM', 'Bm', 'Gd', 'G#m']
 ];
@@ -18,7 +18,7 @@
 
 ~test_GCVRFixtures = [
 	['Cd'], ['Cm'], ['CM'], ['CA'],
-	['C#d'],['C#m'],['C#M'],['C#A'],
+	['C#d'],['C#m'],['DbM'],['DbA'],
 	['Dd'], ['Dm'], ['DM'], ['DA'],
 	['Ebd'],['Ebm'],['EbM'],['EbA'],
 	['Ed'], ['Em'], ['EM'], ['EA'],
@@ -39,8 +39,8 @@
 		\chord: [48, 55, 60, 64],
 		\chordProg: ['CM', 'DM'],
 		\exclude: [
-			OrderedIdentitySet[42, 54, 57],
-			OrderedIdentitySet[66],
+			OrderedIdentitySet[42, 54, 57, 62],
+			OrderedIdentitySet[66, 69],
 			OrderedIdentitySet[66, 69, 74],
 			OrderedIdentitySet[74, 78, 81]]
 	),
@@ -50,7 +50,7 @@
 		\exclude: [
 			OrderedIdentitySet[60],
 			OrderedIdentitySet[48, 51, 63, 67],
-			OrderedIdentitySet[72],
+			OrderedIdentitySet[72, 75],
 			OrderedIdentitySet[60, 72, 75, 79]]
 	),
 	\02: (
@@ -59,7 +59,7 @@
 		\exclude: [
 			OrderedIdentitySet[46, 51, 54, 58],
 			OrderedIdentitySet[51],
-			OrderedIdentitySet[58],
+			OrderedIdentitySet[58, 75],
 			OrderedIdentitySet[63, 66, 70]]
 	),
 	\03: (
@@ -85,8 +85,8 @@
 		\chordProg: ['Dm', 'C#m'],
 		\exclude: [
 			OrderedIdentitySet[40, 44, 49],
-			OrderedIdentitySet[49, 52, 56],
-			OrderedIdentitySet[56, 68, 73],
+			OrderedIdentitySet[49, 52, 56, 68],
+			OrderedIdentitySet[56, 68, 73, 76],
 			OrderedIdentitySet[73, 76, 80]]
 	),
 	\06: (
@@ -254,7 +254,7 @@
 ~test_GNCFixtures = (
 	\ciphers : [
 		'Cd', 'Cm', 'CM', 'CA',
-		'C#d','C#m','C#M','C#A',
+		'C#d','C#m','DbM','DbA',
 		'Dd', 'Dm', 'DM', 'DA',
 		'Ebd','Ebm','EbM','EbA',
 		'Ed', 'Em', 'EM', 'EA',

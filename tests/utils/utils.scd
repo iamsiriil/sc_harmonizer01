@@ -5,15 +5,15 @@
 ~test_getFirstChordsArray = { |triads, data, progState, rules, firstCipher|
 	var parsedChords = Dictionary.new();
 
-	progState[\progression] = [firstCipher].postln;
+	progState[\progression] = [firstCipher];
 
-	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]).postln;
-	data[\state][\nextCipher] = firstCipher.postln;
+	data[\chords] = ~getChordDegreeArrays.(triads, progState[\progression]);
+	data[\state][\nextCipher] = firstCipher;
 
 	~progParser.(progState[\progression], parsedChords);
 	~setRules.(progState, parsedChords, true);
 
-	~getFirstChords.(data, progState, rules, 0);
+	~getChords.(data, progState, rules, 0);
 
 	data[\state][\validNextChords];
 };
@@ -33,7 +33,7 @@
 	~progParser.(progState[\progression], parsedChords);
 	~setRules.(progState, parsedChords, false);
 
-	~getNextChords.(data, progState, rules, 0);
+	~getChords.(data, progState, rules, 1);
 
 	data[\state][\validNextChords];
 };

@@ -7,18 +7,31 @@
 ~test = Dictionary[
 
 	\range -> Dictionary[
-		\GCDA -> { ~test_getChordDegreeArray.(~test_GCDFixture, ~triads, ~data) },
-		\GCVR -> { ~test_getChordVocalRange.(~test_GCVRFixtures, ~triads, ~data) },
-		\RMI -> { |verbose = false| ~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~data, verbose) },
-		\RCT -> { |verbose = false| ~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~data, verbose) }
+		\GCDA    -> { ~test_getChordDegreeArray.(~test_GCDFixture, ~triads, ~data) },
+		\GCVR    -> { ~test_getChordVocalRange.(~test_GCVRFixtures, ~triads, ~data) },
+		\RMI     -> { |verbose = false| ~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~data, verbose) },
+		\RCT     -> { |verbose = false| ~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~data, verbose) },
+		\runAll  -> {
+			~test_getChordDegreeArray.(~test_GCDFixture, ~triads, ~data);
+			~test_getChordVocalRange.(~test_GCVRFixtures, ~triads, ~data);
+			~test_resolveMelodicIntervals.(~test_RMIFixtures, ~triads, ~data, false);
+			~test_resolveCommonTones.(~test_RCTFixtures, ~triads, ~data, false);
+		}
 	],
 
 	\chordRules -> Dictionary[
-		\CCP -> { ~test_checkChordPosition.(~test_CCPFixtures, ~triads, ~rules) },
-		\CVR -> { ~test_checkVoiceRange.(~test_CVRFixtures, ~rules) },
-		\CPO -> { ~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~data[\voice]) },
-		\CPF -> { ~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~data[\voice]) },
-		\CND -> { ~test_checkNoteDuplicate.(~test_CNDFixtures, ~triads, ~rules) }
+		\CCP    -> { ~test_checkChordPosition.(~test_CCPFixtures, ~triads, ~rules) },
+		\CVR    -> { ~test_checkVoiceRange.(~test_CVRFixtures, ~rules) },
+		\CPO    -> { ~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~data[\voice]) },
+		\CPF    -> { ~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~data[\voice]) },
+		\CND    -> { ~test_checkNoteDuplicate.(~test_CNDFixtures, ~triads, ~rules) },
+		\runAll -> {
+			~test_checkChordPosition.(~test_CCPFixtures, ~triads, ~rules);
+			~test_checkVoiceRange.(~test_CVRFixtures, ~rules);
+			~test_checkParallelOctaves.(~test_CPOFixtures, ~rules, ~data[\voice]);
+			~test_checkParallelFifths.(~test_CPFFixtures, ~rules, ~data[\voice]);
+			~test_checkNoteDuplicate.(~test_CNDFixtures, ~triads, ~rules);
+		}
 	],
 
 	\backtrack -> Dictionary[
