@@ -2,32 +2,29 @@
 - HARMONY 01 / Harmonizer
 **************************************************************************************/
 (
-~initData = #{ |progression, durations, direction, data, progState| // prog, dur, dir, out, sus, data, progState
-	var parsedChords, progSize = progression.size;
+~initData = #{ |prog, dur, dir, out, sus, data, progState| // prog, dur, dir, out, sus, data, progState
+	var parsedChords, progSize = prog.size;
 
 	~runLogger.("~initData");
 
-	/*if (durations.isNil && (out == 'voices')) {
-		progState[\durations] = Array.fill(progression.size, {1});
+	if (dur.isNil && (out == 'voice')) {
+		progState[\durations] = Array.fill(prog.size, {1});
 
 	} {
-		progState[\durations] = durations;
+		progState[\durations] = dur;
 
 	};
 	if ((sus == true) && (prog.size == 1)) {
 		"WARNING: Sustain is not applicable to progressions of size 1 and will be set to FALSE.\n".postln;
-		progState[\sustain] == false;
+		progState[\sustain] = false;
 	} {
-		progState[\sustain] == sus;
-	};*/
-
+		progState[\sustain] = sus;
+	};
 
 	// Copy progression, durations and direction to progState
-	progState[\progression]  = progression;
-	progState[\durations]    = durations; // Remove attribution
-	progState[\direction]    = direction;
-	//progState[\output]     = out; -> voices/chords
-	//progState[\sustain]    = sus; -> true/false
+	progState[\progression]  = prog;
+	progState[\direction]    = dir;
+	progState[\output]       = out;
 
 	// Initialize data structures for \validChords, \result and \nextChord
 	progState[\validChords]  = Dictionary.new();
@@ -35,11 +32,11 @@
 	data[\state][\nextChord] = Array.fill(4, {0});
 
 	// Collect necessary chord data from static library
-	data[\chords] = ~getChordDegreeArrays.(~triads, progression);
+	data[\chords] = ~getChordDegreeArrays.(~triads, prog);
 
 	// Parse progression and collect data into progState
 	parsedChords = Dictionary.new();
-	~progParser.(progression, parsedChords);
+	~progParser.(prog, parsedChords);
 	~setRules.(progState, parsedChords);
 	nil;
 };
@@ -61,34 +58,12 @@
 	~runLogger.("~handleResult");
 
 	// Since output format depend on arg out, one chord progressions can be returned as voices or chord
-
-	/*case
-	{ out == 'chord' } {
+	case
+	{ progState[\output] == 'chord' } {
 		progState[\dump] = progState[\result];
 		progState[\return] = progState[\result];
 	}
-	{ out == 'voice' } {
-		progState[\dump]   = progState[\result];
-		progState[\return] = Array.fill(2, {Array.new(4)});
-
-		progState[\result] = progState[\result].flop;
-
-		progState[\result].do { |v|
-			progState[\return][0].add(v);
-			progState[\return][1].add(progState[\durations]);
-		};
-	}*/
-
-	if (progState[\progression].size == 1) {
-
-		progState[\dump]   = progState[\result];
-		progState[\return] = Array.fill(2);
-
-		progState[\return] = progState[\result];
-		//progState[\return][0] = progState[\result];
-		//progState[\return][1] = progState[\durations];
-	} {
-		// per-voice return format
+	{ progState[\output] == 'voice' } {
 		progState[\dump]   = progState[\result];
 		progState[\return] = Array.fill(2, {Array.new(4)});
 
@@ -99,8 +74,8 @@
 			progState[\return][1].add(progState[\durations]);
 		};
 	};
-	//if (sus && (prog.size > 1)) { ~handleSustain.(progState) };
-	//progState[\return];
+
+	if (progState[\sustain] && (progState[\progression].size > 1)) { ~handleSustain.(progState) };
 	nil;
 };
 
@@ -117,7 +92,7 @@ otherwise calls ~backtrackProg.
 	if (progState[\progression].size == 1) {
 
 		data[\state][\nextCipher] = progState[\progression][0];
-		progState[\result] = [~getChords.(data, progState, rules, 0).choose].postln;
+		progState[\result] = [~getChords.(data, progState, rules, 0).choose];
 
 	} {
 		if (~backtrackProg.(data, progState, rules, 0) == false) {
@@ -144,17 +119,17 @@ otherwise calls ~backtrackProg.
 	var rules     = ~rules;
 	var data      = ~data;
 
-	~testArguments.(prog, dur, dir, sus, scr, log);           // Test input arguments
+	~testArguments.(prog, dur, dir, out, sus, scr, log);           // Test input arguments
 
 	~logger = log.if({ ~loggerCount = 0; true }, { false });  // Set logger
 	~runLogger.("~harmonizeProg");
 
-	~initData.(prog, dur, dir, data, progState);              // Initialize data
+	~initData.(prog, dur, dir, out, sus, data, progState);              // Initialize data
 	~handleBacktrack.(data, progState, rules);
 
 	if (scr) { ~dumpData.(~midiRange, ~triads, progState, rules, ~ruleKeys) };
 
-	if (sus && (prog.size > 1)) { ~handleSustain.(progState) };
+	//if (sus && (prog.size > 1)) { ~handleSustain.(progState) };
 
 	progState[\return];
 };

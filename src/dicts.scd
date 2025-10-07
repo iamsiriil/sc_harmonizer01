@@ -48,7 +48,9 @@ dictionaries cannot be assigned nil values.
 	\direction       -> nil,
 	\result          -> nil, // Stores result from backtrack
 	\return          -> nil, // Stores version of progression to be returned
-	\dump            -> nil
+	\dump            -> nil,
+	\output          -> nil,
+	\sustain         -> nil
 ];
 
 // Dictionary containing default rule settings
