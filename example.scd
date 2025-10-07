@@ -27,11 +27,14 @@ Synth(\tone);
 ~dur =  [2, 2, 2, 2, 2, 4];
 
 ~result = ~harmonizeProg.(
-	~prog, ~dur,
-	dir: "line",
-	sus: true,
-	scr: false,
-	log: false
+	~prog,         // Progression
+	~dur,          // Duration (no longer mandatory)
+	dir: "line",   // Direction
+	out: 'voice',  // Output format (arrays per voice or per chord)
+	uni: false,    // Enforce unison prohibition
+	sus: true,     // sustain common tones
+	scr: false,    // Export score
+	log: false     // Logger
 );
 )
 
