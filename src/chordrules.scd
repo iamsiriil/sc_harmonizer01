@@ -139,7 +139,7 @@
 		n = (nextChord[i] - nextChord[i - 1]);
 
 		cross = if (rules[\enforceVoiceCrossProhibition]) {
-			(n >= 0);
+			(n > 0); // n >= 0 for unisons
 		} {
 			(n >= -4);
 		};

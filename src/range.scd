@@ -74,7 +74,7 @@ for each of the voices, depending on note present in previous chord
 	voiceData[\names].do { |v, i|
 		var set = [currChord[i]];
 
-		if ((set.isSubsetOf(validNotes[v])) && (i > 0)) {
+		if ((set.isSubsetOf(validNotes[v]))) { // && (i > 0)
 			validNotes[v] = (validNotes[v] & set);
 		};
 	};
