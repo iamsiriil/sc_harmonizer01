@@ -87,7 +87,8 @@ dictionaries cannot be assigned nil values.
 	\enforceChordPosition,
 	\enforceRootPosition,
 	\enforceFirstInversion,
-	\enforceSecondInversion
+	\enforceSecondInversion,
+	\enforceUnisonProhibition
 ];
 
 // Convenience array containing all dictionaries
