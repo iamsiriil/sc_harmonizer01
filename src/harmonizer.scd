@@ -7,7 +7,7 @@
 
 	~runLogger.("~initData");
 
-	/* if (durations.isNil) {
+	/* if (durations.isNil && (out == 'voices')) {
            progState[\durations] = Array.fill(progression.size, {1});
        } {
            progState[\durations] = durations;
@@ -40,14 +40,35 @@
 
 	~runLogger.("~handleResult");
 
+	// Since output format depend on arg out, one chord progressions can be returned as voices or chord
+
+	/*case
+	{ out == 'chord' } {
+		progState[\dump] = progState[\result];
+		progState[\return] = progState[\result];
+	}
+	{ out == 'voice' } {
+		progState[\dump]   = progState[\result];
+		progState[\return] = Array.fill(2, {Array.new(4)});
+
+		progState[\result] = progState[\result].flop;
+
+		progState[\result].do { |v|
+			progState[\return][0].add(v);
+			progState[\return][1].add(progState[\durations]);
+		};
+	}*/
+
 	if (progState[\progression].size == 1) {
 
-		progState[\dump]   = [progState[\result]];
+		progState[\dump]   = progState[\result];
 		progState[\return] = Array.fill(2);
 
-		progState[\return][0] = progState[\result];
-		progState[\return][1] = progState[\durations];
+		progState[\return] = progState[\result];
+		//progState[\return][0] = progState[\result];
+		//progState[\return][1] = progState[\durations];
 	} {
+		// per-voice return format
 		progState[\dump]   = progState[\result];
 		progState[\return] = Array.fill(2, {Array.new(4)});
 
@@ -73,7 +94,10 @@
 };
 
 /*************************************************************************************/
-
+/*
+Handles backtrack by calling ~getChords directly, if progression size == 1,
+otherwise calls ~backtrackProg.
+*/
 ~handleBacktrack = { |data, progState, rules|
 
 	~runLogger.("~handleBacktrack");
@@ -81,7 +105,7 @@
 	if (progState[\progression].size == 1) {
 
 		data[\state][\nextCipher] = progState[\progression][0];
-		progState[\result] = ~getChords.(data, progState, rules, 0).choose;
+		progState[\result] = [~getChords.(data, progState, rules, 0).choose].postln;
 
 	} {
 		if (~backtrackProg.(data, progState, rules, 0) == false) {
@@ -90,7 +114,6 @@
 	};
 
 	~handleResult.(progState);
-
 	nil;
 };
 
@@ -99,8 +122,8 @@
 ~harmonizeProg = #{
 	arg prog,
 	dur = nil,
-	out = 'voice', // Options voices/chords
 	dir = "line",  // Symbol intead of string
+	out = 'voice', // Options voices/chords
 	sus = true,
 	scr = false,
 	log = false;

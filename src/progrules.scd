@@ -1,7 +1,7 @@
 /**************************************************************************************
 - HARMONY 01 / Progression rules
 **************************************************************************************/
-(
+( // Needs work
 ~checkChord = { |progState, i|
 	var progression = progState[\progression];
 	var progResult = progState[\result];
@@ -13,15 +13,15 @@
 		result = result && (progResult[i][0] != progResult[i][1]);
 	};
 
-	if ((progression.size >= 2) && (i >= 1) && (progState[\direction] == "up")) {
+	if ((progression.size >= 2) && (i >= 1) && (progState[\direction] == "up")) { // change to symbol 'up'
 		result = result && (progResult[i][3] >= progResult[i - 1][3]);
 	};
 
-	if ((progression.size >= 2) && (i >= 1) && (progState[\direction] == "down")) {
+	if ((progression.size >= 2) && (i >= 1) && (progState[\direction] == "down")) { // change to symbol 'down'
 		result = result && (progResult[i][3] <= progResult[i - 1][3]);
 	};
 
-	if ((progression.size >= 2) && (i >= 1) && (progState[\direction] == "line")) {
+	if ((progression.size >= 2) && (i >= 1) && (progState[\direction] == "line")) { // change to symbol 'line'
 		var min = progResult[0][3] - 4;
 		var max = progResult[0][3] + 4;
 		result = result && ((progResult[i][3] >= min) && (progResult[i][3] <= max));
@@ -42,21 +42,21 @@
 };
 
 /*************************************************************************************/
-
+// Needs work
 ~checkDirection = { |progState|
 	var result = true;
 
 	~runLogger.("~checkDirection");
 
 	case
-	{ progState[\direction] == "up" } {
+	{ progState[\direction] == "up" } { // change to symbol 'up'
 		progState[\result].do { |n, i|
 			if (i > 0) {
 				result = result && (progState[\result][i][3] >= progState[\result][i - 1][3]);
 			}
 		};
 	}
-	{ progState[\direction] == "down" } {
+	{ progState[\direction] == "down" } { // change to symbol 'down'
 		progState[\result].do { |n, i|
 			if (i > 0) {
 				result = result && (progState[\result][i][3] <= progState[\result][i - 1][3]);
@@ -67,7 +67,7 @@
 };
 
 /*************************************************************************************/
-
+// Needs work
 ~progIsValid = { |progState|
 
 	~runLogger.("~progIsValid");

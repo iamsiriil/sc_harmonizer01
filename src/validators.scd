@@ -35,13 +35,27 @@
 /*************************************************************************************/
 
 ~testDirection = #{ |direction|
-	var validDirections = Set["up", "down", "line"];
+	var validDirections = Set["up", "down", "line"]; // Change to symbols
 
-	if (direction.isKindOf(String).not) {
-		Error("Direction must be of type String.\n").throw;
+	if (direction.isKindOf(String).not) { // Kind of Symbols
+		Error("Direction must be of type String.\n").throw; // of type Symbol
 	};
 	if (validDirections.includes(direction).not) {
-		Error("% is not a valid direction. Try \"up\", \"down\" or \"line\".\n".format(direction)).throw;
+		Error("% is not a valid direction. Try \"up\", \"down\" or \"line\".\n".format(direction)).throw; // change "" to ''
+	};
+	nil;
+};
+
+/*************************************************************************************/
+
+~testOutputFormat = #{ |out|
+	var validOutput = Set['chord', 'voice'];
+
+	if (out.isKindOf(Symbol).not) {
+		Error("Out must be of type Symbol.\n").throw;
+	};
+	if (validOutput.includes(out).not) {
+		Error("% is not a valid output format. Try \'chord\' or \'voice\'.\n").throw;
 	};
 	nil;
 };
@@ -78,6 +92,7 @@
 	~testProgression.(progression);
 	~testDurations.(durations); // Remove function call
 	~testDirection.(direction);
+	~testOutputFormat.(out);
 
 	// Test sustain, score and logger
 	if (sustain.isKindOf(Boolean).not || score.isKindOf(Boolean).not || logger.isKindOf(Boolean).not) {
