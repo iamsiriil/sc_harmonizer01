@@ -120,11 +120,10 @@ otherwise calls ~backtrackProg.
 	var rules     = ~rules;
 	var data      = ~data;
 
-	~testArguments.(prog, dur, dir, out, uni, sus, scr, log);      // Test input arguments
-
 	~logger = log.if({ ~loggerCount = 0; true }, { false });  // Set logger
 	~runLogger.("~harmonizeProg");
 
+	~testArguments.(prog, dur, dir, out, uni, sus, scr, log); // Test input arguments
 	~initData.(prog, dur, dir, out, sus, data, progState);    // Initialize data
 
 	if (uni == true) {
