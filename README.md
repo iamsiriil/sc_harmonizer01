@@ -25,18 +25,13 @@ Before backtracking, these note ranges are filtered by voice range, and—depend
 
 Generation uses two nested backtracking loops. The inner loop builds all valid chord realizations for a given previous chord from the filtered note sets; the outer loop steps through the entire progression, trying candidate realizations in sequence. If at any point no valid realization can be found—or all candidates are exhausted—the algorithm backtracks to the last stable position, selects the next candidate, and continues.
 
-On success, the function returns an array with two elements:
-
-* `~result[0]` = arrays of MIDI notes per voice [Bass, Tenor, Alto, Soprano]
-
-* `~result[1]` = arrays of durations per voice [Bass, Tenor, Alto, Soprano]
-
-On occasion, the program might fail to generate a progression, in which case an error message is prompted. This is rare, and will be addressed over time as the rule profiling process matures. In these instances, the user may want to experiment with the `direction` parameter.
-
 >[!NOTE]
 > For more information checkout the [Wiki Pages](https://github.com/iamsiriil/sc_harmonizer01/wiki)
 
 ## Usage
+
+> [!WARNING]
+> This section is out of date and will be updated very soon. Meanwhile, check the `example.scd` file for reference.
 
 Clone the repository and load the entry file into a project file of your own:
 
