@@ -32,7 +32,7 @@ dictionaries cannot be assigned nil values.
 		\currChord       -> nil,
 		\nextChord       -> nil,
 		\validNotes      -> nil,
-		\nextValidChords -> nil,
+		\validNextChords -> nil, // Gathers all valid chords from ~getChords
 		\nextCipher      -> nil
 	],
 
@@ -41,14 +41,16 @@ dictionaries cannot be assigned nil values.
 
 // Dictionary Containing data to be used while backtracking across the progression
 ~progState = Dictionary[
+	\ruleEnforcement -> nil,
+	\validChords     -> nil, // Gets all valid chords from ~data[\validNextChords] (redundant?)
+	\result          -> nil, // Stores result from backtrack
+	\dump            -> nil, // Result to be used in score export (redundant?)
+	\return          -> nil, // Stores version of progression to be returned (voice/chord)
+
+	// Argumens (Maybe nested dictionary for all arguments?)
 	\progression     -> nil,
 	\durations       -> nil,
-	\ruleEnforcement -> nil,
-	\validChords     -> nil,
 	\direction       -> nil,
-	\result          -> nil, // Stores result from backtrack
-	\return          -> nil, // Stores version of progression to be returned
-	\dump            -> nil,
 	\output          -> nil,
 	\sustain         -> nil
 ];
