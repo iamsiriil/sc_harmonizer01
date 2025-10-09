@@ -117,7 +117,7 @@ otherwise calls ~backtrackProg.
 	~initData.(prog, dur, dir, out, sus, data, progState);    // Initialize data
 
 
-	if (uni) { rules[\enforceUnisonProhibition] = true };
+	rules[\enforceUnisonProhibition] = uni;
 
 
 	~handleBacktrack.(data, progState, rules);

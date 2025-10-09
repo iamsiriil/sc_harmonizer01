@@ -47,8 +47,7 @@
 		Error("Direction must be of type String.\n").throw; // of type Symbol
 	};
 	if (validDirections.includes(dir).not) {
-		Error("% is not a valid direction. Try \"up\", \"down\" or \"line\".\n".format(dir)).throw; // change "" to ''
-	};
+		Error("% is not a valid direction. Try \"up\", \"down\" or \"line\".\n".format(dir)).throw;
 	nil;
 };
 
@@ -63,7 +62,7 @@
 		Error("Out must be of type Symbol.\n").throw;
 	};
 	if (validOutput.includes(out).not) {
-		Error("% is not a valid output format. Try \'chord\' or \'voice\'.\n").throw;
+		Error("% is not a valid output format. Try \'chord\' or \'voice\'.\n".format(out)).throw;
 	};
 	if ((sus == true) && (out == 'chord')) {
 		Error("Sustain is not compatible with 'chord' output setting. Change to 'voice'.\n").throw;
