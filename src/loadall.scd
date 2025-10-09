@@ -28,4 +28,6 @@
 "./validators.scd".loadRelative;
 "./harmonizer.scd".loadRelative;
 "../tests/test_runtests.scd".loadRelative;
+
+"ALL FILES HAVE BEEN LOADED".postln;
 )

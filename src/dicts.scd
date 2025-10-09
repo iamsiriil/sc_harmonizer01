@@ -109,9 +109,11 @@ contamination across recursive calls
 	data[\state][\currChord]       = nil;
 	data[\state][\nextChord]       = nil;
 	data[\state][\validNotes]      = nil;
-	data[\state][\nextValidChords] = nil;
+	data[\state][\validNextChords] = nil;
 	data[\state][\nextCipher]      = nil;
 	data[\chords]                  = nil;
+	data[\state]                   = nil;
+	data[\voice]                   = nil;
 	nil;
 };
 
@@ -125,13 +127,16 @@ across recursive calls
 
 	~runLogger.("~resetProgState");
 
-	progState[\progression]     = nil;
-	progState[\durations]       = nil;
 	progState[\ruleEnforcement] = nil;
 	progState[\validChords]     = nil;
-	progState[\direction]       = nil;
 	progState[\result]          = nil;
 	progState[\dump]            = nil;
+	progState[\return]          = nil;
+	progState[\progression]     = nil;
+	progState[\durations]       = nil;
+	progState[\direction]       = nil;
+	progState[\output]          = nil;
+	progState[\sustain]         = nil;
 	nil;
 };
 

@@ -16,7 +16,7 @@ def parseSCDump(path: Path):
         for _ in range(0, progSize):
             rule = []
             ciphers.append(str(file.readline()).strip(" \n"))
-            for _ in range(0, 14):
+            for _ in range(0, 15):
                 rule.append(str(file.readline()).strip(" \n"))
 
             rules.append(rule)

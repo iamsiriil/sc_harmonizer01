@@ -106,9 +106,9 @@ otherwise calls ~backtrackProg.
 	scr = false,   // Export score
 	log = true;    // Logger
 
-	var progState = ~progState;
-	var rules     = ~rules;
-	var data      = ~data;
+	var progState = ~progState.copy;
+	var rules     = ~rules.copy;
+	var data      = ~data.copy;
 
 	~logger = log.if({ ~loggerCount = 0; true }, { false });  // Set logger
 	~runLogger.("~harmonizeProg");
@@ -116,9 +116,9 @@ otherwise calls ~backtrackProg.
 	~testArguments.(prog, dur, dir, out, uni, sus, scr, log); // Test arguments
 	~initData.(prog, dur, dir, out, sus, data, progState);    // Initialize data
 
-	if (uni == true) {
-		rules[\enforceUnisonProhibition] = true;
-	};
+
+	if (uni) { rules[\enforceUnisonProhibition] = true };
+
 
 	~handleBacktrack.(data, progState, rules);
 
