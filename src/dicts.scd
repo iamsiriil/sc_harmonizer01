@@ -112,8 +112,6 @@ contamination across recursive calls
 	data[\state][\validNextChords] = nil;
 	data[\state][\nextCipher]      = nil;
 	data[\chords]                  = nil;
-	data[\state]                   = nil;
-	data[\voice]                   = nil;
 	nil;
 };
 
@@ -160,7 +158,7 @@ across recursive calls
 	rules[\enforceRootPosition]          = true;
 	rules[\enforceFirstInversion]        = false;
 	rules[\enforceSecondInversion]       = false;
-	rules[\enforceCommonTones]            = true;
+	rules[\enforceCommonTones]           = true;
 	nil;
 };
 )
