@@ -48,6 +48,7 @@
 	};
 	if (validDirections.includes(dir).not) {
 		Error("% is not a valid direction. Try \"up\", \"down\" or \"line\".\n".format(dir)).throw;
+	};
 	nil;
 };
 
