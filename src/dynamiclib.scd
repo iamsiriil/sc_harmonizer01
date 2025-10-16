@@ -158,12 +158,16 @@
 		var ref, dif;
 
 		case
-		{ (n == 'C') && (root[1] == $b) } {
+		{ (n == 'C') && ((tranChord[i] == 11) || (tranChord[i] == 10)) } {
 			ref = 12;
 		}
-		{ (n == 'B') && (root[1] == $#) } {
+		{ (n == 'B') && ((tranChord[i] == 12) || (tranChord[i] == 13)) } {
+			ref = 11;
+		}
+		{ (root[0] == $B) && (root[1] == $#) && (n == 'B')} {
 			ref = -1;
-		} {
+		}
+		{
 			if (tranChord[i] >= 12) {
 				ref = ~noteNames[\seconds][1][noteIndex] + 12;
 			} {
@@ -193,12 +197,11 @@
 
 	"~getIntervalDegree: Function Call".postln;
 
-	"note1: % | note1.class: % | note2: % | note2.class: %".format(note1, note1.class, note2, note2.class).postln;
+	"note1: % | class: % | note2: % | class: %".format(note1, note1.class, note2, note2.class).postln;
+	note1 = note1[0].asSymbol;          // <------ Issue here!
+	note2 = note2.asString[0].asSymbol; // <------ Issue here!
 
-	note1 = note1[0].asSymbol.postln;
-	note2 = note2.asString[0].asSymbol.postln;
-
-	startIndex = ~noteNames[\seconds][0].indexOf(note1).postln;
+	startIndex = ~noteNames[\seconds][0].indexOf(note1);
 
 	ct = 1;
 	i = startIndex;
@@ -272,25 +275,38 @@
 
 	"~getChord: Function Call".postln;
 
-	temp = ~getChordNoteNames.(root, chord).postln;
-	deg  = ~getChordDegrees.(temp[0], temp[1]).postln;
+	temp = ~getChordNoteNames.(root, chord);
+	deg  = ~getChordDegrees.(temp[0], temp[1]);
+
+	temp[0].do { |n, i|
+
+		if (n >= 12) {
+			temp[0][i] = n - 12;
+			temp[1]    = temp[1].rotate(1);
+			deg        = deg.rotate(1);
+		}
+	};
+	temp[0].sort;
 
 	dict[\notes]   = temp[0];
 	dict[\names]   = temp[1];
 	dict[\degrees] = deg;
 
+	if (root[1].isNil) {
+		dict[\cipher]  = root[0].asString ++ ~chords.findKeyForValue(chord).asString;
+	} {
+		dict[\cipher]  = root[0].asString ++ root[1].asString ++ ~chords.findKeyForValue(chord).asString;
+	};
+
 	dict;
 };
 
 ~root = ~parseRoot.('G#');
-~dict = ~getChord.(~root, ~chords[\A5m7]);
-)
-(
+~dict = ~getChord.(~root, ~chords[\m7]);
+
 ~dict[\notes].postln;
 ~dict[\names].postln;
 ~dict[\degrees].postln;
+~dict[\cipher].postln;
 )
-
-
-
 
