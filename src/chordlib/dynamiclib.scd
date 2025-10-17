@@ -26,23 +26,22 @@
 	root = root.asString;
 
 	if (root.size == 2) {
-		arr.add(root[0]);
-		arr.add(root[1]);
+		arr.add(root[0].asString); // .asString ensures a string instead of char
+		arr.add(root[1].asString);
 	} {
 		arr.add(root);
 		arr.add(nil);
 	};
 
-	"arr: %".format(arr).postln;
 	case
 	{ root == "Cb" } { midi = 11 }
 	{ root == "B#" } { midi = 0 }
 	{
-		midi = ~noteNames[1][~noteNames[0].indexOf(arr[0].asSymbol)].postln;
+		midi = ~noteNames[1][~noteNames[0].indexOf(arr[0].asSymbol)];
 
 		case
-		{ arr[1] == $# } { midi = midi + 1 }
-		{ arr[1] == $b } { midi = midi - 1 }
+		{ arr[1] == "#" } { midi = midi + 1 }
+		{ arr[1] == "b" } { midi = midi - 1 }
 		{ midi };
 	};
 
@@ -68,9 +67,7 @@
 	rootIndex = ~noteNames[0].indexOf(root[0].asSymbol);
 	noteNames = ~noteNames[0].wrapAt(rootIndex + dis);
 
-	noteNames.do { |n, i|
-		noteNames[i] = n.asString;
-	};
+	noteNames.do { |n, i| noteNames[i] = n.asString };
 
 	noteNames.do { |n, i|
 		var noteIndex = ~noteNames[0].indexOf(n.asSymbol);
@@ -78,7 +75,7 @@
 
 		// B# and Cb require special treatment
 		case
-		{ (root[0] == $B) && (root[1] == $#) && (n == "B")} {
+		{ (root[0] == "B") && (root[1] == "#") && (n == "B")} {
 			ref = -1;
 		}
 		{ (n == "C") && ((tranChord[i] == 11) || (tranChord[i] == 10)) } {
@@ -88,14 +85,14 @@
 			ref = 11;
 		}
 		{
-			if (tranChord[i] >= 12) {
-				ref = ~noteNames[1][noteIndex] + 12;
+			if ((tranChord[i] >= 12)) {
+				ref = (~noteNames[1][noteIndex] + 12);
 			} {
 				ref = ~noteNames[1][noteIndex];
 			};
 		};
 
-		dif = tranChord[i] - ref;
+		dif = (tranChord[i] - ref);
 
 		case
 		{ dif.isPositive } {
@@ -196,35 +193,10 @@
 
 /*************************************************************************************/
 
-
-~getAnsiChar = { |names|
-	var sharp  = "♯";
-	var dsharp = "𝄪";
-	var flat   = "♭";
-	var dflat  = "𝄫";
-
-	names.do { |n, i|
-
-		switch (n.size)
-		{ 3 }{
-
-			case
-			{ n.includes($#) } { names[i] = n[0] ++ dsharp }
-			{ n.includes($b) } { names[i] = n[0] ++ dflat }
-		}
-		{ 2 } {
-
-			case
-			{ n.includes($#) } { names[i] = n[0] ++ sharp }
-			{ n.includes($b) } { names[i] = n[0] ++ flat }
-		}
-	};
-};
-
-
-~getChord = { |root, chord, ansi = false|
+~getChord = { |root, symbol, ansi = false|
 	var dict = Dictionary.new(3);
-	var temp, deg;
+	var chord = ~chords[symbol];
+	var temp, deg, accident;
 
 	"~getChord: Function Call".postln;
 
@@ -241,16 +213,21 @@
 	};
 	temp[0].sort;
 
-	if (ansi) { ~getAnsiChar.(temp[1]) };
+	if (ansi) {
+		~namesToAnsi.(temp[1]);
+		accident = ~asAnsiChar.(root[1]);
+	} {
+		accident = root[1];
+	};
 
 	dict[\notes]   = ~extendMidiRange.(temp[0]);
 	dict[\names]   = temp[1];
 	dict[\degrees] = deg;
 
 	if (root[1].isNil) {
-		dict[\cipher]  = root[0] ++ ~chords.findKeyForValue(chord);
+		dict[\cipher]  = root[0] ++ symbol;
 	} {
-		dict[\cipher]  = root[0] ++ root[1] ++ ~chords.findKeyForValue(chord);
+		dict[\cipher]  = root[0] ++ accident ++ symbol;
 	};
 
 	dict;
@@ -258,8 +235,8 @@
 
 /*************************************************************************************/
 
-~root = ~parseRoot.("C");
-~dict = ~getChord.(~root, ~chords[\m7], true);
+~root = ~parseRoot.("F#");
+~dict = ~getChord.(~root, \M, true);
 
 ~dict[\notes].postln;
 ~dict[\names].postln;

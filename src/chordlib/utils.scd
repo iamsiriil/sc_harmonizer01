@@ -2,29 +2,42 @@
 - HARMONY 01 / Dynamic Library - Utility functions
 **************************************************************************************/
 (
-~getAnsiChar = { |names|
-	var sharp  = "♯";
-	var dsharp = "𝄪";
-	var flat   = "♭";
-	var dflat  = "𝄫";
 
-	names.do { |n, i|
+~asAnsiChar = { |string|
 
-		switch (n.size)
-		{ 3 }{
-
-			case
-			{ n.includes($#) } { names[i] = n[0] ++ dsharp }
-			{ n.includes($b) } { names[i] = n[0] ++ dflat }
-		}
-		{ 2 } {
-
-			case
-			{ n.includes($#) } { names[i] = n[0] ++ sharp }
-			{ n.includes($b) } { names[i] = n[0] ++ flat }
-		}
-	};
+	case
+	{ string == "##" } { "𝄪" }
+	{ string == "#" }  { "♯" }
+	{ string == "b" }  { "♭" }
+	{ string == "bb" } { "𝄫" }
 };
+
+/*************************************************************************************/
+
+~namesToAnsi = { |names|
+
+	if (names.isKindOf(Array)) {
+		names.do { |n, i|
+
+			switch (n.size)
+			{ 3 }{
+
+				case
+				{ n.includes($#) } { names[i] = n[0] ++ ~asAnsiChar.("##") }
+				{ n.includes($b) } { names[i] = n[0] ++ ~asAnsiChar.("bb") }
+			}
+			{ 2 } {
+
+				case
+				{ n.includes($#) } { names[i] = n[0] ++ ~asAnsiChar.("#") }
+				{ n.includes($b) } { names[i] = n[0] ++ ~asAnsiChar.("b") }
+			}
+		};
+	} {
+
+	}
+};
+
 
 /*************************************************************************************/
 
