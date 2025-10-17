@@ -79,10 +79,11 @@
 
 	// Augmented sixth chords
 	// No extensions allowed
-	\Na     -> [0, 3, 7],      // Only first inversion allowed
 	\It     -> [0, 2, 6],      // Only first inversion allowed
 	\Gr     -> [0, 2, 6, 10],  // Only first inversion allowed
 	\Fr     -> [0, 4, 6, 10],  // Only second inversion allowed
+	// Not augmented
+	\Na     -> [0, 3, 7],      // Only first inversion allowed
 
 	// Suspended chords
 	// Allowed extensions (7th, 9th, 11th, 13th)
@@ -90,21 +91,15 @@
 	\sus4   -> [0, 5, 7]
 ];
 
-~noteNames = Dictionary[
-	\seconds -> [
-		['C', 'D', 'E', 'F', 'G', 'A', 'B'],
-		[0, 2, 4, 5, 7, 9, 11]
-	],
-	\thirds -> [
-		['C', 'E', 'G', 'B', 'D', 'F', 'A'],
-		[0, 4, 7, 11, 14, 17, 21]
-	]
+~noteNames = [
+	['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+	[0, 2, 4, 5, 7, 9, 11]
 ];
 )
 
-(
-~inputNote = 'G#';
+/*************************************************************************************/
 
+(
 ~parseRoot = { |root|
 	var arr = Array.new(3);
 	var midi;
@@ -121,11 +116,12 @@
 		arr.add(nil);
 	};
 
+	"arr: %".format(arr).postln;
 	case
 	{ root == "Cb" } { midi = 11 }
 	{ root == "B#" } { midi = 0 }
 	{
-		midi = ~noteNames[\seconds][1][~noteNames[\seconds][0].indexOf(arr[0].asSymbol)];
+		midi = ~noteNames[1][~noteNames[0].indexOf(arr[0].asSymbol)].postln;
 
 		case
 		{ arr[1] == $# } { midi = midi + 1 }
@@ -136,6 +132,8 @@
 	arr.add(midi);
 	arr;
 };
+
+/*************************************************************************************/
 
 ~getChordNoteNames = { |root, chord|
 	var dis, tranChord, noteNames, rootIndex;
@@ -150,28 +148,33 @@
 
 	tranChord = (chord + root[2]);
 
-	rootIndex = ~noteNames[\seconds][0].indexOf(root[0].asSymbol);
-	noteNames = ~noteNames[\seconds][0].wrapAt(rootIndex + dis);
+	rootIndex = ~noteNames[0].indexOf(root[0].asSymbol);
+	noteNames = ~noteNames[0].wrapAt(rootIndex + dis);
 
 	noteNames.do { |n, i|
-		var noteIndex = ~noteNames[\seconds][0].indexOf(n);
+		noteNames[i] = n.asString;
+	};
+
+	noteNames.do { |n, i|
+		var noteIndex = ~noteNames[0].indexOf(n.asSymbol);
 		var ref, dif;
 
+		// B# and Cb require special treatment
 		case
-		{ (n == 'C') && ((tranChord[i] == 11) || (tranChord[i] == 10)) } {
+		{ (root[0] == $B) && (root[1] == $#) && (n == "B")} {
+			ref = -1;
+		}
+		{ (n == "C") && ((tranChord[i] == 11) || (tranChord[i] == 10)) } {
 			ref = 12;
 		}
-		{ (n == 'B') && ((tranChord[i] == 12) || (tranChord[i] == 13)) } {
+		{ (n == "B") && ((tranChord[i] == 12) || (tranChord[i] == 13)) } {
 			ref = 11;
-		}
-		{ (root[0] == $B) && (root[1] == $#) && (n == 'B')} {
-			ref = -1;
 		}
 		{
 			if (tranChord[i] >= 12) {
-				ref = ~noteNames[\seconds][1][noteIndex] + 12;
+				ref = ~noteNames[1][noteIndex] + 12;
 			} {
-				ref = ~noteNames[\seconds][1][noteIndex];
+				ref = ~noteNames[1][noteIndex];
 			};
 		};
 
@@ -192,28 +195,31 @@
 	[tranChord, noteNames];
 };
 
+/*************************************************************************************/
+
 ~getIntervalDegree = { |note1, note2|
 	var startIndex, ct, i;
 
 	"~getIntervalDegree: Function Call".postln;
 
-	"note1: % | class: % | note2: % | class: %".format(note1, note1.class, note2, note2.class).postln;
-	note1 = note1[0].asSymbol;          // <------ Issue here!
-	note2 = note2.asString[0].asSymbol; // <------ Issue here!
+	note1 = note1[0];
+	note2 = note2[0];
 
-	startIndex = ~noteNames[\seconds][0].indexOf(note1);
+	startIndex = ~noteNames[0].indexOf(note1.asSymbol);
 
 	ct = 1;
 	i = startIndex;
-	while { (~noteNames[\seconds][0][i] != note2) && (ct <= 6) } {
+	while { (~noteNames[0][i] != note2.asSymbol) && (ct <= 6) } {
 
-		if (~noteNames[\seconds][0][i] != note2) {
+		if (~noteNames[0][i] != note2.asSymbol) {
 			ct = ct + 1;
 		};
-		i = (i + 1) % ~noteNames[\seconds][0].size;
+		i = (i + 1) % ~noteNames[0].size;
 	};
 	ct;
 };
+
+/*************************************************************************************/
 
 ~getIntervalType = { |degree, midiNote1, midiNote2|
 	var dif = (midiNote2 - midiNote1);
@@ -250,6 +256,8 @@
 	type;
 };
 
+/*************************************************************************************/
+
 ~getChordDegrees = { |notes, names|
 	var arr = Array.new(notes.size);
 	var deg, type;
@@ -263,13 +271,41 @@
 			deg  = ~getIntervalDegree.(names[0], names[i]);
 			type = ~getIntervalType.(deg, notes[0], notes[i]);
 
-			arr.add(type ++ deg.asString);
+			arr.add(type ++ deg);
 		}
 	};
-	arr.postln;
+	arr;
 };
 
-~getChord = { |root, chord|
+/*************************************************************************************/
+
+
+~getAnsiChar = { |names|
+	var sharp  = "♯";
+	var dsharp = "𝄪";
+	var flat   = "♭";
+	var dflat  = "𝄫";
+
+	names.do { |n, i|
+
+		switch (n.size)
+		{ 3 }{
+
+			case
+			{ n.includes($#) } { names[i] = n[0] ++ dsharp }
+			{ n.includes($b) } { names[i] = n[0] ++ dflat }
+		}
+		{ 2 } {
+
+			case
+			{ n.includes($#) } { names[i] = n[0] ++ sharp }
+			{ n.includes($b) } { names[i] = n[0] ++ flat }
+		}
+	};
+};
+
+
+~getChord = { |root, chord, ansi = false|
 	var dict = Dictionary.new(3);
 	var temp, deg;
 
@@ -288,21 +324,25 @@
 	};
 	temp[0].sort;
 
+	if (ansi) { ~getAnsiChar.(temp[1]) };
+
 	dict[\notes]   = temp[0];
 	dict[\names]   = temp[1];
 	dict[\degrees] = deg;
 
 	if (root[1].isNil) {
-		dict[\cipher]  = root[0].asString ++ ~chords.findKeyForValue(chord).asString;
+		dict[\cipher]  = root[0] ++ ~chords.findKeyForValue(chord);
 	} {
-		dict[\cipher]  = root[0].asString ++ root[1].asString ++ ~chords.findKeyForValue(chord).asString;
+		dict[\cipher]  = root[0] ++ root[1] ++ ~chords.findKeyForValue(chord);
 	};
 
 	dict;
 };
 
-~root = ~parseRoot.('G#');
-~dict = ~getChord.(~root, ~chords[\m7]);
+/*************************************************************************************/
+
+~root = ~parseRoot.("F#");
+~dict = ~getChord.(~root, ~chords[\A5m7], true);
 
 ~dict[\notes].postln;
 ~dict[\names].postln;
@@ -310,3 +350,6 @@
 ~dict[\cipher].postln;
 )
 
+~str = "C##";
+
+~str.size == 3 && ~str.includes($#)
