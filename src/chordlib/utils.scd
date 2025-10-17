@@ -16,28 +16,22 @@
 
 ~namesToAnsi = { |names|
 
-	if (names.isKindOf(Array)) {
-		names.do { |n, i|
+	names.do { |n, i|
 
-			switch (n.size)
-			{ 3 }{
+		switch (n.size)
+		{ 3 }{
+			case
+			{ n.includes($#) } { names[i] = n[0] ++ ~asAnsiChar.("##") }
+			{ n.includes($b) } { names[i] = n[0] ++ ~asAnsiChar.("bb") }
+		}
+		{ 2 } {
+			case
+			{ n.includes($#) } { names[i] = n[0] ++ ~asAnsiChar.("#") }
+			{ n.includes($b) } { names[i] = n[0] ++ ~asAnsiChar.("b") }
+		}
+	};
 
-				case
-				{ n.includes($#) } { names[i] = n[0] ++ ~asAnsiChar.("##") }
-				{ n.includes($b) } { names[i] = n[0] ++ ~asAnsiChar.("bb") }
-			}
-			{ 2 } {
-
-				case
-				{ n.includes($#) } { names[i] = n[0] ++ ~asAnsiChar.("#") }
-				{ n.includes($b) } { names[i] = n[0] ++ ~asAnsiChar.("b") }
-			}
-		};
-	} {
-
-	}
 };
-
 
 /*************************************************************************************/
 
