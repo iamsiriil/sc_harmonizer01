@@ -56,6 +56,7 @@
 
 	"~getChordNoteNames: Function Call".postln;
 
+	// Separate into function ~getChordNotes
 	case
 	{ chord == [0, 2, 7] } { dis = [0, 1, 4] }
 	{ chord == [0, 5, 7] } { dis = [0, 3, 4] }
@@ -64,6 +65,7 @@
 
 	tranChord = (chord + root[2]);
 
+	// Separate into function ~getNoteNames
 	rootIndex = ~noteNames[0].indexOf(root[0].asSymbol);
 	noteNames = ~noteNames[0].wrapAt(rootIndex + dis);
 
@@ -95,16 +97,8 @@
 		dif = (tranChord[i] - ref);
 
 		case
-		{ dif.isPositive } {
-			dif.do {
-				noteNames[i] = noteNames[i] ++ "#";
-			}
-		}
-		{ dif.isNegative } {
-			dif.abs.do {
-				noteNames[i] = noteNames[i] ++ "b";
-			}
-		}
+		{ dif.isPositive } { dif.do {noteNames[i] = noteNames[i] ++ "#"} }
+		{ dif.isNegative } { dif.abs.do {noteNames[i] = noteNames[i] ++ "b"} }
 	};
 	[tranChord, noteNames];
 };
@@ -203,6 +197,7 @@
 	temp = ~getChordNoteNames.(root, chord);
 	deg  = ~getChordDegrees.(temp[0], temp[1]);
 
+	// Get loop into a separate function: ~wrapFirstOctave
 	temp[0].do { |n, i|
 
 		if (n >= 12) {
@@ -235,8 +230,8 @@
 
 /*************************************************************************************/
 
-~root = ~parseRoot.("F#");
-~dict = ~getChord.(~root, \M, true);
+~root = ~parseRoot.("C#");
+~dict = ~getChord.(~root, \M3d5m7, true);
 
 ~dict[\notes].postln;
 ~dict[\names].postln;
