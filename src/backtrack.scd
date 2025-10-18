@@ -7,6 +7,9 @@
 and returns the collection of all valid chords.
 */
 
+// Turn ~backtrackChords into a Routine that returns one chord at a time, instead of generating
+// all possible chords. Once it reaches the end it returns Nil. (?)
+
 ~backtrackChords = #{ |data, rules, i|
 	var voice = data[\voice][\names][i];
 
@@ -21,7 +24,7 @@ and returns the collection of all valid chords.
 		// In this case, we assign the note and skip directly to the next voice.
 
 		if ((i > 0) && (data[\state][\validNotes][voice].size == 1)) {
-			data[\state][\nextChord].put(i, data[\state][\validNotes][voice].asArray.at(0));
+			data[\state][\nextChord].put(i, data[\state][\validNotes][voice].asArray.at(0)); // use currChord[i]
 			~backtrackChords.(data, rules, (i + 1));
 		};
 
@@ -57,6 +60,31 @@ and returns the collection of all valid chords.
 	};
 
 	~getValidNotes.(data, rules);
+
+	// Toggle rules to create a bias twards keeping note duplication, chord position and common tones
+	// possibly create a loop that keeps calling ~getChords until all possibilities are exausted
+
+	// NOTE DUPLICATION
+	// 1. duplicate root
+	// 2. duplicate third
+	// 3. duplicate fifth
+
+	// CHORD POSITION
+	// If chord positions are not specified in the chord symbols (CM/E)
+	// 1. Try root position
+	// 2. Try first inversion
+	// 3. Only in special occasions try second or third inversions
+
+	// COMMON TONES
+	// To be kept if possible, if not, try other notes
+
+/*
+
+while {data[\state][\validNextChords].isEmpty/.notNil (?) && ~toggleRules.(rules, ...).notNil } { // ---> ~toggleRules as Routine (?)
+    ~backtrackChords.(data, rules, 0);
+};
+
+*/
 	~backtrackChords.(data, rules, 0);
 
 	~resetRules.(rules);
