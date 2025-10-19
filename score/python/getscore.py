@@ -1,3 +1,8 @@
+##########################################################################################
+# Harmonizer 01 - A rule-based harmonizer for SuperCollider								 #
+# Copyright (C) 2025 Siriil																 #
+# Licensed under GPLv3. See LICENSE file for details.									 #
+##########################################################################################
 from music21 import *
 from pathlib import Path
 import sys

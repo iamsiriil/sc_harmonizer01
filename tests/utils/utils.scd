@@ -1,6 +1,8 @@
-/**************************************************************************************
-- HARMONY 01 / Test utility Functions
-**************************************************************************************/
+/*****************************************************************************************
+* Harmonizer 01 - A rule-based harmonizer for SuperCollider								 *
+* Copyright (C) 2025 Siriil																 *
+* Licensed under GPLv3. See LICENSE file for details.									 *
+*****************************************************************************************/
 (
 ~test_getFirstChordsArray = { |triads, data, progState, rules, firstCipher|
 	var parsedChords = Dictionary.new();
@@ -18,7 +20,7 @@
 	data[\state][\validNextChords];
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~test_getNextChordsArray = { |triads, data, progState, rules, fixtures, firstCipher, nextCipher, open = true|
 	var parsedChords = Dictionary.new();
@@ -38,7 +40,7 @@
 	data[\state][\validNextChords];
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 // Check chord fixtures for test_getNextChords are correct
 
 ~checkFistChord = { |fixtures, triads|
