@@ -1,6 +1,20 @@
-/**************************************************************************************
-- HARMONY 01 / Validators
-**************************************************************************************/
+/*****************************************************************************************
+* Harmonizer 01 - A Rule-Based Harmonizer for SuperCollider                              *
+* Copyright (C) 2025 Siriil                                                              *
+*                                                                                        *
+* This program is free software: you can redistribute it and/or modify                   *
+* it under the terms of the GNU General Public License as published by                   *
+* the Free Software Foundation, either version 3 of the License, or                      *
+* (at your option) any later version.                                                    *
+*                                                                                        *
+* This program is distributed in the hope that it will be useful,                        *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of                         *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                          *
+* GNU General Public License for more details.                                           *
+*                                                                                        *
+* You should have received a copy of the GNU General Public License                      *
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.                  *
+*****************************************************************************************/
 (
 ~testProgression = #{ |prog|
 
@@ -18,7 +32,7 @@
 	nil;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~testDurations = #{ |dur|
 
@@ -36,7 +50,7 @@
 	nil;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~testDirection = #{ |dir|
 	var validDirections = Set["up", "down", "line"]; // Change to symbols
@@ -52,7 +66,7 @@
 	nil;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~testOutputFormat = #{ |out, sus|
 	var validOutput = Set['chord', 'voice'];
@@ -71,7 +85,7 @@
 	nil;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 // Change variable names to shorter version. add out.
 ~testArguments = #{ |prog, dur, dir, out, uni, sus, scr, log|
 

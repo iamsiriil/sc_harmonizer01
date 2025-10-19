@@ -1,6 +1,20 @@
-/**************************************************************************************
-- HARMONY 01 / Harmonizer
-**************************************************************************************/
+/*****************************************************************************************
+* Harmonizer 01 - A Rule-Based Harmonizer for SuperCollider                              *
+* Copyright (C) 2025 Siriil                                                              *
+*                                                                                        *
+* This program is free software: you can redistribute it and/or modify                   *
+* it under the terms of the GNU General Public License as published by                   *
+* the Free Software Foundation, either version 3 of the License, or                      *
+* (at your option) any later version.                                                    *
+*                                                                                        *
+* This program is distributed in the hope that it will be useful,                        *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of                         *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                          *
+* GNU General Public License for more details.                                           *
+*                                                                                        *
+* You should have received a copy of the GNU General Public License                      *
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.                  *
+*****************************************************************************************/
 (
 ~initData = #{ |prog, dur, dir, out, sus, data, progState|
 	var parsedChords, progSize = prog.size;
@@ -40,7 +54,7 @@
 	nil;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~handleResult = #{ |progState|
 
@@ -70,7 +84,7 @@
 	nil;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 /*
 Handles backtrack by calling ~getChords directly, if progression size == 1,
 otherwise calls ~backtrackProg.
@@ -82,6 +96,7 @@ otherwise calls ~backtrackProg.
 	if (progState[\progression].size == 1) {
 
 		data[\state][\nextCipher] = progState[\progression][0];
+		// if ~getChord becomes a Routine, .choose may not work since the routine will probably reset at every call of ~harmonizeProg
 		progState[\result] = [~getChords.(data, progState, rules, 0).choose];
 
 	} {
@@ -94,7 +109,7 @@ otherwise calls ~backtrackProg.
 	nil;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~harmonizeProg = #{
 	arg prog,      // Progression

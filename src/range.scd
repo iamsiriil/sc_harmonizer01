@@ -1,6 +1,20 @@
-/**************************************************************************************
-- HARMONY 01 / Range Functions
-**************************************************************************************/
+/*****************************************************************************************
+* Harmonizer 01 - A Rule-Based Harmonizer for SuperCollider                              *
+* Copyright (C) 2025 Siriil                                                              *
+*                                                                                        *
+* This program is free software: you can redistribute it and/or modify                   *
+* it under the terms of the GNU General Public License as published by                   *
+* the Free Software Foundation, either version 3 of the License, or                      *
+* (at your option) any later version.                                                    *
+*                                                                                        *
+* This program is distributed in the hope that it will be useful,                        *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of                         *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                          *
+* GNU General Public License for more details.                                           *
+*                                                                                        *
+* You should have received a copy of the GNU General Public License                      *
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.                  *
+*****************************************************************************************/
 (
 /*
 ~getChordDegreeArrays gathers all chord note sequences and respective degrees,
@@ -25,7 +39,7 @@ across the MIDI range, as two separate arrays
 	dictChords;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 /*
 ~getChordVocalRange gathers all chord notes within each vocal range
 */
@@ -44,7 +58,7 @@ across the MIDI range, as two separate arrays
 	dict;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 /*
 ~resolveMelodicInterval ensure only valid melodic intervals are played between chords
 */
@@ -61,7 +75,7 @@ across the MIDI range, as two separate arrays
 	nil;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 /*
 ~resolveCommonTones ensures only common tones are present as valid candidate,
 for each of the voices, depending on note present in previous chord
@@ -81,7 +95,7 @@ for each of the voices, depending on note present in previous chord
 	nil;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 /*
 ~getValidNotes manages valid candidate notes depending on rule settings
 */

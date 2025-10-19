@@ -1,6 +1,20 @@
-/**************************************************************************************
-- HARMONY 01 / Dynamic Library
-**************************************************************************************/
+/*****************************************************************************************
+* Harmonizer 01 - A Rule-Based Harmonizer for SuperCollider                              *
+* Copyright (C) 2025 Siriil                                                              *
+*                                                                                        *
+* This program is free software: you can redistribute it and/or modify                   *
+* it under the terms of the GNU General Public License as published by                   *
+* the Free Software Foundation, either version 3 of the License, or                      *
+* (at your option) any later version.                                                    *
+*                                                                                        *
+* This program is distributed in the hope that it will be useful,                        *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of                         *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                          *
+* GNU General Public License for more details.                                           *
+*                                                                                        *
+* You should have received a copy of the GNU General Public License                      *
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.                  *
+*****************************************************************************************/
 
 /* Reference dictionary for parsed chords (C79/E)
 
@@ -49,7 +63,7 @@
 	arr;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~getChordNoteNames = { |root, chord|
 	var dis, tranChord, noteNames, rootIndex;
@@ -103,7 +117,7 @@
 	[tranChord, noteNames];
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~getIntervalDegree = { |note1, note2|
 	var startIndex, ct, i;
@@ -127,7 +141,7 @@
 	ct;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~getIntervalType = { |degree, midiNote1, midiNote2|
 	var dif = (midiNote2 - midiNote1);
@@ -164,7 +178,7 @@
 	type;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~getChordDegrees = { |notes, names|
 	var arr = Array.new(notes.size);
@@ -185,7 +199,7 @@
 	arr;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
 ~getChord = { |root, symbol, ansi = false|
 	var dict = Dictionary.new(3);
@@ -212,7 +226,7 @@
 		~namesToAnsi.(temp[1]);
 		accident = ~asAnsiChar.(root[1]);
 	} {
-		accident = root[1];
+		accident = root[1].postln;
 	};
 
 	dict[\notes]   = ~extendMidiRange.(temp[0]);
@@ -228,9 +242,9 @@
 	dict;
 };
 
-/*************************************************************************************/
+/****************************************************************************************/
 
-~root = ~parseRoot.("C#");
+~root = ~parseRoot.("C");
 ~dict = ~getChord.(~root, \M3d5m7, true);
 
 ~dict[\notes].postln;

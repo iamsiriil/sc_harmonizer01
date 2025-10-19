@@ -1,10 +1,27 @@
-/**************************************************************************************
-- HARMONY 01 / Dynamic Library - Dictionaries
-**************************************************************************************/
+/*****************************************************************************************
+* Harmonizer 01 - A Rule-Based Harmonizer for SuperCollider                              *
+* Copyright (C) 2025 Siriil                                                              *
+*                                                                                        *
+* This program is free software: you can redistribute it and/or modify                   *
+* it under the terms of the GNU General Public License as published by                   *
+* the Free Software Foundation, either version 3 of the License, or                      *
+* (at your option) any later version.                                                    *
+*                                                                                        *
+* This program is distributed in the hope that it will be useful,                        *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of                         *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                          *
+* GNU General Public License for more details.                                           *
+*                                                                                        *
+* You should have received a copy of the GNU General Public License                      *
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.                  *
+*****************************************************************************************/
 (
 // Chord symbol aliases
 
 ~chordSymbols = Dictionary[
+
+	\P5     -> Set[],
+
 	// Triads
 	\d      -> Set['d', 'dim', 'º'],
 	\m      -> Set['m', 'min', '-', 'mi'],
@@ -42,28 +59,29 @@
 // Chord blueprints
 
 ~chords = Dictionary[
+	\P5     -> [0, 7],
 	// Triads
 	// Allowed extensions (9th, 11th, 13th)
-	\d      -> [0, 3, 6],
-	\m      -> [0, 3, 7],
-	\M      -> [0, 4, 7],
-	\A      -> [0, 4, 8],
+	\m3d5   -> [0, 3, 6],
+	\m3P5   -> [0, 3, 7],
+	\M3P5   -> [0, 4, 7],
+	\M3A5   -> [0, 4, 8],
 
 	// Seventh chords
 	// Allowed extensions (9th, 11th, 13th)
-	\d7     -> [0, 3, 6, 9],
-	\d5m7   -> [0, 3, 6, 10],
-	\d5M7   -> [0, 3, 6, 11],
-	\m7     -> [0, 3, 7, 10],
-	\m3M7   -> [0, 3, 7, 11],
+	\m3d5d7 -> [0, 3, 6, 9],
+	\m3d5m7 -> [0, 3, 6, 10],
+	\m3d5M7 -> [0, 3, 6, 11],
+	\m3P5m7 -> [0, 3, 7, 10],
+	\m3P5M7 -> [0, 3, 7, 11],
 	\m3A5m7 -> [0, 3, 8, 10],
 	\m3A5M7 -> [0, 3, 8, 11],
 	\M3d5m7 -> [0, 4, 6, 10],
 	\M3d5M7 -> [0, 4, 6, 11],
-	\D7     -> [0, 4, 7, 10],
-	\M7     -> [0, 4, 7, 11],
-	\A5m7   -> [0, 4, 8, 10],
-	\A5M7   -> [0, 4, 8, 11],
+	\M3P5m7 -> [0, 4, 7, 10],
+	\M3P5M7 -> [0, 4, 7, 11],
+	\M3A5m7 -> [0, 4, 8, 10],
+	\M3A5M7 -> [0, 4, 8, 11],
 
 	// Augmented sixth chords
 	// No extensions allowed
@@ -76,7 +94,8 @@
 
 	// Suspended chords
 	\sus2   -> [0, 2, 7],
-	\sus4   -> [0, 5, 7]
+	\sus4
+	-> [0, 5, 7]
 ];
 
 // Utility arrays with note names and major scale
