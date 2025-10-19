@@ -151,5 +151,9 @@ If you find Harmonizer 01 useful and would like to support further development, 
 
 ## License
 
-This project is released under the MIT License.
+As of 2025-10-19, harmony01 is licensed under the GNU General Public License v3 (GPLv3).
+
+All code committed prior to this date was licensed under the MIT License.
+
+Author: Siriil
 
