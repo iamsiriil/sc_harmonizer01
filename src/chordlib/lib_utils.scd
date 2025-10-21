@@ -49,4 +49,27 @@
 	};
 	arr.sort;
 };
+
+/****************************************************************************************/
+
+~wrapAndExtend = { |dict, notes, names, degrees|
+
+	"~wrapFirstOctave: Function Call".postln;
+
+	notes.do { |n, i|
+
+		if (n >= 12) {
+			notes[i]  = n - 12;
+			names     = names.rotate(1);
+			degrees   = degrees.rotate(1);
+		}
+	};
+	notes.sort;
+
+	dict[\notes]   = ~extendMidiRange.(notes);
+	dict[\names]   = names;
+	dict[\degrees] = degrees;
+
+	nil;
+};
 )
