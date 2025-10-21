@@ -28,5 +28,15 @@
 // Test dictionary keys uniqueness
 ~testKeysUniqueness = {};
 
-~unique = ~testUniqueness.(~chordsSymbols)
+~unique = ~testUniqueness.(~chordsSymbols);
+
+/****************************************************************************************/
+
+~root = ~parseRoot.("Bb");
+~dict = ~getChordData.(~root, \A3A5d7, true);
+
+~dict[\notes].postln;
+~dict[\names].postln;
+~dict[\degrees].postln;
+~dict[\symbol].postln;
 )

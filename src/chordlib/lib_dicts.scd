@@ -3,9 +3,24 @@
 * Copyright (C) 2025 Siriil																 *
 * Licensed under GPLv3. See LICENSE file for details.									 *
 *****************************************************************************************/
-(
+/*
+Reference dictionary for parsed chords (C79/E)
+
+~parsed = Dictionary[
+   \root       -> ['C', nil, 0],
+   \bass       -> 'E',
+   \type       -> 'M3m7',
+   \extensions -> ['M9'],
+   \distance   -> 0,
+   \names      -> ['C', 'D', 'E', 'G', 'Bb']
+   \degrees    -> ['Rt', 'M9', 'M3', 'P5', 'm7'],
+   \notes      -> [0, 2, 4, 7, 10, ...],
+]
+*/
+
+/****************************************************************************************/
 // Interval aliases
-//
+(
 ~intervals = Dictionary[
 	\Un -> Set['Rt', 'Un',  'Pu', 'P8', 'd2', 'd9'],
 	\m2 -> Set['Au', 'A8',  'm9'],
@@ -21,7 +36,9 @@
 	\M7 -> Set['d8', 'd15', 'M14']
 ];
 
+/****************************************************************************************/
 // Chord symbol aliases
+
 ~chordSymbols = Dictionary[
 	// Triads
 	\d3d5 -> Set['Ita', 'It', 'Italian', 'º3º5', '-3-5', 'b3b5', 'dim3dim5'],
@@ -88,21 +105,11 @@
 	\A3A5d7 -> Set[],
 	\A3A5m7 -> Set[],
 	\A3A5M7 -> Set[],
-
-	// Augmented sixth chords
-	\It     -> Set[],
-	\Gr     -> Set[],
-	\Fr     -> Set[],
-
-	// Neapolitan sixth
-	\Na     -> Set[],
-
-	// Suspended chords
-	\sus2   -> Set[],
-	\sus4   -> Set[]
 ];
 
+/****************************************************************************************/
 // Interval note offsets
+
 ~intervalOffsets = Dictionary[
 	\Un -> [0, 0],
 	\m2 -> [0, 1],
@@ -119,7 +126,9 @@
 	\P8 -> [0, 12],
 ];
 
+/****************************************************************************************/
 // Triads and seventh chords note offsets
+
 ~chordOffsets = Dictionary[
 
 	// Triads
@@ -191,6 +200,8 @@
 	\A3A5M7 -> [0, 5, 8, 11]
 ];
 
+/****************************************************************************************/
+
 ~subtract = Dictionary[
 	2 -> 0,
 	3 -> 2,
@@ -200,7 +211,9 @@
 	7 -> 9
 ];
 
+/****************************************************************************************/
 // Utility arrays with note names and major scale
+
 ~noteNames = [
 	['C', 'D', 'E', 'F', 'G', 'A', 'B'],
 	[0, 2, 4, 5, 7, 9, 11]
