@@ -3,13 +3,13 @@
 * Copyright (C) 2025 Siriil																 *
 * Licensed under GPLv3. See LICENSE file for details.									 *
 *****************************************************************************************/
-
-/* Reference dictionary for parsed chords (C79/E)
+/*
+Reference dictionary for parsed chords (C79/E)
 
 ~parsed = Dictionary[
-   \root       -> 'C',
+   \root       -> ['C', nil, 0],
    \bass       -> 'E',
-   \type       -> 'D7',
+   \type       -> 'M3m7',
    \extensions -> ['M9'],
    \distance   -> 0,
    \names      -> ['C', 'D', 'E', 'G', 'Bb']
@@ -17,91 +17,71 @@
    \notes      -> [0, 2, 4, 7, 10, ...],
 ]
 */
-
+/****************************************************************************************/
 (
-~parseRoot = { |root|
-	var arr = Array.new(3);
-	var midi;
+~resolveAccidents = { |note, root, chord, i|
+	var noteIndex = ~noteNames[0].indexOf(note.asSymbol);
+	var ref, dif;
 
-	"~parseChords: Function Call".postln;
+	"~resolveAccidents: Function Call".postln;
 
-	root = root.asString;
+	// Cb and B# require special treatment
+	case
+	{ (root[0] == "B") && (root[1] == "#") && (note == "B")} {
+		ref = -1;
+	}
+	{ (note == "C") && ((chord[i] == 11) || (chord[i] == 10)) } {
+		ref = 12;
+	}
+	{ (note == "B") && ((chord[i] == 12) || (chord[i] == 13)) } {
+		ref = 11;
+	}
+	{
+		if ((chord[i] >= 12)) {
+			ref = (~noteNames[1][noteIndex] + 12);
+		} {
+			ref = ~noteNames[1][noteIndex];
+		};
+	};
 
-	if (root.size == 2) {
-		arr.add(root[0].asString); // .asString ensures a string instead of char
-		arr.add(root[1].asString);
-	} {
-		arr.add(root);
-		arr.add(nil);
+	dif = (chord[i] - ref);
+
+	if (dif.abs >= 3){
+		Error("Tripple flats/sharps are NOT allowed.\n".format(note)).throw;
 	};
 
 	case
-	{ root == "Cb" } { midi = 11 }
-	{ root == "B#" } { midi = 0 }
-	{
-		midi = ~noteNames[1][~noteNames[0].indexOf(arr[0].asSymbol)];
+	{ dif.isPositive } { dif.do {note = note ++ "#"} }
+	{ dif.isNegative } { dif.abs.do {note = note ++ "b"} };
 
-		case
-		{ arr[1] == "#" } { midi = midi + 1 }
-		{ arr[1] == "b" } { midi = midi - 1 }
-		{ midi };
-	};
-
-	arr.add(midi);
-	arr;
+	note;
 };
 
 /****************************************************************************************/
 
 ~getChordNoteNames = { |root, chord|
-	var dis, tranChord, noteNames, rootIndex;
+	var offset, tranChord, noteNames, rootIndex;
 
 	"~getChordNoteNames: Function Call".postln;
 
-	// Separate into function ~getChordNotes
+	tranChord = (chord + root[2]);                 // Transpose chord
+
+	// Get note name offsets
 	case
-	{ chord == [0, 2, 7] } { dis = [0, 1, 4] }
-	{ chord == [0, 5, 7] } { dis = [0, 3, 4] }
-	{ chord.size == 3 }    { dis = [0, 2, 4] }
-	{ chord.size == 4 }    { dis = [0, 2, 4, 6] };
+	{ chord == [0, 2, 7] } { offset = [0, 1, 4] }     // Special handling of sus2 chords
+	{ chord == [0, 5, 7] } { offset = [0, 3, 4] }     // Special handling of sus4 chords
+	{ chord.size == 3 }    { offset = [0, 2, 4] }     // Index offsets for triads
+	{ chord.size == 4 }    { offset = [0, 2, 4, 6] }; // Index offsets for seventh chords
 
-	tranChord = (chord + root[2]);
-
-	// Separate into function ~getNoteNames
 	rootIndex = ~noteNames[0].indexOf(root[0].asSymbol);
-	noteNames = ~noteNames[0].wrapAt(rootIndex + dis);
+	noteNames = ~noteNames[0].wrapAt(rootIndex + offset);
 
 	noteNames.do { |n, i| noteNames[i] = n.asString };
 
 	noteNames.do { |n, i|
-		var noteIndex = ~noteNames[0].indexOf(n.asSymbol);
-		var ref, dif;
-
-		// B# and Cb require special treatment
-		case
-		{ (root[0] == "B") && (root[1] == "#") && (n == "B")} {
-			ref = -1;
-		}
-		{ (n == "C") && ((tranChord[i] == 11) || (tranChord[i] == 10)) } {
-			ref = 12;
-		}
-		{ (n == "B") && ((tranChord[i] == 12) || (tranChord[i] == 13)) } {
-			ref = 11;
-		}
-		{
-			if ((tranChord[i] >= 12)) {
-				ref = (~noteNames[1][noteIndex] + 12);
-			} {
-				ref = ~noteNames[1][noteIndex];
-			};
-		};
-
-		dif = (tranChord[i] - ref);
-
-		case
-		{ dif.isPositive } { dif.do {noteNames[i] = noteNames[i] ++ "#"} }
-		{ dif.isNegative } { dif.abs.do {noteNames[i] = noteNames[i] ++ "b"} }
+		noteNames[i] = ~resolveAccidents.(n, root, tranChord, i).postln;
 	};
+
 	[tranChord, noteNames];
 };
 
@@ -188,27 +168,41 @@
 };
 
 /****************************************************************************************/
+~wrapFirstOctave = { |notes, names, degrees|
+	var dict = Dictionary.new;
 
-~getChord = { |root, symbol, ansi = false|
-	var dict = Dictionary.new(3);
+	"~wrapFirstOctave: Function Call".postln;
+
+	notes.do { |n, i|
+
+		if (n >= 12) {
+			notes[i]  = n - 12;
+			names     = names.rotate(1);
+			degrees   = degrees.rotate(1);
+		}
+	};
+	notes.sort;
+
+	dict[\notes] = ~extendMidiRange.(notes);
+	dict[\names] = names;
+	dict[\degrees] = degrees;
+
+	dict;
+};
+
+/****************************************************************************************/
+
+~getChordRange = { |root, symbol, ansi = false|
+	var dict = Dictionary.new(4);
 	var chord = ~chords[symbol];
 	var temp, deg, accident;
 
-	"~getChord: Function Call".postln;
+	"~getChordRange: Function Call".postln;
 
 	temp = ~getChordNoteNames.(root, chord);
 	deg  = ~getChordDegrees.(temp[0], temp[1]);
 
-	// Get loop into a separate function: ~wrapFirstOctave
-	temp[0].do { |n, i|
-
-		if (n >= 12) {
-			temp[0][i] = n - 12;
-			temp[1]    = temp[1].rotate(1);
-			deg        = deg.rotate(1);
-		}
-	};
-	temp[0].sort;
+	dict = ~wrapFirstOctave.(temp[0], temp[1], deg);
 
 	if (ansi) {
 		~namesToAnsi.(temp[1]);
@@ -217,14 +211,10 @@
 		accident = root[1].postln;
 	};
 
-	dict[\notes]   = ~extendMidiRange.(temp[0]);
-	dict[\names]   = temp[1];
-	dict[\degrees] = deg;
-
 	if (root[1].isNil) {
-		dict[\cipher]  = root[0] ++ symbol;
+		dict[\symbol]  = root[0] ++ symbol;
 	} {
-		dict[\cipher]  = root[0] ++ accident ++ symbol;
+		dict[\symbol]  = root[0] ++ accident ++ symbol;
 	};
 
 	dict;
@@ -232,11 +222,11 @@
 
 /****************************************************************************************/
 
-~root = ~parseRoot.("C");
-~dict = ~getChord.(~root, \M3d5m7, true);
+~root = ~parseRoot.("C#");
+~dict = ~getChordRange.(~root, \m3d5M7, true);
 
 ~dict[\notes].postln;
 ~dict[\names].postln;
 ~dict[\degrees].postln;
-~dict[\cipher].postln;
+~dict[\symbol].postln;
 )
