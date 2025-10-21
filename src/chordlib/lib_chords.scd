@@ -22,12 +22,17 @@
 
 ~getChordData = { |root, symbol, ansi = false|
 	var dict  = Dictionary.new(4);
-	var chord = ~chordOffsets[symbol];
-	var temp, deg, accident;
+	//var chord = ~chordOffsets[symbol].postln;
+	var temp, deg, accident, chord, offset;
 
-	"~getChordRange: Function Call".postln;
+	if (symbol.asString.size == 2) {
+		chord  = ~intervalOffsets[symbol][0];
+		offset = ~intervalOffsets[symbol][1];
+	} {
+		chord = ~chordOffsets[symbol];
+	};
 
-	temp = ~getChordNoteNames.(root, chord);
+	temp = ~getChordNoteNames.(root, chord, offset);
 	deg  = ~getChordDegrees.(temp[0], temp[1]);
 
 
@@ -44,3 +49,4 @@
 	dict;
 };
 )
+\p5.asString.size

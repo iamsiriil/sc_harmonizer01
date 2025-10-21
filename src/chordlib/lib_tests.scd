@@ -19,7 +19,7 @@
 	diff = (set.size - dict.size).abs;
 
 	"result: % | diff: %".format(result, diff).postln;
-	[result, diff];
+	[result, diff].postln;
 };
 
 // Test symbol uniqueness across sets
@@ -28,15 +28,16 @@
 // Test dictionary keys uniqueness
 ~testKeysUniqueness = {};
 
-~unique = ~testUniqueness.(~chordsSymbols);
+//~unique = ~testUniqueness.(~chordSymbols);
 
 /****************************************************************************************/
 
-~root = ~parseRoot.("Bb");
-~dict = ~getChordData.(~root, \A3A5d7, true);
+~root = ~parseRoot.("B");
+~dict = ~getChordData.(~root, \M3, true);
 
 ~dict[\notes].postln;
 ~dict[\names].postln;
 ~dict[\degrees].postln;
 ~dict[\symbol].postln;
 )
+~intervalOffsets[\P5]

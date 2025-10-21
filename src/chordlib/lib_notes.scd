@@ -4,9 +4,9 @@
 * Licensed under GPLv3. See LICENSE file for details.									 *
 *****************************************************************************************/
 (
-~getOctave = { ||
+~getOctave = {};
 
-};
+/****************************************************************************************/
 
 ~resolveAccidents = { |note, root, chord, i|
 	var noteIndex = ~noteNames[0].indexOf(note.asSymbol);
@@ -48,7 +48,7 @@
 
 /****************************************************************************************/
 
-~getChordNoteNames = { |root, chord|
+~getChordNoteNames = { |root, chord, intOffset = nil|
 	var offset, tranChord, noteNames, rootIndex;
 
 	"~getChordNoteNames: Function Call".postln;
@@ -60,7 +60,8 @@
 	{ chord == [0, 2, 7] } { offset = [0, 1, 4] }     // Special handling of sus2 chords
 	{ chord == [0, 5, 7] } { offset = [0, 3, 4] }     // Special handling of sus4 chords
 	{ chord.size == 3 }    { offset = [0, 2, 4] }     // Index offsets for triads
-	{ chord.size == 4 }    { offset = [0, 2, 4, 6] }; // Index offsets for seventh chords
+	{ chord.size == 4 }    { offset = [0, 2, 4, 6] }  // Index offsets for seventh chords
+	{ chord.size == 2 }    { offset = intOffset };
 
 	rootIndex = ~noteNames[0].indexOf(root[0].asSymbol);
 	noteNames = ~noteNames[0].wrapAt(rootIndex + offset);
