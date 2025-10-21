@@ -43,9 +43,9 @@
 	\sus2   -> Set[],
 	\sus4   -> Set[]
 ];
+// Remove duplicate chord formations (Na/M3P5, Fr/M3d5m7). Find way to handle exception.
 
 // Chord blueprints
-
 ~chords = Dictionary[
 	\P5     -> [0, 7],
 	// Triads
@@ -82,8 +82,7 @@
 
 	// Suspended chords
 	\sus2   -> [0, 2, 7],
-	\sus4
-	-> [0, 5, 7]
+	\sus4   -> [0, 5, 7]
 ];
 
 // Utility arrays with note names and major scale
