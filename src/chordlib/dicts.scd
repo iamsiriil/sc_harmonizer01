@@ -85,6 +85,15 @@
 	\sus4   -> [0, 5, 7]
 ];
 
+~subtract = Dictionary[
+	2 -> 0,
+	3 -> 2,
+	4 -> 4,
+	5 -> 6,
+	6 -> 7,
+	7 -> 9
+];
+
 // Utility arrays with note names and major scale
 ~noteNames = [
 	['C', 'D', 'E', 'F', 'G', 'A', 'B'],
