@@ -4,6 +4,10 @@
 * Licensed under GPLv3. See LICENSE file for details.									 *
 *****************************************************************************************/
 (
+~getOctave = { ||
+
+};
+
 ~resolveAccidents = { |note, root, chord, i|
 	var noteIndex = ~noteNames[0].indexOf(note.asSymbol);
 	var ref, dif;

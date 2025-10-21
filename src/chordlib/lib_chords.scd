@@ -37,7 +37,7 @@ Reference dictionary for parsed chords (C79/E)
 
 ~getChordData = { |root, symbol, ansi = false|
 	var dict  = Dictionary.new(4);
-	var chord = ~chords[symbol];
+	var chord = ~chordOffsets[symbol];
 	var temp, deg, accident;
 
 	"~getChordRange: Function Call".postln;
@@ -45,15 +45,15 @@ Reference dictionary for parsed chords (C79/E)
 	temp = ~getChordNoteNames.(root, chord);
 	deg  = ~getChordDegrees.(temp[0], temp[1]);
 
-	~wrapAndExtend.(dict, temp[0], temp[1], deg);
 
 	if (ansi) {
 		~namesToAnsi.(temp[1]);
 		accident = ~asAnsiChar.(root[1]);
 	} {
-		accident = root[1].postln;
+		accident = root[1];
 	};
 
+	~wrapAndExtend.(dict, temp[0], temp[1], deg);
 	~getChordSymbol.(dict, root, accident, symbol);
 
 	dict;
@@ -61,8 +61,8 @@ Reference dictionary for parsed chords (C79/E)
 
 /****************************************************************************************/
 
-~root = ~parseRoot.("C#");
-~dict = ~getChordData.(~root, \m3d5M7, true);
+~root = ~parseRoot.("Bb");
+~dict = ~getChordData.(~root, \A3A5d7, true);
 
 ~dict[\notes].postln;
 ~dict[\names].postln;

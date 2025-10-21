@@ -7,6 +7,9 @@
 
 ~asAnsiChar = { |string|
 
+	"~asAnsiChar: Function Call".postln;
+
+
 	case
 	{ string == "##" } { "𝄪" }
 	{ string == "#" }  { "♯" }
@@ -17,6 +20,8 @@
 /****************************************************************************************/
 
 ~namesToAnsi = { |names|
+
+	"~namesToAnsi: Function Call".postln;
 
 	names.do { |n, i|
 
@@ -38,6 +43,9 @@
 
 ~extendMidiRange = { |range|
 	var arr = Array.new(range.size * 11);
+
+	"~extendMidiRange: Function Call".postln;
+
 
 	range.do { |n|
 
