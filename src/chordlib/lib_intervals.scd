@@ -10,8 +10,8 @@
 
 	"~getIntervalDegree: Function Call".postln;
 
-	note1 = note1[0];
-	note2 = note2[0];
+	note1 = note1[0].postln;
+	note2 = note2[0].postln;
 
 	i  = ~noteNames[0].indexOf(note1.asSymbol);
 	ct = 1;
@@ -35,7 +35,8 @@
 
 	"~getIntervalType: Function Call".postln;
 
-	sub = ~subtract[degree];
+	"degree: %".format(degree).postln;
+	sub = ~subtract[degree].postln;
 
 	dif = (dif - sub);
 

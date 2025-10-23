@@ -40,7 +40,7 @@
 
 /****************************************************************************************/
 // Chord symbol "C#min7(9/13)/E"
-~parseChordSymbol = { |symbol|
+~parseInputSymbol = { |symbol|
 
 	if (symbol.isKind(Symbol)) {
 		symbol = symbol.asString;

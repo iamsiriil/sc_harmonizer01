@@ -4,26 +4,11 @@
 * Licensed under GPLv3. See LICENSE file for details.									 *
 *****************************************************************************************/
 (
-
-~getChordSymbol = { |dict, root, accident, symbol|
-
-	"~getChordSymbol: Function Call".postln;
-
-	if (root[1].isNil) {
-		dict[\symbol] = root[0] ++ symbol;
-	} {
-		dict[\symbol] = root[0] ++ accident ++ symbol;
-	};
-
-	nil;
-};
-
-/****************************************************************************************/
-
-~getChordData = { |root, symbol, ansi = false|
+~getChordData = { |root, symbol, ansi = false, normalize = false|
 	var dict  = Dictionary.new(4);
-	//var chord = ~chordOffsets[symbol].postln;
 	var temp, deg, accident, chord, offset;
+
+	//~resolveSymbol.(symbol).postln;
 
 	if (symbol.asString.size == 2) {
 		chord  = ~intervalOffsets[symbol][0];
@@ -44,9 +29,8 @@
 	};
 
 	~wrapAndExtend.(dict, temp[0], temp[1], deg);
-	~getChordSymbol.(dict, root, accident, symbol);
+	~getInputSymbol.(dict, root, accident, symbol, normalize);
 
 	dict;
 };
 )
-\p5.asString.size

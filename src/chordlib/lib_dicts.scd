@@ -29,10 +29,10 @@ Reference dictionary for parsed chords (C79/E)
 	\M3 -> Set['d4', 'd11', 'M10'],
 	\P4 -> Set['A3', 'A10', 'P11'],
 	\A4 -> Set['d5', 'd12', 'A11'],
-	\P5 -> Set['d6', 'd13', 'P12'],
-	\m6 -> Set['A5', 'm13', 'm13'],
-	\M6 -> Set['d7', 'd14', 'M13'],
-	\m7 -> Set['A6', 'A13', 'm14'],
+	\P5 -> Set['d6', 'd13', 'P12', 'd6'],
+	\m6 -> Set['A5', 'A12', 'm13', 'm6'],
+	\M6 -> Set['d7', 'd14', 'M13', 'M6'],
+	\m7 -> Set['A6', 'A13', 'm14', 'A6'],
 	\M7 -> Set['d8', 'd15', 'M14']
 ];
 
@@ -53,7 +53,7 @@ Reference dictionary for parsed chords (C79/E)
 	\M3P5 -> Set['Neapolitan', 'Nap', 'Na', 'Np', 'M', 'Maj'],
 	\M3A5 -> Set['A', 'aug', '+'],
 
-	\A3d5 -> Set[],
+	\A3d5 -> Set['+3-5'],
 	\A3P5 -> Set['Sus4', 'sus4', 's4', 's13'],
 	\A3A5 -> Set[],
 
@@ -74,7 +74,7 @@ Reference dictionary for parsed chords (C79/E)
 	\m3d5m7 -> Set['d5m7', 'd5min7', 'dim5m7', 'ø7', 'm7♭5', '-7♭5', 'half-dim7', 'min7dim5'],
 	\m3d5M7 -> Set['d5M7', 'dim5Maj7', 'º5M7', 'd5Maj7', 'º5^7', 'dim5M7', 'd5^7', 'dim5^7'],
 
-	\m3P5d7 -> Set[],
+	\m3P5d7 -> Set['m6', 'min6', 'madd6', 'minadd6'],
 	\m3P5m7 -> Set['min7', 'Min7'],
 	\m3P5M7 -> Set[],
 
@@ -86,9 +86,9 @@ Reference dictionary for parsed chords (C79/E)
 	\M3d5m7 -> Set['French', 'Fr'],
 	\M3d5M7 -> Set[],
 
-	\M3P5d7 -> Set['6', '13', 'Majº7', 'majº7'],
+	\M3P5d7 -> Set['Majº7', 'majº7', '6', 'add6', 'Maj6'],
 	\M3P5m7 -> Set['Dominant', 'Dom', 'D', '7', 'D7'],
-	\M3P5M7 -> Set['Maj7', 'M7'],
+	\M3P5M7 -> Set['Maj7', 'M7', '^7'],
 
 	\M3A5d7 -> Set[],
 	\M3A5m7 -> Set[],
@@ -107,11 +107,21 @@ Reference dictionary for parsed chords (C79/E)
 	\A3A5M7 -> Set[],
 ];
 
+~specialSymbols = Dictionary[
+	\Na     -> Set['Neapolitan', 'Nap', 'Na'],
+	\It     -> Set['Italian', 'Ita', 'It'],
+	\Fr     -> Set['French', 'Fre', 'Fr'],
+	\Gr     -> Set['German', 'Ger', 'Gr'],
+	\m3P5M6 -> Set['m6', 'min6', 'madd6', 'minadd6'],
+	\M3P5M6 -> Set['6', 'add6', 'Maj6']
+
+];
+
 /****************************************************************************************/
 // Interval note offsets
 
 ~intervalOffsets = Dictionary[
-	\Un -> [[0, 0], [0, 0]],
+	//\Un -> [[0, 0], [0, 0]],
 	\m2 -> [[0, 1], [0, 1]],
 	\M2 -> [[0, 2], [0, 1]],
 	\m3 -> [[0, 3], [0, 2]],
@@ -203,12 +213,14 @@ Reference dictionary for parsed chords (C79/E)
 /****************************************************************************************/
 
 ~subtract = Dictionary[
+	//1 -> -1,
 	2 -> 0,
 	3 -> 2,
 	4 -> 4,
 	5 -> 6,
 	6 -> 7,
-	7 -> 9
+	7 -> 9,
+	//z8 -> 11
 ];
 
 /****************************************************************************************/

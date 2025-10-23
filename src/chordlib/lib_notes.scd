@@ -53,6 +53,7 @@
 
 	"~getChordNoteNames: Function Call".postln;
 
+	"chord: % | root[2]: %".format(chord, root[2]).postln;
 	tranChord = (chord + root[2]);                    // Transpose chord
 
 	// Get note name offsets

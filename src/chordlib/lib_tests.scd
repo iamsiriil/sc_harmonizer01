@@ -4,40 +4,63 @@
 * Licensed under GPLv3. See LICENSE file for details.									 *
 *****************************************************************************************/
 (
+"../loadall.scd".loadRelative;
+)
+
+(
 // DICTIONARIES **************************************************************************
 // Test value uniqueness in dicts
 
-~testUniqueness = { |dict|
+~testValuesUniqueness = { |dict|
 	var set = Set.newFrom(dict);
 	var result, diff;
 
+	dict.postln;
 	if (set.size == dict.size) {
 		result = true;
 	} {
 		result = false;
 	};
+
 	diff = (set.size - dict.size).abs;
 
-	"result: % | diff: %".format(result, diff).postln;
 	[result, diff].postln;
 };
+/****************************************************************************************/
+// Test for duplicate symbols across all sets stored in the ~chordSymbols dictionary
 
-// Test symbol uniqueness across sets
-~testSymbolUniqueness = {};
+~testChordSymbolsUniqueness = { |dict|
+	var testArray = [], testSet;
 
-// Test dictionary keys uniqueness
-~testKeysUniqueness = {};
+	dict.do { |v|
+		testArray = testArray ++ v.asArray;
+	};
 
-//~unique = ~testUniqueness.(~chordSymbols);
+	testSet = testArray.asSet;
+
+	if (testSet.size < testArray.size) {
+		false;
+	} {
+		true;
+	};
+};
 
 /****************************************************************************************/
+// Test dictionary keys uniqueness
 
-~root = ~parseRoot.("B");
-~dict = ~getChordData.(~root, \M3, true);
+~testKeysUniqueness = {};
 
-~dict[\notes].postln;
-~dict[\names].postln;
-~dict[\degrees].postln;
-~dict[\symbol].postln;
+
+/****************************************************************************************/
+// Need special treatment for Un
+~root = ~parseRoot.("C");
+~dict = ~getChordData.(~root, \m7, true);
+
+ ~dict[\notes].postln;
+ ~dict[\names].postln;
+ ~dict[\degrees].postln;
+ ~dict[\symbol].postln;
+
+//~testChordSymbolsUniqueness.(~chordSymbols);
+//~unique = ~testValuesUniqueness.(~chordSymbols);
 )
-~intervalOffsets[\P5]
