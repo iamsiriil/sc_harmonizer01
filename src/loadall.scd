@@ -29,7 +29,6 @@
 "./backtrack.scd".loadRelative;
 "./validators.scd".loadRelative;
 "./harmonizer.scd".loadRelative;
-"./chordlib/lib_loadall.scd".loadRelative;
 "../tests/test_runtests.scd".loadRelative;
 
 "ALL FILES HAVE BEEN LOADED".postln;
