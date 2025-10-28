@@ -15,34 +15,19 @@ dictionaries cannot be assigned nil values.
 ~data = Dictionary[
 	\voice -> Dictionary[
 
-		// Voice dictionary will need changes to account for additional voices
-		// Max 7, as chords cannot have more than seven different notes (?)
-		// spn1, spn2, alt1, alt2, ten, bar, bass (?)
-
 		\range -> Dictionary[
 			\bas -> [40, 62],
-
-			// \bar -> [...], Since there's a greater distance between bass and tenor,
-			// makes sense the baritone voice stays in between, with its own register.
-
-			\ten -> [48, 69], // remains
-			\alt -> [55, 76], // alt 1 and 2
-			\spn -> [60, 81]  // Spn 1 and 2
+			\ten -> [48, 69],
+			\alt -> [55, 76],
+			\spn -> [60, 81]
 		],
 		\validIntervals -> Dictionary[
-
-			// Only two are needed: bass and other voices
-
 			\bas -> [0, 1, 2, 3, 4, 5, 7, 12],
 			\ten -> [0, 1, 2, 3, 4, 5, 7],
 			\alt -> [0, 1, 2, 3, 4, 5, 7],
 			\spn -> [0, 1, 2, 3, 4, 5, 7]
 		],
-
-		// To be included dynamically since voice number may vary between 4 and 7 (?)
 		\number -> 4,
-
-		// Simply refer to voices as v0, v1, ..., v7 (?)
 		\names  -> ['bas', 'ten', 'alt', 'spn']
 	],
 
@@ -50,7 +35,7 @@ dictionaries cannot be assigned nil values.
 		\currChord       -> nil,
 		\nextChord       -> nil,
 		\validNotes      -> nil,
-		\validNextChords -> nil, // Gathers all valid chords from ~getChords
+		\validNextChords -> nil,
 		\nextCipher      -> nil
 	],
 
@@ -64,8 +49,6 @@ dictionaries cannot be assigned nil values.
 	\result          -> nil, // Stores result from backtrack
 	\dump            -> nil, // Result to be used in score export (redundant?)
 	\return          -> nil, // Stores version of progression to be returned (voice/chord)
-
-	// Argumens (Maybe nested dictionary for all arguments?)
 	\progression     -> nil,
 	\durations       -> nil,
 	\direction       -> nil,
@@ -90,7 +73,6 @@ dictionaries cannot be assigned nil values.
 	\enforceFirstInversion        -> false,
 	\enforceSecondInversion       -> false,
 	\enforceUnisonProhibition     -> false
-	// New rules for additional chord positions (third inversion and so on)
 ];
 
 // Convinience array with the sequence of rule symbols
@@ -110,11 +92,7 @@ dictionaries cannot be assigned nil values.
 	\enforceFirstInversion,
 	\enforceSecondInversion,
 	\enforceUnisonProhibition
-	// New rules for additional chord positions (third inversion and so on)
 ];
-
-// Convenience array containing all dictionaries
-~dictionaries = [~midiRange, ~triads, ~data, ~progState, ~rules, ~ruleKeys];
 
 /****************************************************************************************/
 /*
@@ -179,7 +157,7 @@ across recursive calls
 	rules[\enforceFirstInversion]        = false;
 	rules[\enforceSecondInversion]       = false;
 	rules[\enforceCommonTones]           = true;
-	// New rules for additional chord positions (third inversion and so on)
+	rules[\enforceUnisonProhibition]     = false;
 	nil;
 };
 )
