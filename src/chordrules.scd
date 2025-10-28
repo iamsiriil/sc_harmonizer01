@@ -141,6 +141,7 @@
 		u = if (rules[\enforceUnisonProhibition]) { 1 } { 0 };
 		n = (nextChord[i] - nextChord[i - 1]);
 
+		//"u: %".format(u).postln;
 		cross = if (rules[\enforceVoiceCrossProhibition]) {
 			(n >= u); // n >= 0 for unisons
 		} {

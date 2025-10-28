@@ -157,7 +157,7 @@ across recursive calls
 	rules[\enforceFirstInversion]        = false;
 	rules[\enforceSecondInversion]       = false;
 	rules[\enforceCommonTones]           = true;
-	rules[\enforceUnisonProhibition]     = false;
+	//rules[\enforceUnisonProhibition]     = false; -> Overwrites input value
 	nil;
 };
 )
