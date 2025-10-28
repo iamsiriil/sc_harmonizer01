@@ -50,7 +50,7 @@
 
 	case
 	{ progState[\output] == 'chord' } {
-		progState[\dump] = progState[\result];
+		progState[\dump]   = progState[\result];
 		progState[\return] = progState[\result];
 	}
 	{ progState[\output] == 'voice' } {
@@ -84,8 +84,7 @@ otherwise calls ~backtrackProg.
 	if (progState[\progression].size == 1) {
 
 		data[\state][\nextCipher] = progState[\progression][0];
-		// if ~getChord becomes a Routine, .choose may not work since the routine will probably reset at every call of ~harmonizeProg
-		progState[\result] = [~getChords.(data, progState, rules, 0).choose];
+		progState[\result]        = [~getChords.(data, progState, rules, 0).choose];
 
 	} {
 		if (~backtrackProg.(data, progState, rules, 0) == false) {
