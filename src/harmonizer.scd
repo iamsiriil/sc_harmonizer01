@@ -22,6 +22,13 @@
 		progState[\sustain] = sus;
 	};
 
+	if ((sus == true) && (out == 'chord')) {
+		"WARNING: Sustain is not compatible with 'chord' output format and will be set to FALSE.\n".postln;
+		progState[\sustain] = false;
+	} {
+		progState[\sustain] = sus;
+	};
+
 	// Copy progression, direction and output format to progState
 	progState[\progression]  = prog;
 	progState[\direction]    = dir;

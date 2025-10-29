@@ -67,9 +67,6 @@
 	if (validOutput.includes(out).not) {
 		Error("% is not a valid output format. Try \'chord\' or \'voice\'.\n".format(out)).throw;
 	};
-	if ((sus == true) && (out == 'chord')) {
-		Error("Sustain is not compatible with 'chord' output setting. Change to 'voice'.\n").throw;
-	};
 	nil;
 };
 
