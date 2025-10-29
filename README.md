@@ -14,10 +14,9 @@ The next iteration will introduce dynamically generated chord ranges (e.g., seve
 
 The entry point is harmonizeProg, which requires:
 
-* **progression**: an Array of Symbols (chord ciphers), and
+* **prog**: an Array of Symbols (chord ciphers), and
 
-* **durations**: an Array of Integers (one per chord).
-Both arrays must have the same length.
+* **dur**: not mandatory. The durations array is only necessary if the user inteds to output voices. If not provided, harmonizer will assign an array of ones, of the same size as `prog`, as durations.
 
 The progression is parsed to extract and store per-chord data in a Dictionary: root, chord quality (major, minor, diminished, augmented), and the interval from the previous chord’s root. During parsing, a specific rule profile is assigned to each chord to guide generation. The parser then collects chord data from the static library (MIDI-note ranges and degree arrays).
 
@@ -42,16 +41,20 @@ Clone the repository and load the entry file into a project file of your own:
 Then call the main function:
 
 ```SuperCollider
-harmonizeProg.(prog, dur, dir: "line", sus: true, scr: false, log: false)
+harmonizeProg.(prog, dur, dir: "line", out: 'voice', uni: false, sus: true, scr: false, log: false)
 ```
 
 #### Arguments
 
 + **prog** (Array of Symbols) – chord progression to harmonize. Symbols must match the static library (see Valid chord symbols).
 
-+ **dur** (Array of Integers) – one duration per chord. Must match the length of progression.
++ **dur** (Array of Numbers) – duration of each chord. Must match the length of progression. If no progression is passed and `out` is set to `'voice'`, Harmonizer will assign an array of ones, of the same size as `prog`. 
 
-+ **dir** (String, default "line") – upper-voice motion: "up", "down", or "line" (ranged, centered on first chord’s top note).
++ **dir** (String, default "line") – upper-voice motion: `"up"`, `"down"`, or `"line"` (ranged, centered on first chord’s top note).
+
++ **out** (Symbol, 'voice') – output format. `'voice'` ouputs one voice per subarray, `'chord'` outputs one chord per subarray.
+
++ **uni** (Boolean, default false) – when set to `true` prohibits unisons in chords.
 
 + **sus** (Boolean, default true) – sustains common tones by extending the first note’s duration.
 
@@ -69,14 +72,18 @@ harmonizeProg.(prog, dur, dir: "line", sus: true, scr: false, log: false)
 
 ```SuperCollider
 [
-    // MIDI notes per voice
-    [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ],
-    // durations per voice
-    [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ]
+    // out: 'voice'
+    [
+        [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ],// MIDI notes per voice
+        [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ] // durations per voice
+    ]
+
+    // out: 'chord'
+    [ [..chord1..], [..chord2..], [..chord3..], ... ]
 ]
 ```
 
-You can then map each voice into a Pbind (see `main.scd` for a full example).
+You can then map each voice into a Pattern, Routine, or other playback construct (see `example.scd` for a full example).
 
 #### Valid chord symbols
 
@@ -95,7 +102,7 @@ You can then map each voice into a Pbind (see `main.scd` for a full example).
 | **Bb**	| Bbd        	| Bbm	| BbM	| BbA       |
 | **B**  	| Bd        	| Bm	| BM	| BA        |
 
-A more complete example is available in `main.scd`.
+A more complete example is available in `example.scd`.
 
 #### Score export
 
