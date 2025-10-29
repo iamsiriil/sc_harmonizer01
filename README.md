@@ -41,7 +41,7 @@ Then call the main function:
 
 #### Arguments
 
-+ **prog** (Array of Symbols) – chord progression to harmonize. Symbols must match the static library (see Valid chord symbols).
++ **`prog`** (Array of Symbols) – chord progression to harmonize. Symbols must match the static library (see Valid chord symbols).
 
 + **dur** (Array of Numbers) – duration of each chord. Must match the length of progression. If no durations are provided, and `out` is set to `'voice'`, harmonizer will assign an array of ones, of the same size as `prog`. 
 
