@@ -61,7 +61,7 @@ dictionaries cannot be assigned nil values.
 	\enforceVoiceCrossProhibition -> true,
 	\enforceMelodicIntervals      -> true,
 	\enforceVocalRange            -> true,
-	\enforceCommonTones           -> true,
+	\enforceCommonTones           -> false,
 	\enforceParallelOctaves       -> true,
 	\enforceParallelFifths        -> true,
 	\enforceNoteDuplicate         -> true,
@@ -156,7 +156,7 @@ across recursive calls
 	rules[\enforceRootPosition]          = true;
 	rules[\enforceFirstInversion]        = false;
 	rules[\enforceSecondInversion]       = false;
-	rules[\enforceCommonTones]           = true;
+	rules[\enforceCommonTones]           = false;
 	//rules[\enforceUnisonProhibition]     = false; -> Overwrites input value
 	nil;
 };
