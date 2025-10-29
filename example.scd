@@ -36,7 +36,7 @@ SynthDef(\organ2, { |freq = #[110, 220, 440, 880], amp = 0.2, pan = 0, gate = 1,
 ~result = ~harmonizeProg.(
 	~prog,         // Progression
 	~dur,          // Duration (no longer mandatory)
-	dir: "down",   // Direction
+	dir: "line",   // Direction
 	out: 'voice',  // Output format (arrays per voice or per chord)
 	uni: true,     // Enforce unison prohibition
 	sus: true,     // sustain common tones
@@ -46,7 +46,7 @@ SynthDef(\organ2, { |freq = #[110, 220, 440, 880], amp = 0.2, pan = 0, gate = 1,
 )
 
 /*************************************************************************************/
-// Play progression (voice)
+// Play progression (out: 'voice')
 (
 ~octave = (_ + 12); // Change octave
 
@@ -94,7 +94,7 @@ Ppar([
 )
 
 /*************************************************************************************/
-// Play progression (chord)
+// Play progression (out: 'chord')
 (
 ~octave = (_ + 12); // Change octave
 
@@ -109,12 +109,15 @@ Ppar([
 		synth.set(\freq, c.midicps, \gate, 1);
 
 		if (i == (~result.size - 1)) {
+
 			4.wait;
+			synth.set(\gate, 0);
+
 		} {
 			1.wait;
 		};
 	};
-	synth.set(\gate, 0);
 });
+
 ~r.play();
 )
