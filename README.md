@@ -71,16 +71,16 @@ harmonizeProg.(prog, dur, dir: "line", out: 'voice', uni: false, sus: true, scr:
 #### Return format
 
 ```SuperCollider
-[
-    // out: 'voice'
-    [
-        [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ],// MIDI notes per voice
-        [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ] // durations per voice
-    ]
 
-    // out: 'chord'
-    [ [..chord1..], [..chord2..], [..chord3..], ... ]
+// out: 'voice'
+[
+    [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ],// MIDI notes per voice
+    [ [..Bass..], [..Tenor..], [..Alto..], [..Soprano..] ] // durations per voice
 ]
+
+// out: 'chord'
+[ [..chord1..], [..chord2..], [..chord3..], ... ]
+
 ```
 
 You can then map each voice into a Pattern, Routine, or other playback construct (see `example.scd` for a full example).
