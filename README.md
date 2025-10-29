@@ -41,13 +41,13 @@ Then call the main function:
 
 #### Arguments
 
-+ **`prog`** (Array of Symbols) – chord progression to harmonize. Symbols must match the static library (see Valid chord symbols).
++ **prog** (Array of Symbols) – chord progression to harmonize. Symbols must match the static library (see Valid chord symbols).
 
 + **dur** (Array of Numbers) – duration of each chord. Must match the length of progression. If no durations are provided, and `out` is set to `'voice'`, harmonizer will assign an array of ones, of the same size as `prog`. 
 
 + **dir** (String, default "line") – upper-voice motion: `"up"`, `"down"`, or `"line"` (ranged, centered on first chord’s top note).
 
-+ **out** (Symbol, 'voice') – output format. `'voice'` ouputs one voice per subarray, `'chord'` outputs one chord per subarray.
++ **out** (Symbol, default 'voice') – output format. `'voice'` ouputs one voice per subarray, `'chord'` outputs one chord per subarray.
 
 + **uni** (Boolean, default false) – when set to `true` prohibits unisons in chords.
 
