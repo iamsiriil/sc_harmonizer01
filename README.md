@@ -14,9 +14,7 @@ The next iteration will introduce dynamically generated chord ranges (e.g., seve
 
 The entry point is harmonizeProg, which requires:
 
-* **prog**: an Array of Symbols (chord ciphers), and
-
-* **dur**: not mandatory. The durations array is only necessary if the user inteds to output voices. If not provided, harmonizer will assign an array of ones, of the same size as `prog`, as durations.
+* **prog**: an Array of Symbols (chord ciphers).
 
 The progression is parsed to extract and store per-chord data in a Dictionary: root, chord quality (major, minor, diminished, augmented), and the interval from the previous chord’s root. During parsing, a specific rule profile is assigned to each chord to guide generation. The parser then collects chord data from the static library (MIDI-note ranges and degree arrays).
 
