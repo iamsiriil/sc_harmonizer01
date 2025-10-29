@@ -38,7 +38,7 @@ SynthDef(\organ2, { |freq = #[110, 220, 440, 880], amp = 0.2, pan = 0, gate = 1,
 	~dur,          // Duration (no longer mandatory)
 	dir: "line",   // Direction
 	out: 'voice',  // Output format (arrays per voice or per chord)
-	uni: true,     // Enforce unison prohibition
+	uni: false,    // Enforce unison prohibition
 	sus: true,     // sustain common tones
 	scr: false,    // Export score
 	log: false     // Logger
