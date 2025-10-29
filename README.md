@@ -79,7 +79,7 @@ harmonizeProg.(prog, dur, dir: "line", out: 'voice', uni: false, sus: true, scr:
 ]
 
 // out: 'chord'
-[ [..chord1..], [..chord2..], [..chord3..], ... ]
+[ [..Chord1..], [..Chord2..], [..Chord3..], ... ]
 
 ```
 
