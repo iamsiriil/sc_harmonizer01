@@ -27,9 +27,6 @@ Generation uses two nested backtracking loops. The inner loop builds all valid c
 
 ## Usage
 
-> [!WARNING]
-> This section is out of date and will be updated very soon. Meanwhile, check the `example.scd` file for reference.
-
 Clone the repository and load the entry file into a project file of your own:
 
 ```SuperCollider
@@ -39,7 +36,7 @@ Clone the repository and load the entry file into a project file of your own:
 Then call the main function:
 
 ```SuperCollider
-harmonizeProg.(prog, dur, dir: "line", out: 'voice', uni: false, sus: true, scr: false, log: false)
+~harmonizeProg.(prog, dur, dir: "line", out: 'voice', uni: false, sus: true, scr: false, log: false)
 ```
 
 #### Arguments
