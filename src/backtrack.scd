@@ -74,7 +74,6 @@ wrapper ~getChord, invokes ~backtrackChords to produce, for each chord
 symbol in the progression, a list of valid candidate chords. Returns true if
 the completed progression satisfies all rules.
 */
-
 ~backtrackProg = #{ |data, progState, rules, i|
 	var result;
 

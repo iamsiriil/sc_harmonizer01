@@ -42,7 +42,8 @@
 	degreesAsSet = chords[cipher][\degree].asSet;
 	chordAsSet = degrees.asSet;
 
-	if (chordAsSet == degreesAsSet) { // Checks if chord is complete
+	// Checks if chord is complete
+	if (chordAsSet == degreesAsSet) {
 
 		if (rules[\enforceNoteDuplicate]) {
 
@@ -141,7 +142,6 @@
 		u = if (rules[\enforceUnisonProhibition]) { 1 } { 0 };
 		n = (nextChord[i] - nextChord[i - 1]);
 
-		//"u: %".format(u).postln;
 		cross = if (rules[\enforceVoiceCrossProhibition]) {
 			(n >= u); // n >= 0 for unisons
 		} {
